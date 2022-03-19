@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Roboto&display=swap')
+
+$smokey: #151313
+$smokish: #292424
+$fern: #497740
+$steel: #3581B8
+$mac: #FCB07E
+$alabaster: #DEE2D6
+$rose: #F46197
+
+$white: $smokey
+$white-ter: $smokey
+$white-bis: $smokey
+
+$grey: $smokish
+$grey-light: $alabaster
+$grey-dark: $alabaster
+$grey-darker: $alabaster
+
+$blue: $steel
+$turquoise: $steel
+$green: $fern
+$yellow: $mac
+$red: $rose
+
+$family-sans-serif: "Roboto", sans-serif
+$body-size: 16px
+$radius-large: 6px
+
+.section.fullheight
+  min-height: calc(100vh - 3.25rem)
+
+.title,
+.subtitle
+  font-family: "Josefin Sans", sans-serif
+
+.tooltip
+  background: $smokish
+  box-shadow: 0 5px 10px black
+  padding: 1.25rem
+  border-radius: $radius-large
+  ol
+    margin: 0
+    padding: 0
+
+.tooltip-arrow
+  background: $blue
+
+.combo-container
+  border-radius: $radius-large
+
+.combo
+  border-radius: $radius-large
+  &:hover
+    outline: 3px solid $steel
+    transition: 0.3s ease all
+
+@import "../../node_modules/bulma/bulma"

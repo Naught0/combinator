@@ -1,0 +1,1 @@
+python3 -m poetry run gunicorn -b :30003 app:app

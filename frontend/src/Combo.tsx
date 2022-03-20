@@ -9,24 +9,21 @@ export const Combo = ({ data }: props) => {
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
-    visible, } = usePopperTooltip({ placement: "top-end" });
+    visible, } = usePopperTooltip({ offset: [0, 15], trigger: "click" });
 
   return (
-    <div className="combo columns is-gapless is-clickable is-flex is-align-items-center m-0 p-4" ref={setTriggerRef}>
+    <div className={`combo columns is-gapless is-clickable is-flex is-align-items-center m-3 p-3 ${visible && 'active'}`} ref={setTriggerRef}>
       {visible && <div className="tooltip" ref={setTooltipRef} {...getTooltipProps()}>
-        <div className="tooltip-arrow" {...getArrowProps()}></div>
+        <div {...getArrowProps()}></div>
         <div className="content is-marginless is-paddingless">
           <ol>
             {data.s
               .split(".")
               .filter(t => t.trim().length > 0)
               .map((s, idx) => <li key={`${data.d}-${idx}`}>
-                {s.split(" ").map((word, idx) => {
-                  const matchChar = word.match(/\{(?<val>.+)\}/)?.groups?.val;
-                  if (matchChar && Object.keys(manaFontMap).includes(matchChar.toLowerCase())) {
-                    console.log(`Found ${matchChar}`);
-                    
-                    return manaFontMap[matchChar.toLowerCase()];
+                {s.replaceAll(/[{}]/g, ' ').split(" ").map((word, idx) => {
+                  if (word && Object.keys(manaFontMap).includes(word.toLowerCase())) {
+                    return manaFontMap[word.toLowerCase()];
                   }
                   return ` ${word} `
                 })}

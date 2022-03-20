@@ -1,41 +1,73 @@
+import { faCircleRight } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Combo } from './Combo';
+import logo from "./images/logo.svg";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [deckData, setDeckData] = useState<DeckData>();
+  const [fetching, setFetching] = useState(false);
+  const [error, setError] = useState<string>();
 
   const findCombos = () => {
+    setDeckData(undefined);
+    setError(undefined);
+
     (async () => {
-      const { data } = await axios.get("/api/search", { params: { "url": deckUrl } });
-      setDeckData(data);
+      setFetching(true);
+      try {
+        const { data } = await axios.get("/api/search", { params: { "url": deckUrl } });
+        setDeckData(data);
+      } catch (e) {
+        setError("Couldn't grab that list, double check the URL (and make sure it's Moxfield)");
+      }
+      setFetching(false);
     })();
+
   }
 
   return (
     <React.Fragment>
-      <nav className="navbar is-info"></nav>
+      <nav className="navbar has-background-grey has-shadow px-4">
+        <div className="navbar-brand">
+          <div className="navbar-item">
+            <span className="icon-text">
+              <span className="icon mr-4"><img src={logo} alt="" style={{ minWidth: "64px" }} /></span>
+              <span className="fancy">infinite combos, finite braincells</span>
+            </span>
+          </div>
+        </div>
+      </nav>
       <div className="section fullheight">
         <div className="container">
           <h1 className="title">What combos are in your deck?</h1>
-          <p className="subtitle">You know damn well you don't know</p>
-          <div className="field is-horizontal">
+          <div className="field is-horizontal mb-5">
             <div className="field-body">
-              <div className="field"><input type="text" className="input is-medium" placeholder="Moxfield URL" onInput={(e) => setDeckUrl((e.target as HTMLInputElement).value)} /></div>
+              <div className="field">
+                <input type="text" className={`input is-medium ${error && "is-danger"}`} placeholder="Moxfield URL" onInput={(e) => setDeckUrl((e.target as HTMLInputElement).value)} />
+                {error && <p className="has-text-danger help">{error}</p>}
+              </div>
               <div className="field">
                 <div className="buttons">
-                  <button className="button is-primary is-medium" disabled={deckUrl.length < 10} onClick={findCombos}>Gimme combos</button>
+                  <button className={`button is-primary is-medium ${fetching && "is-loading"}`} disabled={deckUrl.length < 10} onClick={findCombos}>
+                    <span>think for me</span>
+                    <span className="icon">
+                      <FontAwesomeIcon icon={faCircleRight} />
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
           {deckData &&
-            <div className='container combo-container has-background-grey px-3 pb-4'>
-              <hr className="has-background-warning" />
+            <div className='container combo-container has-background-grey p-5'>
               <h1 className="title">{deckData.meta.name}</h1>
-              <p className="subtitle">by {deckData.meta.author}</p>
-              {deckData.combos.map(c => <Combo data={c} />)}
+              <p className="subtitle mb-2">by {deckData.meta.author}</p>
+              {deckData.combos.length > 0 && <p className='mb-4 help'><i>Click a combo to see the steps</i></p>}
+              {deckData.combos.length > 0 && deckData.combos.map(c => <Combo data={c} />)}
+              {!(deckData.combos.length > 0) && <h1 className='is-size-4'>💡 Pro Tip: Try adding some combos to your list</h1>}
             </div>
           }
         </div>

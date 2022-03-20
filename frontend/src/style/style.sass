@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Roboto&display=swap')
 
 $smokey: #151313
-$smokish: #292424
+$smokish: #2c2929
 $fern: #497740
 $steel: #3581B8
 $mac: #FCB07E
@@ -31,16 +31,19 @@ $radius-large: 6px
   min-height: calc(100vh - 3.25rem)
 
 .title,
-.subtitle
+.subtitle,
+.fancy
   font-family: "Josefin Sans", sans-serif
 
 .tooltip
-  background: $smokish
-  box-shadow: 0 5px 10px black
-  padding: 1.25rem
+  background: $alabaster
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.5)
+  padding: 1.25rem !important
   border-radius: $radius-large
+  border-bottom: 3px solid $mac
+  color: $smokey
   ol
-    margin: 0
+    margin-top: 0 !important
     padding: 0
 
 .tooltip-arrow
@@ -48,11 +51,16 @@ $radius-large: 6px
 
 .combo-container
   border-radius: $radius-large
+  border-top: 3px solid $mac
 
 .combo
   border-radius: $radius-large
-  &:hover
+  &:hover,
+  &.active
     outline: 3px solid $steel
     transition: 0.3s ease all
+  
+.ms-cost
+  box-shadow: 1px 1px 2px rgb(0 0 0 / 0.8)
 
 @import "../../node_modules/bulma/bulma"

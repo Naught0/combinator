@@ -1,3 +1,4 @@
+import pathlib
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,29 +9,36 @@ from flask_cors import CORS
 
 from process import find_matches, get_combo_data, get_moxfield_deck
 
-app = Flask(import_name=__name__, static_url_path="/", static_folder="./frontend/build")
+app = Flask(__name__, static_url_path="/", static_folder="frontend/build")
 
 CORS(app)
 
 COMBO_DATA = get_combo_data()
 
 
-@app.route("/")
-def _index():
-    return send_from_directory("./frontend/build", "index.html")
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def _index(path):
+    if path and pathlib.Path(app.static_folder, path).exists():
+        return send_from_directory(f"{app.static_folder}/{path}")
+    else:
+        return send_from_directory(app.static_folder, "index.html")
 
 
 @app.errorhandler(404)
-def fourohfour():
-    return send_from_directory("./frontend/build", "index.html")
+def fourohfour(*args, **kwargs):
+    return send_from_directory(app.static_folder, "index.html")
 
 
 @app.route("/api/search")
 def search():
     params = request.args
-    deck = get_moxfield_deck(params["url"])
-    combos = find_matches(COMBO_DATA, deck["cards"])
-    deck.update({"combos": combos})
-    del deck["cards"]
+    try:
+        deck = get_moxfield_deck(params["url"])
+        combos = find_matches(COMBO_DATA, deck["cards"])
+        deck.update({"combos": combos})
+        del deck["cards"]
+    except:
+        return jsonify("Deck not found or malformed"), HTTPStatus.BAD_REQUEST
 
     return jsonify(deck), HTTPStatus.OK

@@ -19,6 +19,7 @@ $grey-darker: $alabaster
 
 $blue: $steel
 $turquoise: $steel
+$link: $mac
 $green: $fern
 $yellow: $mac
 $red: $rose
@@ -42,9 +43,13 @@ $radius-large: 6px
   border-radius: $radius-large
   border-bottom: 3px solid $mac
   color: $smokey
-  ol
+  ol, ul
     margin-top: 0 !important
     padding: 0
+  ol
+    margin-left: 1rem !important
+  ul
+    margin-left: 0.9rem !important
 
 .tooltip-arrow
   background: $blue
@@ -59,7 +64,7 @@ $radius-large: 6px
   &.active
     outline: 3px solid $steel
     transition: 0.3s ease all
-  
+
 .ms-cost
   box-shadow: 1px 1px 2px rgb(0 0 0 / 0.8)
 

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Combo } from './Combo';
+import { Footer } from './Footer';
 import logo from "./images/logo.svg";
 
 export const App = () => {
@@ -35,7 +36,7 @@ export const App = () => {
           <div className="navbar-item">
             <span className="icon-text">
               <span className="icon mr-4"><img src={logo} alt="" style={{ minWidth: "64px" }} /></span>
-              <span className="fancy">infinite combos, finite braincells</span>
+              <span className="fancy">infinite combos, finite brain cells</span>
             </span>
           </div>
         </div>
@@ -65,13 +66,14 @@ export const App = () => {
             <div className='container combo-container has-background-grey p-5'>
               <h1 className="title">{deckData.meta.name}</h1>
               <p className="subtitle mb-2">by {deckData.meta.author}</p>
-              {deckData.combos.length > 0 && <p className='mb-4 help'><i>Click a combo to see the steps</i></p>}
+              {deckData.combos.length > 0 && <p className='mb-4 help'><i>Click a combo to see its prerequisites and steps</i></p>}
               {deckData.combos.length > 0 && deckData.combos.map(c => <Combo data={c} />)}
               {!(deckData.combos.length > 0) && <h1 className='is-size-4'>💡 Pro Tip: Try adding some combos to your list</h1>}
             </div>
           }
         </div>
       </div>
+      <Footer />
     </React.Fragment >
   );
 }

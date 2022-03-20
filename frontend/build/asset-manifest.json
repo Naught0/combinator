@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bac2b2a3.css",
+    "main.js": "/static/js/main.3b409b6f.js",
+    "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
+    "static/media/mana.svg?v=1.14.0": "/static/media/mana.a0c6f663e353a72aaf23.svg",
+    "static/media/mplantin.svg?v=1.14.0": "/static/media/mplantin.83d7d29e550b1e99d824.svg",
+    "static/media/mana.eot": "/static/media/mana.f3a066447bf6ac35f088.eot",
+    "static/media/mana.woff?v=1.14.0": "/static/media/mana.26e8eea763aeceb29009.woff",
+    "static/media/mana.ttf?v=1.14.0": "/static/media/mana.9284e31dddc88aecda27.ttf",
+    "static/media/mplantin.eot": "/static/media/mplantin.5b4cd76298c9d024c16d.eot",
+    "static/media/mplantin.ttf?v=1.14.0": "/static/media/mplantin.9ccce3a24c7c9894b58e.ttf",
+    "static/media/mplantin.woff?v=1.14.0": "/static/media/mplantin.f511062c132e4b72f9b8.woff",
+    "static/media/logo.svg": "/static/media/logo.7fc04289e57cd5de95015d7c11edce01.svg",
+    "index.html": "/index.html",
+    "main.bac2b2a3.css.map": "/static/css/main.bac2b2a3.css.map",
+    "main.3b409b6f.js.map": "/static/js/main.3b409b6f.js.map",
+    "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bac2b2a3.css",
+    "static/js/main.3b409b6f.js"
+  ]
+}

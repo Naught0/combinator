@@ -7,7 +7,13 @@ from http import HTTPStatus
 from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
 
-from process import find_matches, get_combo_data, get_moxfield_deck
+from process import (
+    find_matches,
+    get_archidekt_deck,
+    get_combo_data,
+    get_goldfish_deck,
+    get_moxfield_deck,
+)
 
 app = Flask(__name__, static_url_path="/", static_folder="frontend/build")
 
@@ -33,8 +39,16 @@ def fourohfour(*args, **kwargs):
 @app.route("/api/search")
 def search():
     params = request.args
+    fn = None
+    if "moxfield" in params["url"].lower():
+        fn = get_moxfield_deck
+    if "mtggoldfish" in params["url"].lower():
+        fn = get_goldfish_deck
+    if "archidekt" in params["url"].lower():
+        fn = get_archidekt_deck
+
     try:
-        deck = get_moxfield_deck(params["url"])
+        deck = fn(params["url"])
         combos = find_matches(COMBO_DATA, deck["cards"])
         deck.update({"combos": combos})
         del deck["cards"]

@@ -22,7 +22,7 @@ export const App = () => {
         const { data } = await axios.get("/api/search", { params: { "url": deckUrl } });
         setDeckData(data);
       } catch (e) {
-        setError("Couldn't grab that list, double check the URL (and make sure it's Moxfield)");
+        setError("Error -- Ensure you provided a valid Moxfield, MTGGoldfish, or Archidekt URL.");
       }
       setFetching(false);
     })();
@@ -47,7 +47,7 @@ export const App = () => {
           <div className="field is-horizontal mb-5">
             <div className="field-body">
               <div className="field">
-                <input type="text" className={`input is-medium ${error && "is-danger"}`} placeholder="Moxfield URL" onInput={(e) => setDeckUrl((e.target as HTMLInputElement).value)} />
+                <input type="text" className={`input is-medium ${error && "is-danger"}`} placeholder="Archidekt, Moxfield, or MTGGoldfish deck URL" onInput={(e) => setDeckUrl((e.target as HTMLInputElement).value)} />
                 {error && <p className="has-text-danger help">{error}</p>}
               </div>
               <div className="field">

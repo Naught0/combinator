@@ -66,5 +66,5 @@ def get_archidekt_deck(url: str) -> dict:
 
 
 def get_combo_data():
-    return json.load(open("data.json"))  # TODO
-    # return requests.get(COMBO_DATA_URL).json()
+    # return json.load(open("data.json"))  # TODO
+    return requests.get(COMBO_DATA_URL).json()

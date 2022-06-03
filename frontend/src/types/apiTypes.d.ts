@@ -10,6 +10,7 @@ interface Combo {
 interface DeckMeta {
   name: string;
   author: string;
+  url: string;
 }
 
 interface DeckData {

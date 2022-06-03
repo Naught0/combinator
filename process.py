@@ -25,7 +25,7 @@ def get_moxfield_deck(url: str) -> Set[str]:
 
     resp = requests.get(MOXFIELD_BASE_URL.format(deck_id)).json()
     return {
-        "meta": {"name": resp.get("name"), "author": resp["createdByUser"]["userName"]},
+        "meta": {"name": resp.get("name"), "author": resp["createdByUser"]["userName"], "url": url},
         "cards": set([*resp["mainboard"].keys(), *resp["sideboard"].keys()]),
     }
 
@@ -49,7 +49,7 @@ def get_goldfish_deck(url: str) -> Set[str]:
     resp = requests.get(download_url.format(deck_id)).text
     cards = set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x])
 
-    return {"meta": {"name": title, "author": author}, "cards": cards}
+    return {"meta": {"name": title, "author": author, "url": url}, "cards": cards}
 
 
 def get_archidekt_deck(url: str) -> dict:
@@ -62,7 +62,7 @@ def get_archidekt_deck(url: str) -> dict:
     title = data["name"]
     cards = set([x["card"]["oracleCard"]["name"] for x in data["cards"]])
 
-    return {"meta": {"name": title, "author": author}, "cards": cards}
+    return {"meta": {"name": title, "author": author, "url": url}, "cards": cards}
 
 
 def get_combo_data():

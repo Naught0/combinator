@@ -40,11 +40,12 @@ def fourohfour(*args, **kwargs):
 def search():
     params = request.args
     fn = None
-    if "moxfield" in params["url"].lower():
+    url = params["url"].lower()
+    if "moxfield" in url:
         fn = get_moxfield_deck
-    if "mtggoldfish" in params["url"].lower():
+    if "mtggoldfish" in url:
         fn = get_goldfish_deck
-    if "archidekt" in params["url"].lower():
+    if "archidekt" in url:
         fn = get_archidekt_deck
 
     try:

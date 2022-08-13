@@ -61,20 +61,16 @@ export const App = () => {
   return (
     <React.Fragment>
       <ToastContainer theme="dark" />
-      <nav className="navbar has-background-grey has-shadow px-4">
-        <div className="navbar-brand">
-          <div className="navbar-item">
-            <span className="icon-text">
-              <span className="icon mr-4">
-                <img src={logo} alt="" style={{ minWidth: "64px" }} />
-              </span>
-              <span className="fancy">infinite combos, finite brain cells</span>
-            </span>
-          </div>
-        </div>
-      </nav>
       <div className="section fullheight">
         <div className="container">
+          <p className="title is-1 icon-text">
+            <span className="icon mr-6">
+              <img src={logo} alt="" style={{ minWidth: "64px" }} />
+            </span>
+            <span className="fancy">infinite combos, finite brain cells</span>
+          </p>
+        </div>
+        <div className="container mt-6">
           <h1 className="title">What combos are in your deck?</h1>
           <form
             onSubmit={(e) => {

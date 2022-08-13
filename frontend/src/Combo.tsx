@@ -7,7 +7,7 @@ interface props {
 
 const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
   return s
-    .replace("}{", "} {")
+    .replaceAll("}{", "} {")
     .split(" ")
     .map((word, idx) => {
       const toCompare = word.toLowerCase().replaceAll(/[.,]/g, "");

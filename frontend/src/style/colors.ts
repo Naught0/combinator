@@ -6,4 +6,4 @@ export const colors = {
   mac: "#FCB07E",
   alabaster: "#DEE2D6",
   rose: "#F46197",
-}
+};

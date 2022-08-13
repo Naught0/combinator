@@ -6,13 +6,16 @@ interface props {
 }
 
 const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
-  return s.replace("}{", "} {").split(" ").map((word, idx) => {
-    const toCompare = word.toLowerCase().replaceAll(/[.,]/g, "");
-    if (word && Object.keys(manaFontMap).includes(toCompare)) {
-      return manaFontMap[toCompare](`${uniqueKey}-${idx}-${word}`);
-    }
-    return ` ${word} `;
-  });
+  return s
+    .replace("}{", "} {")
+    .split(" ")
+    .map((word, idx) => {
+      const toCompare = word.toLowerCase().replaceAll(/[.,]/g, "");
+      if (word && Object.keys(manaFontMap).includes(toCompare)) {
+        return manaFontMap[toCompare](`${uniqueKey}-${idx}-${word}`);
+      }
+      return ` ${word} `;
+    });
 };
 
 export const Combo = ({ data }: props) => {
@@ -50,7 +53,9 @@ export const Combo = ({ data }: props) => {
                     .split(".")
                     .filter((t) => t.trim().length > 0)
                     .map((s, idx) => (
-                      <li key={`${data.d}-${idx}`}>{replaceManaSymbols(data.d, s)}</li>
+                      <li key={`${data.d}-${idx}`}>
+                        {replaceManaSymbols(data.d, s)}
+                      </li>
                     ))}
                 </ol>
               </div>

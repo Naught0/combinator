@@ -23,12 +23,6 @@ export const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (deckUrl && !deckData) {
-      findCombos();
-    }
-  }, [deckUrl, deckData]);
-
   const findCombos = (url?: string) => {
     setDeckData(undefined);
     setError(undefined);

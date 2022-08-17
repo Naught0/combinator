@@ -1,4 +1,3 @@
-import json
 import re
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -11,11 +10,31 @@ MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 
 
 def find_matches(data: List[dict], to_match: Set[str]) -> List[dict]:
+    """Finds combos in a given decklist based on card names
+
+    Args:
+        data (List[dict])
+        to_match (Set[str])
+
+    Returns:
+        List[dict]: List of combos
+    """
     db = pd.DataFrame(data)
     return db[db["c"].apply(lambda x: set(x).issubset(to_match))].to_dict("records")
 
 
-def get_moxfield_deck(url: str) -> Set[str]:
+def get_moxfield_deck(url: str) -> dict:
+    """Retrieve a deck from moxfield
+
+    Args:
+        url (str)
+
+    Raises:
+        ValueError: Malformed URL
+
+    Returns:
+        dict
+    """
     parsed = urlparse(url)
 
     try:
@@ -30,7 +49,18 @@ def get_moxfield_deck(url: str) -> Set[str]:
     }
 
 
-def get_goldfish_deck(url: str) -> Set[str]:
+def get_goldfish_deck(url: str) -> dict:
+    """Retrieve an mtggoldfish deck
+
+    Args:
+        url (str)
+
+    Raises:
+        ValueError: On malformed URL
+
+    Returns:
+        dict
+    """
     parsed = urlparse(url)
     download_url = "https://www.mtggoldfish.com/deck/download/{}"
     headers = {
@@ -53,6 +83,14 @@ def get_goldfish_deck(url: str) -> Set[str]:
 
 
 def get_archidekt_deck(url: str) -> dict:
+    """Retrieve an archidekt deck
+
+    Args:
+        url (str)
+
+    Returns:
+        dict
+    """
     parsed = urlparse(url)
     id = parsed.path.split("/")[-1]
     url = "https://archidekt.com/api/decks/{}/small/".format(id)
@@ -66,5 +104,9 @@ def get_archidekt_deck(url: str) -> dict:
 
 
 def get_combo_data():
-    # return json.load(open("data.json"))  # TODO
+    """Retrieve combo data from commanders spellbook
+
+    Returns:
+        dict
+    """
     return requests.get(COMBO_DATA_URL).json()

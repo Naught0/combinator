@@ -62,13 +62,17 @@ export const App = () => {
     <React.Fragment>
       <ToastContainer theme="dark" />
       <div className="section fullheight">
-        <div className="container">
-          <p className="title is-1 icon-text">
-            <span className="icon mr-6">
-              <img src={logo} alt="" style={{ minWidth: "64px" }} />
-            </span>
-            <span className="fancy">infinite combos, finite brain cells</span>
-          </p>
+        <div className="level">
+          <div className="level-left">
+            <div className="level-item">
+              <img src={logo} alt="" width={64} />
+            </div>
+            <div className="level-item">
+              <span className="fancy title is-1">
+                infinite combos, finite brain cells
+              </span>
+            </div>
+          </div>
         </div>
         <div className="container mt-6">
           <h1 className="title">What combos are in your deck?</h1>

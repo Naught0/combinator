@@ -26,7 +26,7 @@ def get_moxfield_deck(url: str) -> Set[str]:
     resp = requests.get(MOXFIELD_BASE_URL.format(deck_id)).json()
     return {
         "meta": {"name": resp.get("name"), "author": resp["createdByUser"]["userName"], "url": url},
-        "cards": set([*resp["mainboard"].keys(), *resp["sideboard"].keys()]),
+        "cards": set([resp["main"]["name"], *resp["mainboard"].keys(), *resp["sideboard"].keys()]),
     }
 
 

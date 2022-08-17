@@ -88,13 +88,18 @@ def get_archidekt_deck(url: str) -> dict:
     Args:
         url (str)
 
+    Raises:
+        RequestException
+
     Returns:
         dict
     """
     parsed = urlparse(url)
     id = parsed.path.split("/")[-1]
     url = "https://archidekt.com/api/decks/{}/small/".format(id)
-    data = requests.get(url).json()
+    resp = requests.get(url)
+    resp.raise_for_status()
+    data = resp.json()
 
     author = data["owner"]["username"]
     title = data["name"]

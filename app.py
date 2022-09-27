@@ -1,4 +1,5 @@
 import pathlib
+import traceback
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -50,10 +51,11 @@ def search():
 
     try:
         deck = fn(params["url"])
-        combos = find_matches(COMBO_DATA, deck["cards"])
-        deck.update({"combos": combos})
-        del deck["cards"]
-    except:
+        combos = find_matches(COMBO_DATA, deck["cards"], deck["meta"]["colors"])
+        deck.update(combos)
+        deck["cards"] = list(deck["cards"])
+    except Exception as e:
+        traceback.print_exc()
         return jsonify("Deck not found or malformed"), HTTPStatus.BAD_REQUEST
 
     return jsonify(deck), HTTPStatus.OK

@@ -17,4 +17,6 @@ interface DeckData {
   meta: DeckMeta;
   cards: string[];
   combos: Combo[];
+  one: Combo[] | [];
+  two: Combo[] | [];
 }

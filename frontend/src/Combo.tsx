@@ -3,6 +3,7 @@ import { manaFontMap } from "./manaFontMap";
 
 interface props {
   data: Combo;
+  cards: string[];
 }
 
 const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
@@ -18,7 +19,7 @@ const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
     });
 };
 
-export const Combo = ({ data }: props) => {
+export const Combo = ({ data, cards }: props) => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({ offset: [0, 15], trigger: "click" });
 
@@ -39,8 +40,10 @@ export const Combo = ({ data }: props) => {
                   {data.p
                     .split(".")
                     .filter((p) => p)
-                    .map((p) => (
-                      <li>{replaceManaSymbols(p, p)}</li>
+                    .map((p, idx) => (
+                      <li key={`combo-${data.d}-${p}-${idx}`}>
+                        {replaceManaSymbols(p, p)}
+                      </li>
                     ))}
                 </ul>
               </div>
@@ -66,7 +69,12 @@ export const Combo = ({ data }: props) => {
       <div className="column">
         <div className="tags are-medium">
           {data.c.map((card) => (
-            <span key={`${data.d}-${card}`} className="tag is-dark">
+            <span
+              key={`${data.d}-${card}`}
+              className={`tag ${
+                cards.includes(card) ? "is-dark" : "is-danger"
+              }`}
+            >
               {card}
             </span>
           ))}

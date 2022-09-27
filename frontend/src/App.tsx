@@ -2,18 +2,25 @@ import { faCircleRight } from "@fortawesome/free-regular-svg-icons";
 import { faShare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Combo } from "./Combo";
 import { Footer } from "./Footer";
 import logo from "./images/logo.svg";
 
+enum Tab {
+  COMBOS,
+  ONE,
+  TWO,
+}
+
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [deckData, setDeckData] = useState<DeckData>();
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState<string>();
+  const [tab, setTab] = useState<Tab>(Tab.COMBOS);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -23,25 +30,29 @@ export const App = () => {
     }
   }, []);
 
-  const findCombos = (url?: string) => {
-    setDeckData(undefined);
-    setError(undefined);
+  const findCombos = useCallback(
+    (url?: string) => {
+      setDeckData(undefined);
+      setError(undefined);
+      setTab(Tab.COMBOS);
 
-    (async () => {
-      setFetching(true);
-      try {
-        const { data } = await axios.get("/api/search", {
-          params: { url: url || deckUrl },
-        });
-        setDeckData(data);
-      } catch (e) {
-        setError(
-          "Error -- Ensure you provided a valid Moxfield, MTGGoldfish, or Archidekt URL."
-        );
-      }
-      setFetching(false);
-    })();
-  };
+      (async () => {
+        setFetching(true);
+        try {
+          const { data } = await axios.get("/api/search", {
+            params: { url: url || deckUrl },
+          });
+          setDeckData(data);
+        } catch (e) {
+          setError(
+            "Error -- Ensure you provided a valid Moxfield, MTGGoldfish, or Archidekt URL."
+          );
+        }
+        setFetching(false);
+      })();
+    },
+    [deckUrl]
+  );
 
   const shareUrl = () => {
     if (!deckData) return window.location.href;
@@ -116,14 +127,30 @@ export const App = () => {
             </div>
           </form>
           {deckData && (
-            <div className="container combo-container has-background-grey p-5">
-              <div className="columns">
-                <div className="column">
-                  <h1 className="title">{`${deckData.meta.name} - ${deckData.combos.length} combos`}</h1>
+            <>
+              <div className="is-flex mt-4">
+                <div className="is-flex is-flex-grow-1 is-flex-direction-column">
+                  <h1 className="title">{`"${deckData.meta.name}" - ${deckData.combos.length} combos`}</h1>
+                  <p className="subtitle mb-2">by {deckData.meta.author}</p>
+                  {deckData.combos.length > 0 && (
+                    <p className="help">
+                      Click a combo to see its prerequisites and steps
+                    </p>
+                  )}
+                  {deckData.one.length > 0 && (
+                    <p className="help">
+                      If more combos are found by adding one or two cards to the
+                      deck, you can access them by clicking the respective
+                      'Short X' tab
+                    </p>
+                  )}
                 </div>
-                <div className="column">
+                <div className="is-flex is-flex-grow-0">
                   <div className="buttons is-right">
-                    <button className="button is-text" onClick={doShareUrl}>
+                    <button
+                      className="button is-dark is-outlined"
+                      onClick={doShareUrl}
+                    >
                       <span>Share</span>
                       <span className="icon">
                         <FontAwesomeIcon icon={faShare} />
@@ -132,20 +159,64 @@ export const App = () => {
                   </div>
                 </div>
               </div>
-              <p className="subtitle mb-2">by {deckData.meta.author}</p>
-              {deckData.combos.length > 0 && (
-                <p className="mb-4 help">
-                  <i>Click a combo to see its prerequisites and steps</i>
-                </p>
-              )}
-              {deckData.combos.length > 0 &&
-                deckData.combos.map((c) => <Combo key={c.d} data={c} />)}
-              {!(deckData.combos.length > 0) && (
-                <h1 className="is-size-4">
-                  💡 Pro Tip: Try adding some combos to your list
-                </h1>
-              )}
-            </div>
+              <div className="tabs is-medium is-fullwidth mb-0">
+                <ul>
+                  <li className={`${tab === Tab.COMBOS ? "is-active" : ""}`}>
+                    <a role="button" onClick={() => setTab(Tab.COMBOS)}>
+                      Combos
+                    </a>
+                  </li>
+                  {deckData.one.length > 0 && (
+                    <li className={`${tab === Tab.ONE ? "is-active" : ""}`}>
+                      <a role="button" onClick={() => setTab(Tab.ONE)}>
+                        Short 1 &ndash;&nbsp;
+                        <span className="is-size-6">
+                          ({deckData.one.length})
+                        </span>
+                      </a>
+                    </li>
+                  )}
+                  {deckData.two.length > 0 && (
+                    <li className={`${tab === Tab.TWO ? "is-active" : ""}`}>
+                      <a role="button" onClick={() => setTab(Tab.TWO)}>
+                        Short 2 &ndash;&nbsp;
+                        <span className="is-size-6">
+                          ({deckData.two.length})
+                        </span>
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+              <div className="container combo-container has-background-grey p-5">
+                {deckData.combos.length > 0 && (
+                  <>
+                    <div className="columns">
+                      <div className="column">
+                        <p className="title is-5 has-text-centered">Cards</p>
+                      </div>
+                      <div className="column">
+                        <p className="title is-5 has-text-centered">Effect</p>
+                      </div>
+                    </div>
+                    {deckData[
+                      tab === Tab.COMBOS
+                        ? "combos"
+                        : tab === Tab.ONE
+                        ? "one"
+                        : "two"
+                    ].map((c) => (
+                      <Combo key={c.d} cards={deckData.cards} data={c} />
+                    ))}
+                  </>
+                )}
+                {!(deckData.combos.length > 0) && (
+                  <h1 className="is-size-4">
+                    💡 Pro Tip: Try adding some combos to your list
+                  </h1>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>

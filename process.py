@@ -50,7 +50,7 @@ def find_near_matches(db: pd.DataFrame, to_match: Set[str], identity: List[str])
         "records"
     )
 
-    return (one[:50], two[:50])
+    return (one[:25], two[:25])
 
 
 def get_moxfield_deck(url: str) -> dict:

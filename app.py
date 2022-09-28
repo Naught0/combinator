@@ -16,7 +16,7 @@ from process import (
     get_moxfield_deck,
 )
 
-app = Flask(__name__, static_url_path="/", static_folder="frontend/build")
+app = Flask(__name__, static_url_path="/", static_folder="static")
 
 CORS(app)
 

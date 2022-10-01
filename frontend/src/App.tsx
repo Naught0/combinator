@@ -130,7 +130,7 @@ export const App = () => {
             <>
               <div className="is-flex mt-4">
                 <div className="is-flex is-flex-grow-1 is-flex-direction-column">
-                  <h1 className="title">{`"${deckData.meta.name}" - ${deckData.combos.length} combos`}</h1>
+                  <h1 className="title">{deckData.meta.name}</h1>
                   <p className="subtitle mb-2">by {deckData.meta.author}</p>
                   {deckData.combos.length > 0 && (
                     <p className="help">
@@ -141,7 +141,7 @@ export const App = () => {
                     <p className="help">
                       If more combos are found by adding one or two cards to the
                       deck, you can access them by clicking the respective
-                      'Short X' tab
+                      'Add X' tab
                     </p>
                   )}
                 </div>
@@ -163,13 +163,16 @@ export const App = () => {
                 <ul>
                   <li className={`${tab === Tab.COMBOS ? "is-active" : ""}`}>
                     <a role="button" onClick={() => setTab(Tab.COMBOS)}>
-                      Combos
+                      Combos &ndash;&nbsp;
+                      <span className="is-size-6">
+                        ({deckData.combos.length})
+                      </span>
                     </a>
                   </li>
                   {deckData.one.length > 0 && (
                     <li className={`${tab === Tab.ONE ? "is-active" : ""}`}>
                       <a role="button" onClick={() => setTab(Tab.ONE)}>
-                        Short 1 &ndash;&nbsp;
+                        Add 1 &ndash;&nbsp;
                         <span className="is-size-6">
                           ({deckData.one.length})
                         </span>
@@ -179,7 +182,7 @@ export const App = () => {
                   {deckData.two.length > 0 && (
                     <li className={`${tab === Tab.TWO ? "is-active" : ""}`}>
                       <a role="button" onClick={() => setTab(Tab.TWO)}>
-                        Short 2 &ndash;&nbsp;
+                        Add 2 &ndash;&nbsp;
                         <span className="is-size-6">
                           ({deckData.two.length})
                         </span>

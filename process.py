@@ -1,4 +1,5 @@
 import re
+import backoff
 from bs4 import BeautifulSoup
 import pandas as pd
 import requests
@@ -8,6 +9,20 @@ from typing import Dict, List, Set
 COMBO_DATA_URL = "https://commanderspellbook.com/api/combo-data.json"
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
+
+
+def chunk_array(l: list, n: int) -> List[List[any]]:
+    """https://www.geeksforgeeks.org/break-list-chunks-size-n-python/
+
+    Args:
+        l (list): The list to chunk
+        n (int): the max chunk size
+
+    Yields:
+        List[any]
+    """
+    for i in range(0, len(l), n):
+        yield l[i : i + n]
 
 
 def find_matches(data: List[dict], to_match: Set[str], identity: List[str]) -> List[dict]:
@@ -80,7 +95,9 @@ def get_moxfield_deck(url: str) -> dict:
             "url": url,
             "colors": [x.lower() for x in resp["main"]["colors"]],
         },
-        "cards": set([resp["main"]["name"], *resp["mainboard"].keys(), *resp["sideboard"].keys()]),
+        "cards": get_scryfall_images(
+            list(set([resp["main"]["name"], *resp["mainboard"].keys(), *resp["sideboard"].keys()]))
+        ),
     }
 
 
@@ -112,7 +129,7 @@ def get_goldfish_deck(url: str) -> dict:
     author = soup.span.text[3:]
     title = soup.title.text.split("by ")[0]
     resp = requests.get(download_url.format(deck_id)).text
-    cards = set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x])
+    cards = get_scryfall_images(list(set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x])))
 
     return {"meta": {"name": title, "author": author, "url": url, "colors": []}, "cards": cards}
 
@@ -150,7 +167,7 @@ def get_archidekt_deck(url: str) -> dict:
             "url": url,
             "colors": list(set(COLOR_MAP[x.lower()] for x in colors)),
         },
-        "cards": cards,
+        "cards": get_scryfall_images(list(cards)),
     }
 
 
@@ -161,3 +178,43 @@ def get_combo_data():
         dict
     """
     return requests.get(COMBO_DATA_URL).json()
+
+
+@backoff.on_exception(backoff.expo, requests.RequestException, max_tries=3)
+def scryfall_request(card_list_chunk: List[str]) -> Dict[str, str]:
+    """Takes a list of card names and spits out a dict w/ images.
+    Respects 429 ratelimiting
+
+    Args:
+        card_list_chunk (List[str]):
+
+    Returns:
+        Dict[str, str]: _description_
+    """
+    ret = {}
+    resp = requests.post(
+        "https://api.scryfall.com/cards/collection", json={"identifiers": [{"name": x} for x in card_list_chunk]}
+    )
+    data = resp.json()["data"]
+    for card in data:
+        ret.update({card["name"]: card["image_uris"]["normal"]})
+
+    return ret
+
+
+def get_scryfall_images(card_names: List[str]) -> Dict[str, str]:
+    """Returns images for a list of scryfall cards
+
+    Args:
+        card_names (List[str]): List of card names
+
+    Returns:
+        Dict[str, str]: {"Card name": "http://image.link"}
+    """
+    # Respect scryfall API
+    card_chunks = list(chunk_array(card_names, 75))
+    ret = {}
+    for chunk in card_chunks:
+        ret.update(scryfall_request(chunk))
+
+    return ret

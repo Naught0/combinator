@@ -1,4 +1,6 @@
+from itertools import chain
 import pathlib
+from pprint import pprint
 import traceback
 from dotenv import load_dotenv
 
@@ -14,6 +16,7 @@ from process import (
     get_combo_data,
     get_goldfish_deck,
     get_moxfield_deck,
+    get_scryfall_images,
 )
 
 app = Flask(__name__, static_url_path="/", static_folder="static")
@@ -53,7 +56,12 @@ def search():
         deck = fn(params["url"])
         combos = find_matches(COMBO_DATA, deck["cards"], deck["meta"]["colors"])
         deck.update(combos)
-        deck["cards"] = deck["cards"]
+        all_cards = deck["cards"]
+        extra_cards = [
+            *list(chain(*[x["c"] for x in deck.get("one", {"c": []})])),
+            *list(chain(*[x["c"] for x in deck.get("two", {"c": []})])),
+        ]
+        deck["cardImages"] = get_scryfall_images([*all_cards, *extra_cards])
     except Exception as e:
         traceback.print_exc()
         return jsonify("Deck not found or malformed"), HTTPStatus.BAD_REQUEST

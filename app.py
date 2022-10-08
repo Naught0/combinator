@@ -53,7 +53,7 @@ def search():
         deck = fn(params["url"])
         combos = find_matches(COMBO_DATA, deck["cards"], deck["meta"]["colors"])
         deck.update(combos)
-        deck["cards"] = list(deck["cards"])
+        deck["cards"] = deck["cards"]
     except Exception as e:
         traceback.print_exc()
         return jsonify("Deck not found or malformed"), HTTPStatus.BAD_REQUEST

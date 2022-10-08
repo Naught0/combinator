@@ -19,7 +19,8 @@ interface CardsWithImages {
 
 interface DeckData {
   meta: DeckMeta;
-  cards: CardsWithImages;
+  cards: string[];
+  cardImages: CardsWithImages;
   combos: Combo[];
   one: Combo[] | [];
   two: Combo[] | [];

@@ -221,7 +221,7 @@ export const App = () => {
                         ? "one"
                         : "two"
                     ].map((c) => (
-                      <Combo key={c.d} cards={deckData.cards} data={c} />
+                      <Combo key={c.d} deckData={deckData} combo={c} />
                     ))}
                   </>
                 )}

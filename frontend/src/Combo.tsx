@@ -4,8 +4,8 @@ import { useSetRecoilState } from "recoil";
 import { hoveredCard } from "./atoms";
 
 interface props {
-  combo: Combo;
-  deckData: DeckData;
+  data: Combo;
+  cards: CardsWithImages;
 }
 
 const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
@@ -71,15 +71,15 @@ export const Combo = ({ combo, deckData }: props) => {
       )}
       <div className="column">
         <div className="tags are-medium">
-          {combo.c.map((card) => {
+          {data.c.map((card) => {
             return (
               <span
-                key={`${combo.d}-${card}`}
+                key={`${data.d}-${card}`}
                 className={`tag is-clickable ${
-                  deckData.cards.includes(card) ? "is-dark" : "is-danger"
+                  Object.keys(cards).includes(card) ? "is-dark" : "is-danger"
                 }`}
-                onMouseOver={() => setCurrentCardUrl(deckData.cardImages[card])}
-                onClick={() => setCurrentCardUrl(deckData.cardImages[card])}
+                onMouseOver={() => setCurrentCardUrl(cards[card])}
+                onClick={() => setCurrentCardUrl(cards[card])}
                 onMouseOut={() => setCurrentCardUrl("")}
               >
                 {card}

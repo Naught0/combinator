@@ -194,7 +194,6 @@ def scryfall_request(card_list_chunk: List[str]) -> Dict[str, str]:
     resp = requests.post(
         "https://api.scryfall.com/cards/collection", json={"identifiers": [{"name": x} for x in card_list_chunk]}
     )
-    print(f"Request: {resp.status_code}:\n{json.dumps(card_list_chunk, indent=2)}")
     data = resp.json()["data"]
     for card in data:
         ret.update({card["name"]: card["image_uris"]["normal"]})

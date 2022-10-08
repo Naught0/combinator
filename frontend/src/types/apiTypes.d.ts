@@ -13,9 +13,13 @@ interface DeckMeta {
   url: string;
 }
 
+interface CardsWithImages {
+  [card_name: string]: string;
+}
+
 interface DeckData {
   meta: DeckMeta;
-  cards: string[];
+  cards: CardsWithImages;
   combos: Combo[];
   one: Combo[] | [];
   two: Combo[] | [];

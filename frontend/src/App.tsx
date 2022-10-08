@@ -7,7 +7,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Combo } from "./Combo";
 import { Footer } from "./Footer";
+import { useRecoilState } from "recoil";
 import logo from "./images/logo.svg";
+import { hoveredCard } from "./atoms";
+import useOnclickOutside from "react-cool-onclickoutside";
 
 enum Tab {
   COMBOS,
@@ -21,6 +24,10 @@ export const App = () => {
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState<string>();
   const [tab, setTab] = useState<Tab>(Tab.COMBOS);
+  const [cardImageUrl, setCardImageUrl] = useRecoilState(hoveredCard);
+  const ref = useOnclickOutside(() => {
+    setCardImageUrl("");
+  });
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -73,6 +80,11 @@ export const App = () => {
     <React.Fragment>
       <ToastContainer theme="dark" />
       <div className="section fullheight">
+      {cardImageUrl && (
+        <div className="card-popup" ref={ref}>
+          <img src={cardImageUrl} alt="Card" style={{ width: "100%" }} />
+        </div>
+      )}
         <div className="level">
           <div className="level-left">
             <div className="level-item">
@@ -140,8 +152,8 @@ export const App = () => {
                   {deckData.one.length > 0 && (
                     <p className="help">
                       If more combos are found by adding one or two cards to the
-                      deck, you can access them by clicking the respective
-                      'Add X' tab
+                      deck, you can access them by clicking the respective 'Add
+                      X' tab
                     </p>
                   )}
                 </div>

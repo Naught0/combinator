@@ -1,9 +1,11 @@
 import { usePopperTooltip } from "react-popper-tooltip";
 import { manaFontMap } from "./manaFontMap";
+import { useSetRecoilState } from "recoil";
+import { hoveredCard } from "./atoms";
 
 interface props {
   data: Combo;
-  cards: string[];
+  cards: CardsWithImages;
 }
 
 const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
@@ -22,11 +24,12 @@ const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
 export const Combo = ({ data, cards }: props) => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({ offset: [0, 15], trigger: "click" });
+  const setCurrentCardUrl = useSetRecoilState(hoveredCard);
 
   return (
     <div
-      className={`combo columns is-gapless is-clickable is-flex is-align-items-center m-3 p-3 ${
-        visible && "active"
+      className={`combo is-gapless is-clickable is-flex is-align-items-center m-3 p-3 ${
+        visible ? "active" : ""
       }`}
       ref={setTriggerRef}
     >
@@ -68,16 +71,21 @@ export const Combo = ({ data, cards }: props) => {
       )}
       <div className="column">
         <div className="tags are-medium">
-          {data.c.map((card) => (
-            <span
-              key={`${data.d}-${card}`}
-              className={`tag ${
-                cards.includes(card) ? "is-dark" : "is-danger"
-              }`}
-            >
-              {card}
-            </span>
-          ))}
+          {data.c.map((card) => {
+            return (
+              <span
+                key={`${data.d}-${card}`}
+                className={`tag is-clickable ${
+                  Object.keys(cards).includes(card) ? "is-dark" : "is-danger"
+                }`}
+                onMouseOver={() => setCurrentCardUrl(cards[card])}
+                onClick={() => setCurrentCardUrl(cards[card])}
+                onMouseOut={() => setCurrentCardUrl("")}
+              >
+                {card}
+              </span>
+            );
+          })}
         </div>
       </div>
       <div className="column">

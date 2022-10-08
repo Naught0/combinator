@@ -95,7 +95,9 @@ def get_moxfield_deck(url: str) -> dict:
             "url": url,
             "colors": [x.lower() for x in resp["main"]["colors"]],
         },
-        "cards": list(set([resp["main"]["name"], *resp["mainboard"].keys(), *resp["sideboard"].keys()])),
+        "cards": get_scryfall_images(
+            list(set([resp["main"]["name"], *resp["mainboard"].keys(), *resp["sideboard"].keys()]))
+        ),
     }
 
 
@@ -127,7 +129,7 @@ def get_goldfish_deck(url: str) -> dict:
     author = soup.span.text[3:]
     title = soup.title.text.split("by ")[0]
     resp = requests.get(download_url.format(deck_id)).text
-    cards = list(set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x]))
+    cards = get_scryfall_images(list(set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x])))
 
     return {"meta": {"name": title, "author": author, "url": url, "colors": []}, "cards": cards}
 
@@ -165,7 +167,7 @@ def get_archidekt_deck(url: str) -> dict:
             "url": url,
             "colors": list(set(COLOR_MAP[x.lower()] for x in colors)),
         },
-        "cards": list(cards),
+        "cards": get_scryfall_images(list(cards)),
     }
 
 

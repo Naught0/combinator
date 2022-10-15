@@ -68,7 +68,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       </div>
       {deckData && <ComboContainer {...deckData} />}
       {loading && (
-        <div className="my-4">
+        <div className="my-6">
           <IconText className="is-size-2" icon={faSpinner} spin>
             <span className="ml-5">Loading</span>
           </IconText>

@@ -1,14 +1,17 @@
-from itertools import chain
 import pathlib
-from pprint import pprint
 import traceback
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
+
+from itertools import chain
 from http import HTTPStatus
 from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
+from user import get_moxfield_user_decks
+
 
 from process import (
     find_matches,
@@ -38,6 +41,20 @@ def _index(path):
 @app.errorhandler(404)
 def fourohfour(*args, **kwargs):
     return send_from_directory(app.static_folder, "index.html")
+
+
+@app.route("/api/user/search")
+def user_search():
+    params = request.args
+    user = params.get("userName")
+    if not user:
+        return jsonify({"error": True, "message": "Field `userName` must be supplied"}), HTTPStatus.UNPROCESSABLE_ENTITY
+
+    try:
+        decks = get_moxfield_user_decks(user)
+        return jsonify(decks), HTTPStatus.OK
+    except Exception as e:
+        return jsonify({"error": True, "message": str(e)}), HTTPStatus.BAD_REQUEST
 
 
 @app.route("/api/search")

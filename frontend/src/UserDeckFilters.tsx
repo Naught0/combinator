@@ -1,12 +1,13 @@
 import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faSortAsc, faSortDesc } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Dropdown } from "./Dropdown";
+import { SortDirection } from "./UserDecksContainer";
 
 interface Props {
-  setSortBy: (k: string) => void;
-  setSortDir: (k: "ASC" | "DESC") => void;
+  setSortBy: (k: keyof Deck) => void;
+  setSortDir: (k: SortDirection) => void;
   titleFilter?: string;
   setFormatFilter: (key: string) => void;
   resetFilters: () => void;
@@ -55,12 +56,19 @@ export const UserDeckFilters: FC<Props> = ({
                 <a
                   className="dropdown-item"
                   key={`dropdown-sort-opt-${s}`}
-                  onClick={() => setSortBy(s)}
+                  onClick={() => setSortBy(s as keyof Deck)}
                 >
                   {s}
                 </a>
               ))}
             </Dropdown>
+          </div>
+          <div className="level-item">
+            <div className="buttons">
+              <button className="button">
+                <span></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -5,11 +5,21 @@ import { FC } from "react";
 interface Props {
   title: string;
   hoverable?: boolean;
+  className?: string;
 }
-export const Dropdown: FC<Props> = ({ title, hoverable, children }) => {
+export const Dropdown: FC<Props> = ({
+  className,
+  title,
+  hoverable,
+  children,
+}) => {
   return (
     <>
-      <div className={`dropdown ${hoverable ? "is-hoverable" : ""}`}>
+      <div
+        className={`dropdown ${hoverable ? "is-hoverable" : ""} ${
+          !!className ? className : ""
+        }`}
+      >
         <div className="dropdown-trigger">
           <button
             className="button"

@@ -23,7 +23,7 @@ export const sortAndFilterUserDecks = (
   }
 
   // Sort ASC by default
-  return ret.sort((a, b) => {
+  ret.sort((a, b) => {
     const dateKeys: (keyof Deck)[] = ["createdAtUtc", "lastUpdatedAtUtc"];
     if (dateKeys.includes(sortBy)) {
       console.log("iskeyof")
@@ -33,4 +33,6 @@ export const sortAndFilterUserDecks = (
     }
     return 0;
   });
+
+  return ret;
 };

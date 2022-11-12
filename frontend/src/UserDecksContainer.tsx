@@ -1,6 +1,15 @@
-import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faSortAmountAsc,
+  faSortAmountDesc,
+  faSortAmountDown,
+  faSortAmountUp,
+  faSortAsc,
+  faSortDesc,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import { ComboContainer } from "./ComboContainer";
 import { Deck } from "./Deck";
 import { IconText } from "./IconText";
@@ -16,6 +25,11 @@ export enum SortDirection {
   ASC = "asc",
   DESC = "desc",
 }
+
+export const sortDirIconMap = new Map<SortDirection, ReactNode>([
+  [SortDirection.ASC, <FontAwesomeIcon icon={faSortAmountUp} />],
+  [SortDirection.DESC, <FontAwesomeIcon icon={faSortAmountDown} />],
+]);
 
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
@@ -47,6 +61,8 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
   const resetFilter = () => {
     setTitleFilter("");
+    setSortBy("createdAtUtc");
+    setSortDir(SortDirection.DESC);
   };
 
   return (
@@ -54,9 +70,10 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       {!currentDeck && (
         <UserDeckFilters
           titleFilter={titleFilter}
+          sortDirection={sortDir}
           setTitleFilter={(s) => setTitleFilter(s)}
-          resetFilters={() => {}}
-          setFormatFilter={() => {}}
+          resetFilters={resetFilter}
+          setFormatFilter={setFormatFilter}
           setSortBy={setSortBy}
           setSortDir={setSortDir}
         />

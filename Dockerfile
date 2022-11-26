@@ -1,17 +1,13 @@
 FROM node:16.13-alpine as build
 WORKDIR /frontend
-COPY frontend/package.json package.json
-COPY frontend/tsconfig.json tsconfig.json
-COPY frontend/src ./src
-COPY frontend/public ./public
+COPY frontend/ .
 RUN yarn install
 RUN yarn build
 
 FROM python:3.9-slim
 WORKDIR /app
 COPY --from=build static ./static
-COPY server/requirements.txt .
-COPY server ./server
+COPY server/ .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn==20.1.0
 RUN pip install eventlet==0.30.2

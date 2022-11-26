@@ -1,4 +1,3 @@
-import json
 import re
 import backoff
 from bs4 import BeautifulSoup

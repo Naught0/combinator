@@ -10,8 +10,8 @@ RUN yarn build
 FROM python:3.9-slim
 WORKDIR /app
 COPY --from=build static ./static
-COPY requirements.txt .
-COPY . .
+COPY server/requirements.txt .
+COPY server ./server
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn==20.1.0
 RUN pip install eventlet==0.30.2

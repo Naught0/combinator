@@ -1,28 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Roboto&display=swap')
-
-$smokey: #151313
-$smokish: #2c2929
-$fern: #497740
-$steel: #3581B8
-$mac: #FCB07E
-$alabaster: #DEE2D6
-$rose: #F46197
-
-$white: $smokey
-$white-ter: $smokey
-$white-bis: $smokey
-
-$grey: $smokish
-$grey-light: $alabaster
-$grey-dark: $alabaster
-$grey-darker: $alabaster
-
-$blue: $steel
-$turquoise: $steel
-$link: $mac
-$green: $fern
-$yellow: $mac
-$red: $rose
+@import ./colors
 
 $family-sans-serif: "Roboto", sans-serif
 $body-size: 16px
@@ -51,7 +28,7 @@ $radius-large: 6px
   ul
     margin-left: 0.9rem !important
 
-.tabs
+.tabs:not(.is-toggle)
   a
     border-bottom-width: 5px !important
 
@@ -65,7 +42,7 @@ $radius-large: 6px
     background: $smokey
     transition: 0.3s ease all
   @media screen and (max-width: 1024px)
-    flex-direction: column 
+    flex-direction: column
 
 .ms-cost
   box-shadow: 1px 1px 2px rgb(0 0 0 / 0.8)
@@ -82,5 +59,20 @@ $radius-large: 6px
 
   img
     border-radius: 1rem
+
+.icon-text
+  .icon
+    margin-right: 0 !important
+
+.deck
+  border-radius: $radius-large
+  transition: 0.2s ease all
+  width: 45%
+  min-width: 400px
+  cursor: pointer
+  &:hover
+    filter: brightness(1.1) drop-shadow(0 0 10px rgb(0 0 0 / 0.5))
+  @media screen and (max-width: 875px)
+    width: 100%
 
 @import "../../node_modules/bulma/bulma"

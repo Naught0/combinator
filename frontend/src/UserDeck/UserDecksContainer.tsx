@@ -11,8 +11,9 @@ import { Deck } from "../Deck";
 import { IconText } from "../IconText";
 import { getComboData } from "../services";
 import { UserDeckFilters } from "./Filters/UserDeckFilters";
-import { sortAndFilterUserDecks } from "../util";
 import { useFilteredDeck } from "./hooks/useFilteredDeck";
+import { Paginate } from "../Paginate/Paginate";
+import { usePaginate } from "../Paginate/hooks/usePaginate";
 
 interface Props {
   decks: Deck[];
@@ -33,9 +34,17 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [deckData, setDeckData] = useState<DeckData>();
   const [loading, setLoading] = useState(false);
   const [titleFilter, setTitleFilter] = useState<string>("");
-  const [formatFilter, setFormatFilter] = useState<Format>("commander");
+  const [formatFilter, setFormatFilter] = useState<Format>();
   const [sortBy, setSortBy] = useState<keyof Deck>("createdAtUtc");
   const [sortDir, setSortDir] = useState<SortDirection>(SortDirection.DESC);
+  const [pageSize, setPageSize] = useState(10);
+  const [pageIndex, setPageIndex] = useState(0);
+  const availableDeckFormats = useMemo(() => {
+    const formats = [...new Set(decks.map((d) => d.format))];
+    formats.sort();
+
+    return formats;
+  }, [decks]);
   const filteredSortedDecks = useFilteredDeck({
     decks,
     sortBy,
@@ -43,6 +52,15 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     titleFilter,
     formatFilter,
   });
+  const { currentPage, totalPages, pages, canNext, canPrev } = usePaginate({
+    data: filteredSortedDecks,
+    pageIndex: pageIndex,
+    pageSize: pageSize,
+  });
+
+  useEffect(() => {
+    setPageIndex(0);
+  }, [formatFilter, titleFilter]);
 
   useEffect(() => {
     if (!currentDeck) return;
@@ -59,6 +77,25 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     setSortDir(SortDirection.DESC);
   };
 
+  const pagination = useMemo(
+    () =>
+      totalPages > 1 ? (
+        <div className="container my-2">
+          <Paginate
+            pageIndex={pageIndex}
+            setIndex={setPageIndex}
+            next={() => setPageIndex((idx) => (canNext ? idx + 1 : idx))}
+            prev={() => setPageIndex((idx) => (canPrev ? idx - 1 : idx))}
+            canNext={canNext}
+            canPrev={canPrev}
+          >
+            {pages}
+          </Paginate>
+        </div>
+      ) : null,
+    [canNext, canPrev, pageIndex, totalPages, pages]
+  );
+
   return (
     <>
       {!currentDeck && (
@@ -66,12 +103,15 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           titleFilter={titleFilter}
           sortDirection={sortDir}
           sortBy={sortBy}
-          setTitleFilter={(s) => setTitleFilter(s)}
+          pageSize={pageSize}
+          formatFilter={formatFilter}
+          formats={availableDeckFormats}
+          setPageSize={setPageSize}
+          setTitleFilter={setTitleFilter}
           resetFilters={resetFilter}
           setFormatFilter={setFormatFilter}
           setSortBy={setSortBy}
           setSortDir={setSortDir}
-          formatFilter={formatFilter}
         />
       )}
       {!!currentDeck && (
@@ -88,19 +128,23 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           <span>All decks</span>
         </button>
       )}
-      <div
-        className="container is-flex is-flex-wrap-wrap"
-        style={{ gap: "0.75rem" }}
-      >
-        {!currentDeck &&
-          filteredSortedDecks.map((deck) => (
-            <Deck
-              key={deck.id}
-              deck={deck}
-              onClick={(deck) => setCurrentDeck(deck)}
-            />
-          ))}
-      </div>
+      {!currentDeck && (
+        <div>
+          <div
+            className="container is-flex is-flex-wrap-wrap"
+            style={{ gap: "0.75rem" }}
+          >
+            {currentPage?.map((deck) => (
+              <Deck
+                key={deck.id}
+                deck={deck}
+                onClick={(deck) => setCurrentDeck(deck)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      {pagination}
       {deckData && <ComboContainer {...deckData} />}
       {loading && (
         <div className="my-6">

@@ -2,7 +2,6 @@ import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC } from "react";
 import { Dropdown } from "../../Dropdown/Dropdown";
-import { mtgFormats } from "../../types";
 import { SortDirection, sortDirIconMap } from "../UserDecksContainer";
 import { deckFilters } from "./deckFilters";
 
@@ -11,11 +10,14 @@ import { deckFilters } from "./deckFilters";
 interface Props {
   setSortBy: (k: keyof Deck) => void;
   setSortDir: (k: SortDirection) => void;
-  setFormatFilter: (key: Format) => void;
+  setFormatFilter: (key: Format | undefined) => void;
   resetFilters: () => void;
   setTitleFilter: (s: string) => void;
+  setPageSize: (size: number) => void;
+  formats: Format[];
   formatFilter?: Format;
   titleFilter?: string;
+  pageSize: number;
   sortDirection: SortDirection;
   sortBy: string;
 }
@@ -24,10 +26,13 @@ export const UserDeckFilters: FC<Props> = ({
   sortDirection,
   sortBy,
   formatFilter,
+  pageSize,
+  formats,
   setSortBy,
   setTitleFilter,
   setFormatFilter,
   setSortDir,
+  setPageSize,
   resetFilters,
 }) => {
   return (
@@ -36,7 +41,7 @@ export const UserDeckFilters: FC<Props> = ({
         className="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-baseline my-3"
         style={{ gap: "0.75rem" }}
       >
-        <div className="field" style={{ flexBasis: "50%" }}>
+        <div className="field">
           <div className="control has-icons-right">
             <input
               type="text"
@@ -59,6 +64,25 @@ export const UserDeckFilters: FC<Props> = ({
             )}
           </div>
         </div>
+        <Dropdown title={`Format: ${formatFilter || "any"}`} hoverable>
+          <a
+            className="dropdown-item"
+            onClick={() => setFormatFilter(undefined)}
+          >
+            any
+          </a>
+          {formats.map((fmt) => (
+            <a
+              key={fmt}
+              className={`dropdown-item ${
+                formatFilter === fmt ? "is-active" : ""
+              }`}
+              onClick={() => setFormatFilter(fmt as Format)}
+            >
+              {fmt}
+            </a>
+          ))}
+        </Dropdown>
         <div className="is-flex" style={{ gap: "0.125rem" }}>
           <Dropdown
             title={`Sort by: ${
@@ -94,16 +118,13 @@ export const UserDeckFilters: FC<Props> = ({
             </button>
           </div>
         </div>
-        <Dropdown title={`Format: ${formatFilter}`} hoverable>
-          {mtgFormats.map((fmt) => (
+        <Dropdown title={`Page size: ${pageSize}`} hoverable>
+          {[5, 10, 20, 50, 100].map((num) => (
             <a
-              key={fmt}
-              className={`dropdown-item ${
-                formatFilter === fmt ? "is-active" : ""
-              }`}
-              onClick={() => setFormatFilter(fmt as Format)}
+              className={`dropdown-item ${pageSize === num ? "is-active" : ""}`}
+              onClick={() => setPageSize(num)}
             >
-              {fmt}
+              {num}
             </a>
           ))}
         </Dropdown>

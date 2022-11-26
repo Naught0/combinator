@@ -6,7 +6,7 @@ interface props {
   titleFilter: string;
   sortDir: SortDirection;
   sortBy: keyof Deck;
-  formatFilter?: Format | null;
+  formatFilter?: Format;
 }
 export const sortAndFilterUserDecks = ({
   decks,

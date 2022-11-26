@@ -12,7 +12,7 @@ interface Deck {
   id: string;
   name: string;
   hasPrimer: boolean;
-  format: string;
+  format: Format;
   areCommentsEnabled: boolean;
   visibility: string;
   publicUrl: string;

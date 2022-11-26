@@ -18,6 +18,7 @@
     "axios-cache-adapter": "^2.7.3",
     "bulma": "^0.9.3",
     "dayjs": "^1.11.6",
+    "lodash.chunk": "^4.2.0",
     "mana-font": "^1.14.0",
     "react": "^17.0.2",
     "react-cool-onclickoutside": "^1.7.0",
@@ -56,5 +57,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/lodash.chunk": "^4.2.7"
+  }
 }

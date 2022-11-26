@@ -1,10 +1,10 @@
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import "./index.sass";
 
 interface Props {
-  title: string;
+  title: ReactNode;
   hoverable?: boolean;
   className?: string;
 }

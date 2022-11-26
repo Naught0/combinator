@@ -1,6 +1,7 @@
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC } from "react";
+import "./index.sass";
 
 interface Props {
   title: string;
@@ -32,7 +33,7 @@ export const Dropdown: FC<Props> = ({
             </span>
           </button>
         </div>
-        <div className="dropdown-menu" id="dropdown-menu" role="menu">
+        <div className="dropdown-menu" role="menu">
           <div className="dropdown-content">{children}</div>
         </div>
       </div>

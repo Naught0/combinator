@@ -1,4 +1,4 @@
-import { SortDirection } from "../UserDecksContainer";
+import { SortDirection } from "../UserDeck/UserDecksContainer";
 import dayjs from "dayjs";
 
 export const sortAndFilterUserDecks = (
@@ -9,8 +9,6 @@ export const sortAndFilterUserDecks = (
   sortBy: keyof Deck
 ): Deck[] => {
   const pattern = /[^\w]+/g;
-  if (!titleFilter.replaceAll(pattern, "")) return decks;
-
   let ret = [];
   for (const deck of decks) {
     if (
@@ -28,8 +26,8 @@ export const sortAndFilterUserDecks = (
     if (dateKeys.includes(sortBy)) {
       console.log("iskeyof")
       const bool = dayjs(a[sortBy] as string).isAfter(b[sortBy] as string);
-      if (sortDir === SortDirection.ASC) return bool ? -1 : 1;
-      else return bool ? 1 : -1;
+      if (sortDir === SortDirection.ASC) return bool ? 1 : -1;
+      else return bool ? -1 : 1;
     }
     return 0;
   });

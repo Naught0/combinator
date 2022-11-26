@@ -1,8 +1,8 @@
-import axios from "axios";
+import { cachedClient } from "./cachedRequest";
 
 export const getComboData = async (url: string): Promise<DeckData> => {
   try {
-    const { data } = await axios.get("/api/search", {
+    const { data } = await cachedClient.get("/api/search", {
       params: { url: url },
     });
     return await data;

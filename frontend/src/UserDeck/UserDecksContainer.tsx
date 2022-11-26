@@ -1,21 +1,18 @@
 import {
   faArrowLeft,
-  faSortAmountAsc,
-  faSortAmountDesc,
   faSortAmountDown,
   faSortAmountUp,
-  faSortAsc,
-  faSortDesc,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, ReactNode, useEffect, useMemo, useState } from "react";
-import { ComboContainer } from "./ComboContainer";
-import { Deck } from "./Deck";
-import { IconText } from "./IconText";
-import { getComboData } from "./services";
-import { UserDeckFilters } from "./UserDeckFilters";
-import { sortAndFilterUserDecks } from "./util";
+import { ComboContainer } from "../ComboContainer";
+import { Deck } from "../Deck";
+import { IconText } from "../IconText";
+import { getComboData } from "../services";
+import { UserDeckFilters } from "./Filters/UserDeckFilters";
+import { sortAndFilterUserDecks } from "../util";
+import { useFilteredDeck } from "./hooks/useFilteredDeck";
 
 interface Props {
   decks: Deck[];
@@ -36,19 +33,16 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [deckData, setDeckData] = useState<DeckData>();
   const [loading, setLoading] = useState(false);
   const [titleFilter, setTitleFilter] = useState<string>("");
-  const [formatFilter, setFormatFilter] = useState<string>("");
+  const [formatFilter, setFormatFilter] = useState<Legality>();
   const [sortBy, setSortBy] = useState<keyof Deck>("createdAtUtc");
   const [sortDir, setSortDir] = useState<SortDirection>(SortDirection.DESC);
-
-  const filteredSortedDecks = useMemo<Deck[]>(() => {
-    return sortAndFilterUserDecks(
-      decks,
-      titleFilter,
-      formatFilter,
-      sortDir,
-      sortBy
-    );
-  }, [decks, titleFilter, formatFilter, sortDir, sortBy]);
+  const filteredSortedDecks = useFilteredDeck({
+    decks,
+    sortBy,
+    sortDir,
+    titleFilter,
+    formatFilter,
+  });
 
   useEffect(() => {
     if (!currentDeck) return;
@@ -71,6 +65,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         <UserDeckFilters
           titleFilter={titleFilter}
           sortDirection={sortDir}
+          sortBy={sortBy}
           setTitleFilter={(s) => setTitleFilter(s)}
           resetFilters={resetFilter}
           setFormatFilter={setFormatFilter}

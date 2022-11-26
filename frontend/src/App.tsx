@@ -12,8 +12,9 @@ import useOnclickOutside from "react-cool-onclickoutside";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
 import { Deck } from "./Deck";
-import { UserDecksContainer } from "./UserDecksContainer";
+import { UserDecksContainer } from "./UserDeck/UserDecksContainer";
 import { getComboData } from "./services";
+import { cachedClient } from "./services/cachedRequest";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
@@ -62,7 +63,7 @@ export const App = () => {
     setFetching(true);
     try {
       const data = await (
-        await axios.get("/api/user/search", { params: { userName: userName } })
+        await cachedClient.get("/api/user/search", { params: { userName: userName } })
       ).data;
       setUserDeckData(data);
     } catch (e) {

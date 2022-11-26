@@ -42,3 +42,24 @@ interface MoxfieldDecksResults {
   totalPages: number;
   data: Deck[];
 }
+
+type Legality =
+  | "standard"
+  | "future"
+  | "historic"
+  | "gladiator"
+  | "pioneer"
+  | "explorer"
+  | "modern"
+  | "legacy"
+  | "pauper"
+  | "vintage"
+  | "penny"
+  | "commander"
+  | "brawl"
+  | "historicbrawl"
+  | "alchemy"
+  | "paupercommander"
+  | "duel"
+  | "oldschool"
+  | "premodern";

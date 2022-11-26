@@ -43,7 +43,7 @@ interface MoxfieldDecksResults {
   data: Deck[];
 }
 
-type Legality =
+type Format =
   | "standard"
   | "future"
   | "historic"

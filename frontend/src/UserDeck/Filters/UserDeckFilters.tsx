@@ -2,15 +2,19 @@ import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC } from "react";
 import { Dropdown } from "../../Dropdown/Dropdown";
+import { mtgFormats } from "../../types";
 import { SortDirection, sortDirIconMap } from "../UserDecksContainer";
 import { deckFilters } from "./deckFilters";
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
 interface Props {
   setSortBy: (k: keyof Deck) => void;
   setSortDir: (k: SortDirection) => void;
-  setFormatFilter: (key: Legality) => void;
+  setFormatFilter: (key: Format) => void;
   resetFilters: () => void;
   setTitleFilter: (s: string) => void;
+  formatFilter?: Format;
   titleFilter?: string;
   sortDirection: SortDirection;
   sortBy: string;
@@ -19,6 +23,7 @@ export const UserDeckFilters: FC<Props> = ({
   titleFilter,
   sortDirection,
   sortBy,
+  formatFilter,
   setSortBy,
   setTitleFilter,
   setFormatFilter,
@@ -54,37 +59,54 @@ export const UserDeckFilters: FC<Props> = ({
             )}
           </div>
         </div>
-        <Dropdown
-          title={`Sort by: ${
-            deckFilters.find((f) => f.key === sortBy)?.display
-          }`}
-          hoverable
-        >
-          {deckFilters.map((s) => (
-            <a
-              className="dropdown-item"
-              key={`dropdown-sort-opt-${s.key}`}
-              onClick={() => setSortBy(s.key)}
+        <div className="is-flex" style={{ gap: "0.125rem" }}>
+          <Dropdown
+            title={`Sort by: ${
+              deckFilters.find((f) => f.key === sortBy)?.display
+            }`}
+            hoverable
+          >
+            {deckFilters.map((s) => (
+              <a
+                className={`dropdown-item ${
+                  s.key === sortBy ? "is-active" : ""
+                }`}
+                key={`dropdown-sort-opt-${s.key}`}
+                onClick={() => setSortBy(s.key)}
+              >
+                {s.display}
+              </a>
+            ))}
+          </Dropdown>
+          <div>
+            <button
+              className="button"
+              onClick={() =>
+                setSortDir(
+                  sortDirection === SortDirection.ASC
+                    ? SortDirection.DESC
+                    : SortDirection.ASC
+                )
+              }
             >
-              {s.display}
+              <span className="icon">{sortDirIconMap.get(sortDirection)}</span>
+              <span>{sortDirection.toString()}</span>
+            </button>
+          </div>
+        </div>
+        <Dropdown title={`Format: ${formatFilter}`} hoverable>
+          {mtgFormats.map((fmt) => (
+            <a
+              key={fmt}
+              className={`dropdown-item ${
+                formatFilter === fmt ? "is-active" : ""
+              }`}
+              onClick={() => setFormatFilter(fmt as Format)}
+            >
+              {fmt}
             </a>
           ))}
         </Dropdown>
-        <div>
-          <button
-            className="button"
-            onClick={() =>
-              setSortDir(
-                sortDirection === SortDirection.ASC
-                  ? SortDirection.DESC
-                  : SortDirection.ASC
-              )
-            }
-          >
-            <span className="icon">{sortDirIconMap.get(sortDirection)}</span>
-            <span>{sortDirection.toString()}</span>
-          </button>
-        </div>
       </div>
     </>
   );

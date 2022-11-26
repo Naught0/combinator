@@ -1,13 +1,20 @@
 import { SortDirection } from "../UserDeck/UserDecksContainer";
 import dayjs from "dayjs";
 
-export const sortAndFilterUserDecks = (
-  decks: Deck[],
-  titleFilter: string,
-  formatFilter: string,
-  sortDir: SortDirection,
-  sortBy: keyof Deck
-): Deck[] => {
+interface props {
+  decks: Deck[];
+  titleFilter: string;
+  sortDir: SortDirection;
+  sortBy: keyof Deck;
+  formatFilter?: Format;
+}
+export const sortAndFilterUserDecks = ({
+  decks,
+  sortBy,
+  sortDir,
+  titleFilter,
+  formatFilter,
+}: props): Deck[] => {
   const pattern = /[^\w]+/g;
   let ret = [];
   for (const deck of decks) {
@@ -20,11 +27,15 @@ export const sortAndFilterUserDecks = (
     ret.push(deck);
   }
 
-  // Sort ASC by default
+  if (formatFilter) {
+    ret = ret.filter((d) => d.format === formatFilter);
+  }
+
+  // Sort DESC by default
   ret.sort((a, b) => {
     const dateKeys: (keyof Deck)[] = ["createdAtUtc", "lastUpdatedAtUtc"];
     if (dateKeys.includes(sortBy)) {
-      console.log("iskeyof")
+      console.log("iskeyof");
       const bool = dayjs(a[sortBy] as string).isAfter(b[sortBy] as string);
       if (sortDir === SortDirection.ASC) return bool ? 1 : -1;
       else return bool ? -1 : 1;

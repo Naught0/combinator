@@ -6,25 +6,13 @@ interface props {
   decks: Deck[];
   sortDir: SortDirection;
   sortBy: keyof Deck;
-  titleFilter?: string;
-  formatFilter?: Legality;
+  titleFilter: string;
+  formatFilter?: Format;
 }
-export const useFilteredDeck = ({
-  decks,
-  sortBy,
-  sortDir,
-  formatFilter,
-  titleFilter,
-}: props) => {
+export const useFilteredDeck = (props: props) => {
   const data = useMemo(() => {
-    return sortAndFilterUserDecks(
-      decks,
-      titleFilter || "",
-      formatFilter || "",
-      sortDir,
-      sortBy
-    );
-  }, [decks, titleFilter, formatFilter, sortDir, sortBy]);
+    return sortAndFilterUserDecks(props);
+  }, [props]);
 
   return data;
 };

@@ -33,7 +33,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [deckData, setDeckData] = useState<DeckData>();
   const [loading, setLoading] = useState(false);
   const [titleFilter, setTitleFilter] = useState<string>("");
-  const [formatFilter, setFormatFilter] = useState<Legality>();
+  const [formatFilter, setFormatFilter] = useState<Format>("commander");
   const [sortBy, setSortBy] = useState<keyof Deck>("createdAtUtc");
   const [sortDir, setSortDir] = useState<SortDirection>(SortDirection.DESC);
   const filteredSortedDecks = useFilteredDeck({
@@ -71,6 +71,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           setFormatFilter={setFormatFilter}
           setSortBy={setSortBy}
           setSortDir={setSortDir}
+          formatFilter={formatFilter}
         />
       )}
       {!!currentDeck && (

@@ -60,7 +60,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     formatFilter,
     isLegal,
   });
-  const { currentPage, totalPages, pages, canNext, canPrev } = usePaginate({
+  const { currentPage, totalPages, pages } = usePaginate({
     data: filteredSortedDecks,
     pageIndex: pageIndex,
     pageSize: pageSize,
@@ -100,19 +100,12 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     () =>
       totalPages > 1 && !currentDeck ? (
         <div className="container my-2">
-          <Paginate
-            pageIndex={pageIndex}
-            setIndex={setPageIndex}
-            next={() => setPageIndex((idx) => (canNext ? idx + 1 : idx))}
-            prev={() => setPageIndex((idx) => (canPrev ? idx - 1 : idx))}
-            canNext={canNext}
-            canPrev={canPrev}
-          >
+          <Paginate pageIndex={pageIndex} setIndex={setPageIndex}>
             {pages}
           </Paginate>
         </div>
       ) : null,
-    [canNext, canPrev, pageIndex, totalPages, pages, currentDeck]
+    [pageIndex, totalPages, pages, currentDeck]
   );
 
   return (
@@ -156,8 +149,10 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         </div>
       )}
       {pagination}
-      {view === View.COMBO && deckData && <ComboContainer {...deckData} />}
-      {loading && (
+      {view === View.COMBO && currentDeck && deckData && (
+        <ComboContainer {...deckData} />
+      )}
+      {view === View.COMBO && loading && (
         <div className="my-6">
           <IconText className="is-size-2" icon={faSpinner} spin>
             <span className="ml-5">Loading</span>

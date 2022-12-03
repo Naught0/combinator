@@ -54,7 +54,7 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
               Click a combo to see its prerequisites and steps
             </p>
           )}
-          {deckData.one.length > 0 && (
+          {(deckData.one.length > 0 || deckData.two.length > 0) && (
             <p className="help">
               If more combos are found by adding one or two cards to the deck,
               you can access them by clicking the respective 'Add X' tab

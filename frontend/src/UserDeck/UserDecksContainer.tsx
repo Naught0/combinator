@@ -24,6 +24,11 @@ export enum SortDirection {
   DESC = "desc",
 }
 
+enum View {
+  DECKS,
+  COMBO,
+}
+
 export const sortDirIconMap = new Map<SortDirection, ReactNode>([
   [SortDirection.ASC, <FontAwesomeIcon icon={faSortAmountUp} />],
   [SortDirection.DESC, <FontAwesomeIcon icon={faSortAmountDown} />],
@@ -40,6 +45,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [sortDir, setSortDir] = useState<SortDirection>(SortDirection.DESC);
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
+  const [view, setView] = useState<View>(View.DECKS);
   const availableDeckFormats = useMemo(() => {
     const formats = [...new Set(decks.map((d) => d.format))];
     formats.sort();
@@ -52,7 +58,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     sortDir,
     titleFilter,
     formatFilter,
-    isLegal
+    isLegal,
   });
   const { currentPage, totalPages, pages, canNext, canPrev } = usePaginate({
     data: filteredSortedDecks,
@@ -62,7 +68,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
   useEffect(() => {
     setPageIndex(0);
-  }, [formatFilter, titleFilter]);
+  }, [formatFilter, titleFilter, pageSize]);
 
   useEffect(() => {
     if (!currentDeck) return;
@@ -77,6 +83,17 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     setTitleFilter("");
     setSortBy("createdAtUtc");
     setSortDir(SortDirection.DESC);
+  };
+
+  const setDeck = (deck: Deck) => {
+    setCurrentDeck(deck);
+    setView(View.COMBO);
+  };
+
+  const clearDecks = () => {
+    setView(View.DECKS);
+    setCurrentDeck(undefined);
+    setDeckData(undefined);
   };
 
   const pagination = useMemo(
@@ -100,7 +117,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
   return (
     <>
-      {!currentDeck && (
+      {view === View.DECKS && (
         <CollapsibleDeckFilters
           titleFilter={titleFilter}
           sortDirection={sortDir}
@@ -118,38 +135,28 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           setIsLegal={setIsLegal}
         />
       )}
-      {!!currentDeck && (
-        <button
-          className="button my-3"
-          onClick={() => {
-            setCurrentDeck(undefined);
-            setDeckData(undefined);
-          }}
-        >
+      {view === View.COMBO && (
+        <button className="button my-3" onClick={clearDecks}>
           <span className="icon">
             <FontAwesomeIcon icon={faArrowLeft} />
           </span>
           <span>All decks</span>
         </button>
       )}
-      {!currentDeck && (
+      {view === View.DECKS && (
         <div>
           <div
             className="container is-flex is-flex-wrap-wrap"
             style={{ gap: "0.75rem" }}
           >
             {currentPage?.map((deck) => (
-              <Deck
-                key={deck.id}
-                deck={deck}
-                onClick={(deck) => setCurrentDeck(deck)}
-              />
+              <Deck key={deck.id} deck={deck} onClick={setDeck} />
             ))}
           </div>
         </div>
       )}
       {pagination}
-      {deckData && <ComboContainer {...deckData} />}
+      {view === View.COMBO && deckData && <ComboContainer {...deckData} />}
       {loading && (
         <div className="my-6">
           <IconText className="is-size-2" icon={faSpinner} spin>

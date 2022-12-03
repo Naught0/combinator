@@ -7,6 +7,7 @@ interface props {
   sortDir: SortDirection;
   sortBy: keyof Deck;
   formatFilter?: Format;
+  isLegal: boolean | null;
 }
 export const sortAndFilterUserDecks = ({
   decks,
@@ -14,6 +15,7 @@ export const sortAndFilterUserDecks = ({
   sortDir,
   titleFilter,
   formatFilter,
+  isLegal,
 }: props): Deck[] => {
   const pattern = /[^\w]+/g;
   let ret = [];
@@ -23,8 +25,16 @@ export const sortAndFilterUserDecks = ({
       !deck.name.replaceAll(pattern, "").toLowerCase().includes(titleFilter)
     )
       continue;
-    if (formatFilter && !(deck.format.toLowerCase() === formatFilter.toLowerCase())) continue;
+    if (
+      formatFilter &&
+      !(deck.format.toLowerCase() === formatFilter.toLowerCase())
+    )
+      continue;
     ret.push(deck);
+  }
+
+  if (isLegal !== null ) {
+    ret = ret.filter((deck) => deck.isLegal === isLegal);
   }
 
   // Sort DESC by default

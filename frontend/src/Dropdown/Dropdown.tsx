@@ -1,6 +1,7 @@
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
+import useOnclickOutside from "react-cool-onclickoutside";
 import "./index.sass";
 
 interface Props {
@@ -14,12 +15,19 @@ export const Dropdown: FC<Props> = ({
   hoverable,
   children,
 }) => {
+  const [isActive, setActive] = useState(false);
+  const ref = useOnclickOutside(() => {
+    setActive(false);
+  });
+
   return (
     <>
       <div
         className={`dropdown ${hoverable ? "is-hoverable" : ""} ${
           !!className ? className : ""
-        }`}
+        } ${isActive ? "is-active" : ""}`}
+        onClick={() => setActive(!isActive)}
+        ref={ref}
       >
         <div className="dropdown-trigger">
           <button

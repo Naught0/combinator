@@ -25,8 +25,17 @@ export const Deck: FC<Props> = ({ deck, onClick }) => {
         backgroundSize: "100%",
       }}
       onClick={() => onClick(deck)}
+      title={deck.name}
     >
-      <div>{deck.name}</div>
+      <div
+        style={{
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+        }}
+      >
+        {deck.name}
+      </div>
       <div className="tags my-2">
         <span className="tag is-dark">{deck.format}</span>
       </div>

@@ -3,7 +3,7 @@ export const Footer = () => {
     <footer className="footer has-background-grey">
       <div className="content is-size-7 has-text-centered">
         <p>
-          <a href="https://github.com/naught0" rel="noreferrer" target="_blank">
+          <a href="https://jamese.dev" rel="noreferrer" target="_blank">
             I made dis
           </a>
         </p>

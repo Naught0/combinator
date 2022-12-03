@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, ReactNode, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { Combo } from "./Combo";
-import { IconText } from "./IconText";
 
 enum Tab {
   COMBOS,

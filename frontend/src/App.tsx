@@ -1,6 +1,4 @@
-import { faCircleRight } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -11,10 +9,10 @@ import { hoveredCard } from "./atoms";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
-import { Deck } from "./Deck";
 import { UserDecksContainer } from "./UserDeck/UserDecksContainer";
 import { getComboData } from "./services";
 import { cachedClient } from "./services/cachedRequest";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
@@ -25,7 +23,7 @@ export const App = () => {
   const [cardImageUrl, setCardImageUrl] = useRecoilState(hoveredCard);
   const [searchType, setSearchType] = useState(SearchType.USER);
   const [userDeckData, setUserDeckData] = useState<Deck[]>();
-  const [userSelectedDeck, setUserSelectedDeck] = useState<Deck>();
+  const [, setUserSelectedDeck] = useState<Deck>();
 
   const ref = useOnclickOutside(() => {
     setCardImageUrl("");
@@ -63,7 +61,9 @@ export const App = () => {
     setFetching(true);
     try {
       const data = await (
-        await cachedClient.get("/api/user/search", { params: { userName: userName } })
+        await cachedClient.get("/api/user/search", {
+          params: { userName: userName },
+        })
       ).data;
       setUserDeckData(data);
     } catch (e) {
@@ -115,7 +115,7 @@ export const App = () => {
               }
             }}
           >
-            <div className="field is-horizontal mb-5">
+            <div className="field is-horizontal">
               <div className="field-body">
                 <div className="field">
                   {searchType === SearchType.DECK && (
@@ -157,7 +157,7 @@ export const App = () => {
                     >
                       <span>think for me</span>
                       <span className="icon">
-                        <FontAwesomeIcon icon={faCircleRight} />
+                        <FontAwesomeIcon icon={faArrowRight} />
                       </span>
                     </button>
                   </div>

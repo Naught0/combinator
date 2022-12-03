@@ -1,7 +1,17 @@
 @import "../style/colors.sass"
 
+
+.dropdown
+  margin-bottom: 0 !important
+  *
+    transition: ease background-color 0.2s, ease color 0.2s !important
+
 .dropdown-item
   &:hover
+    background: $veryTranslucentWhite !important
     color: $link !important
   &.is-active:hover
     color: $grey-darker !important
+
+.dropdown:hover > div >  button
+  background: $veryTranslucentWhite !important

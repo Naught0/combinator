@@ -75,11 +75,16 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
         </div>
         <Dropdown
           title={`Format: ${
-            formatFilter ? dumbTitalize({ text: formatFilter }) : "Any"
+            formatFilter
+              ? uniqueDeckFormatMap.get(formatFilter) ||
+                dumbTitalize({ text: formatFilter })
+              : "Any"
           }`}
         >
           <a
-            className="dropdown-item"
+            className={`dropdown-item ${
+              formatFilter === undefined ? "is-active" : ""
+            }`}
             onClick={() => setFormatFilter(undefined)}
           >
             Any
@@ -115,7 +120,9 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
               (legality) =>
                 legality && (
                   <a
-                    className={`dropdown-item ${legality.className}`}
+                    className={`dropdown-item ${legality.className} ${
+                      isLegal === legality.value ? "is-active" : ""
+                    }`}
                     onClick={() => setIsLegal(legality.value)}
                   >
                     {legality.display}

@@ -10,10 +10,10 @@ import { ComboContainer } from "../ComboContainer";
 import { Deck } from "../Deck";
 import { IconText } from "../IconText";
 import { getComboData } from "../services";
-import { UserDeckFilters } from "./Filters/UserDeckFilters";
 import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
+import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
 
 interface Props {
   decks: Deck[];
@@ -35,6 +35,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [loading, setLoading] = useState(false);
   const [titleFilter, setTitleFilter] = useState<string>("");
   const [formatFilter, setFormatFilter] = useState<Format>();
+  const [isLegal, setIsLegal] = useState<boolean | null>(null);
   const [sortBy, setSortBy] = useState<keyof Deck>("createdAtUtc");
   const [sortDir, setSortDir] = useState<SortDirection>(SortDirection.DESC);
   const [pageSize, setPageSize] = useState(10);
@@ -51,6 +52,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     sortDir,
     titleFilter,
     formatFilter,
+    isLegal
   });
   const { currentPage, totalPages, pages, canNext, canPrev } = usePaginate({
     data: filteredSortedDecks,
@@ -79,7 +81,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
   const pagination = useMemo(
     () =>
-      totalPages > 1 ? (
+      totalPages > 1 && !currentDeck ? (
         <div className="container my-2">
           <Paginate
             pageIndex={pageIndex}
@@ -93,13 +95,13 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           </Paginate>
         </div>
       ) : null,
-    [canNext, canPrev, pageIndex, totalPages, pages]
+    [canNext, canPrev, pageIndex, totalPages, pages, currentDeck]
   );
 
   return (
     <>
       {!currentDeck && (
-        <UserDeckFilters
+        <CollapsibleDeckFilters
           titleFilter={titleFilter}
           sortDirection={sortDir}
           sortBy={sortBy}
@@ -112,11 +114,13 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           setFormatFilter={setFormatFilter}
           setSortBy={setSortBy}
           setSortDir={setSortDir}
+          isLegal={isLegal}
+          setIsLegal={setIsLegal}
         />
       )}
       {!!currentDeck && (
         <button
-          className="button"
+          className="button my-3"
           onClick={() => {
             setCurrentDeck(undefined);
             setDeckData(undefined);

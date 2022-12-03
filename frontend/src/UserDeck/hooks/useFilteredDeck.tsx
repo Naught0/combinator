@@ -8,6 +8,7 @@ interface props {
   sortBy: keyof Deck;
   titleFilter: string;
   formatFilter?: Format;
+  isLegal: boolean | null;
 }
 export const useFilteredDeck = (props: props) => {
   const data = useMemo(() => {

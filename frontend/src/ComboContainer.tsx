@@ -1,8 +1,9 @@
-import { faShare } from "@fortawesome/free-solid-svg-icons";
+import { faShare, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, useState } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { Combo } from "./Combo";
+import { IconText } from "./IconText";
 
 enum Tab {
   COMBOS,
@@ -12,6 +13,21 @@ enum Tab {
 
 export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
   const [tab, setTab] = useState<Tab>(Tab.COMBOS);
+  const addCardTabExplanation = useMemo<ReactNode>(() => {
+    if ([Tab.ONE, Tab.TWO].includes(tab)) {
+      return (
+        <div className="has-text-centered" style={{ width: "100%" }}>
+          <span className="icon-text">
+            <span className="icon">
+              <FontAwesomeIcon icon={faSquare} className="has-text-danger" />
+            </span>
+            <span>= card not in deck</span>
+          </span>
+        </div>
+      );
+    }
+    return null;
+  }, [tab]);
   const shareUrl = () => {
     if (!deckData) return window.location.href;
 
@@ -26,6 +42,7 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
       .then((v) => toast.success("Copied link to clipboard"))
       .catch((v) => toast.error("Couldn't copy text to clipboard"));
   };
+
   return (
     <>
       <div className="is-flex mt-4">
@@ -94,6 +111,7 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
                 <p className="title is-5 has-text-centered">Effect</p>
               </div>
             </div>
+            {addCardTabExplanation}
             {deckData[
               tab === Tab.COMBOS ? "combos" : tab === Tab.ONE ? "one" : "two"
             ].map((c) => (

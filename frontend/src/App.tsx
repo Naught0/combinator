@@ -151,7 +151,7 @@ export const App = () => {
                             !(userName.length > 0) ? "is-hidden" : ""
                           }`}
                           role="button"
-                          title="Share a link to this user's mtgcombinator page"
+                          title="Share a link to this page"
                           onClick={() => {
                             copyToClipboardAndToast({
                               text: `${window.location.origin}?moxfield_user=${userName}`,

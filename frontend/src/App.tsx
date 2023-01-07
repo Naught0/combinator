@@ -37,6 +37,11 @@ export const App = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!deckUrl) return;
+    setSearchType(SearchType.DECK);
+  }, [deckUrl]);
+
   const findCombos = useCallback(() => {
     setDeckData(undefined);
     setError(undefined);

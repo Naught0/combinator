@@ -6,6 +6,7 @@ import { FC, ReactNode, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { Combo } from "./Combo";
 import { Hyperlink } from "./Hyperlink";
+import { copyToClipboardAndToast } from "./util";
 
 enum Tab {
   COMBOS,
@@ -30,19 +31,17 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
     }
     return null;
   }, [tab]);
-  const shareUrl = () => {
+
+  const shareUrl = useMemo(() => {
     if (!deckData) return window.location.href;
 
     const base = window.location.origin;
     const qs = new URLSearchParams(`?deck_url=${deckData.meta.url}`).toString();
     return `${base}?${qs}`;
-  };
+  }, [deckData]);
 
   const doShareUrl = () => {
-    navigator.clipboard
-      .writeText(shareUrl())
-      .then((v) => toast.success("Copied link to clipboard"))
-      .catch((v) => toast.error("Couldn't copy text to clipboard"));
+    copyToClipboardAndToast({ text: shareUrl });
   };
 
   return (

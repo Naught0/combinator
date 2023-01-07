@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, ReactNode, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { Combo } from "./Combo";
+import { Hyperlink } from "./Hyperlink";
 
 enum Tab {
   COMBOS,
@@ -48,7 +49,9 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
     <>
       <div className="is-flex mt-4">
         <div className="is-flex is-flex-grow-1 is-flex-direction-column">
-          <h1 className="title">{deckData.meta.name}</h1>
+          <h1 className="title">
+            <Hyperlink href={deckData.meta.url}>{deckData.meta.name}</Hyperlink>
+          </h1>
           <p className="subtitle mb-2">by {deckData.meta.author}</p>
           {deckData.combos.length > 0 && (
             <p className="help">
@@ -121,7 +124,7 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
           </>
         ) : (
           <h1 className="is-size-4">
-            💡 Pro Tip: Try adding some combos to your list
+            💡 Pro Tip: Try adding some <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink> to your list
           </h1>
         )}
       </div>

@@ -12,7 +12,7 @@ import { ComboContainer } from "./ComboContainer";
 import { UserDecksContainer } from "./UserDeck/UserDecksContainer";
 import { getComboData } from "./services";
 import { cachedClient } from "./services/cachedRequest";
-import { faArrowRight, faShare } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faLink } from "@fortawesome/free-solid-svg-icons";
 import { copyToClipboardAndToast } from "./util";
 
 export const App = () => {
@@ -158,7 +158,7 @@ export const App = () => {
                             });
                           }}
                         >
-                          <FontAwesomeIcon icon={faShare} />
+                          <FontAwesomeIcon icon={faLink} />
                         </span>
                       </div>
                     </div>

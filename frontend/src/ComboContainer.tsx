@@ -123,7 +123,9 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
           </>
         ) : (
           <h1 className="is-size-4">
-            💡 Pro Tip: Try adding some <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink> to your list
+            💡 Pro Tip: Try adding some{" "}
+            <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
+            to your list
           </h1>
         )}
       </div>

@@ -11,10 +11,11 @@ export const CollapsibleDeckFilters: FC<UserDeckFilterProps> = (props) => {
       <div style={{ display: isCollapsed ? "none" : "flex" }}>
         <UserDeckFilters {...props} />
       </div>
-      <div className="control my-3">
+      <div className="control my-3 is-fullwidth" style={{width: "100%"}}>
         <button
-          className="is-text is-size-7"
+          className="is-text"
           onClick={() => setIsCollapsed(!isCollapsed)}
+          style={{ width: "95%" }}
         >
           <span className="icon">
             <FontAwesomeIcon icon={isCollapsed ? faPlus : faMinus} />

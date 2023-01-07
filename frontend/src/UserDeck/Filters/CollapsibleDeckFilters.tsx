@@ -11,9 +11,9 @@ export const CollapsibleDeckFilters: FC<UserDeckFilterProps> = (props) => {
       <div style={{ display: isCollapsed ? "none" : "flex" }}>
         <UserDeckFilters {...props} />
       </div>
-      <div className="control my-3 is-fullwidth" style={{width: "100%"}}>
+      <div className="control is-fullwidth" style={{width: "95%"}}>
         <button
-          className="is-text"
+          className="is-text py-3"
           onClick={() => setIsCollapsed(!isCollapsed)}
           style={{ width: "95%" }}
         >

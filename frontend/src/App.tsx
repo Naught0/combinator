@@ -12,7 +12,8 @@ import { ComboContainer } from "./ComboContainer";
 import { UserDecksContainer } from "./UserDeck/UserDecksContainer";
 import { getComboData } from "./services";
 import { cachedClient } from "./services/cachedRequest";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faShare } from "@fortawesome/free-solid-svg-icons";
+import { copyToClipboardAndToast } from "./util";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
@@ -32,15 +33,23 @@ export const App = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const url = params.get("deck_url");
+    const user = params.get("moxfield_user");
+
     if (url !== null) {
       setDeckUrl(url);
+    }
+    if (user !== null) {
+      setUserName(user);
     }
   }, []);
 
   useEffect(() => {
     if (!deckUrl) return;
+    if (userName) {
+      return setSearchType(SearchType.USER);
+    }
     setSearchType(SearchType.DECK);
-  }, [deckUrl]);
+  }, [deckUrl, userName]);
 
   const findCombos = useCallback(() => {
     setDeckData(undefined);

@@ -124,6 +124,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
                       isLegal === legality.value ? "is-active" : ""
                     }`}
                     onClick={() => setIsLegal(legality.value)}
+                    key={legality.display}
                   >
                     {legality.display}
                   </a>
@@ -142,7 +143,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
                 className={`dropdown-item ${
                   s.key === sortBy ? "is-active" : ""
                 }`}
-                key={`dropdown-sort-opt-${s.key}`}
+                key={s.key}
                 onClick={() => setSortBy(s.key)}
               >
                 {s.display}
@@ -170,6 +171,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
             <a
               className={`dropdown-item ${pageSize === num ? "is-active" : ""}`}
               onClick={() => setPageSize(num)}
+              key={num}
             >
               {num}
             </a>

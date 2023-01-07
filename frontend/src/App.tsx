@@ -132,6 +132,37 @@ export const App = () => {
             <div className="field is-horizontal">
               <div className="field-body">
                 <div className="field">
+                  {searchType === SearchType.USER && (
+                    <div className="field">
+                      <div className="control has-icons-right">
+                        <input
+                          type="text"
+                          className={`input is-medium ${
+                            error ? "is-danger" : ""
+                          }`}
+                          placeholder="Moxfield username"
+                          onInput={(e) =>
+                            setUserName((e.target as HTMLInputElement).value)
+                          }
+                          value={userName}
+                        />
+                        <span
+                          className={`icon is-right is-small is-clickable ${
+                            !(userName.length > 0) ? "is-hidden" : ""
+                          }`}
+                          role="button"
+                          title="Share a link to this user's mtgcombinator page"
+                          onClick={() => {
+                            copyToClipboardAndToast({
+                              text: `${window.location.origin}?moxfield_user=${userName}`,
+                            });
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faShare} />
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   {searchType === SearchType.DECK && (
                     <input
                       type="text"
@@ -143,21 +174,10 @@ export const App = () => {
                       value={deckUrl}
                     />
                   )}
-                  {searchType === SearchType.USER && (
-                    <input
-                      type="text"
-                      className={`input is-medium ${error ? "is-danger" : ""}`}
-                      placeholder="Moxfield username"
-                      onInput={(e) =>
-                        setUserName((e.target as HTMLInputElement).value)
-                      }
-                      value={userName}
-                    />
-                  )}
                   {error && <p className="has-text-danger help">{error}</p>}
                 </div>
                 <div className="field">
-                  <div className="buttons">
+                  <div className="buttons has-addons">
                     <button
                       className={`button is-primary is-medium ${
                         fetching && "is-loading"

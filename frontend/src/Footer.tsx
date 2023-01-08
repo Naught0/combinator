@@ -39,11 +39,18 @@ export const Footer = () => {
             <Hyperlink href="https://fontawesome.com/">font awesome</Hyperlink>,{" "}
           </span>
           <span>
-            <Hyperlink href="https://bulma.io/">bulma</Hyperlink>
+            <Hyperlink href="https://bulma.io/">bulma</Hyperlink>,{" "}
           </span>
           <span>
-            {", & "}
-            <Hyperlink href="https://moxfield.com/">moxfield</Hyperlink>
+            <Hyperlink href="https://moxfield.com/">moxfield</Hyperlink>,{" "}
+          </span>
+          <span>
+            <Hyperlink href="https://archidekt.com/">archidekt</Hyperlink>{", & "}
+          </span>
+          <span>
+            <Hyperlink href="https://www.mtggoldfish.com/">
+              mtggoldfish
+            </Hyperlink>
           </span>
         </p>
       </div>

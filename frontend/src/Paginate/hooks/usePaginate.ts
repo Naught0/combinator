@@ -11,7 +11,5 @@ export const usePaginate = ({ data, pageIndex = 0, pageSize = 15 }: props) => {
     currentPage: pages[pageIndex],
     pages: pages,
     totalPages: pages.length,
-    canNext: pageIndex + 1 < pages.length,
-    canPrev: pageIndex > 0,
   };
 };

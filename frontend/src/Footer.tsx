@@ -1,3 +1,5 @@
+import { Hyperlink } from "./Hyperlink";
+
 export const Footer = () => {
   return (
     <footer className="footer has-background-grey">
@@ -6,6 +8,10 @@ export const Footer = () => {
           <a href="https://jamese.dev" rel="noreferrer" target="_blank">
             I made dis
           </a>
+          {" and it's "}
+          <Hyperlink href="https://github.com/naught0/combinator">
+            open source
+          </Hyperlink>
         </p>
         <p>
           combo data from the wise &amp; powerful{" "}
@@ -30,15 +36,21 @@ export const Footer = () => {
         <p>
           <span>other stuff: </span>
           <span>
-            <a href="https://fontawesome.com/" rel="noreferrer" target="_blank">
-              font awesome
-            </a>
-            ,{" "}
+            <Hyperlink href="https://fontawesome.com/">font awesome</Hyperlink>,{" "}
           </span>
           <span>
-            <a href="https://bulma.io/" rel="noreferrer" target="_blank">
-              bulma
-            </a>
+            <Hyperlink href="https://bulma.io/">bulma</Hyperlink>,{" "}
+          </span>
+          <span>
+            <Hyperlink href="https://moxfield.com/">moxfield</Hyperlink>,{" "}
+          </span>
+          <span>
+            <Hyperlink href="https://archidekt.com/">archidekt</Hyperlink>{", & "}
+          </span>
+          <span>
+            <Hyperlink href="https://www.mtggoldfish.com/">
+              mtggoldfish
+            </Hyperlink>
           </span>
         </p>
       </div>

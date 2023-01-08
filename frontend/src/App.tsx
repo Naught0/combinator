@@ -12,7 +12,9 @@ import { ComboContainer } from "./ComboContainer";
 import { UserDecksContainer } from "./UserDeck/UserDecksContainer";
 import { getComboData } from "./services";
 import { cachedClient } from "./services/cachedRequest";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faLink } from "@fortawesome/free-solid-svg-icons";
+import { copyToClipboardAndToast } from "./util";
+import "./style/rainbow-button.sass";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
@@ -32,10 +34,23 @@ export const App = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const url = params.get("deck_url");
+    const user = params.get("moxfield_user");
+
     if (url !== null) {
       setDeckUrl(url);
     }
+    if (user !== null) {
+      setUserName(user);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!deckUrl) return;
+    if (userName) {
+      return setSearchType(SearchType.USER);
+    }
+    setSearchType(SearchType.DECK);
+  }, [deckUrl, userName]);
 
   const findCombos = useCallback(() => {
     setDeckData(undefined);
@@ -118,6 +133,37 @@ export const App = () => {
             <div className="field is-horizontal">
               <div className="field-body">
                 <div className="field">
+                  {searchType === SearchType.USER && (
+                    <div className="field">
+                      <div className="control has-icons-right">
+                        <input
+                          type="text"
+                          className={`input is-medium ${
+                            error ? "is-danger" : ""
+                          }`}
+                          placeholder="Moxfield username"
+                          onInput={(e) =>
+                            setUserName((e.target as HTMLInputElement).value)
+                          }
+                          value={userName}
+                        />
+                        <span
+                          className={`icon is-right is-small is-clickable ${
+                            !(userName.length > 0) ? "is-hidden" : ""
+                          }`}
+                          role="button"
+                          title="Share a link to this page"
+                          onClick={() => {
+                            copyToClipboardAndToast({
+                              text: `${window.location.origin}?moxfield_user=${userName}`,
+                            });
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faLink} />
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   {searchType === SearchType.DECK && (
                     <input
                       type="text"
@@ -129,23 +175,12 @@ export const App = () => {
                       value={deckUrl}
                     />
                   )}
-                  {searchType === SearchType.USER && (
-                    <input
-                      type="text"
-                      className={`input is-medium ${error ? "is-danger" : ""}`}
-                      placeholder="Moxfield username"
-                      onInput={(e) =>
-                        setUserName((e.target as HTMLInputElement).value)
-                      }
-                      value={userName}
-                    />
-                  )}
                   {error && <p className="has-text-danger help">{error}</p>}
                 </div>
                 <div className="field">
-                  <div className="buttons">
+                  <div className="buttons has-addons">
                     <button
-                      className={`button is-primary is-medium ${
+                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${
                         fetching && "is-loading"
                       }`}
                       disabled={

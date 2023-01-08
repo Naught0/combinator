@@ -1,8 +1,12 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import { faShare, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, ReactNode, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { Combo } from "./Combo";
+import { Hyperlink } from "./Hyperlink";
+import { copyToClipboardAndToast } from "./util";
 
 enum Tab {
   COMBOS,
@@ -27,26 +31,26 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
     }
     return null;
   }, [tab]);
-  const shareUrl = () => {
+
+  const shareUrl = useMemo(() => {
     if (!deckData) return window.location.href;
 
     const base = window.location.origin;
     const qs = new URLSearchParams(`?deck_url=${deckData.meta.url}`).toString();
     return `${base}?${qs}`;
-  };
+  }, [deckData]);
 
   const doShareUrl = () => {
-    navigator.clipboard
-      .writeText(shareUrl())
-      .then((v) => toast.success("Copied link to clipboard"))
-      .catch((v) => toast.error("Couldn't copy text to clipboard"));
+    copyToClipboardAndToast({ text: shareUrl });
   };
 
   return (
     <>
       <div className="is-flex mt-4">
         <div className="is-flex is-flex-grow-1 is-flex-direction-column">
-          <h1 className="title">{deckData.meta.name}</h1>
+          <h1 className="title">
+            <Hyperlink href={deckData.meta.url}>{deckData.meta.name}</Hyperlink>
+          </h1>
           <p className="subtitle mb-2">by {deckData.meta.author}</p>
           {deckData.combos.length > 0 && (
             <p className="help">
@@ -119,7 +123,9 @@ export const ComboContainer: FC<DeckData> = ({ ...deckData }) => {
           </>
         ) : (
           <h1 className="is-size-4">
-            💡 Pro Tip: Try adding some combos to your list
+            💡 Pro Tip: Try adding some{" "}
+            <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
+            to your list
           </h1>
         )}
       </div>

@@ -17,7 +17,7 @@ interface Props {
 export const Deck: FC<Props> = ({ deck, onClick }) => {
   return (
     <div
-      className="deck is-flex is-flex-direction-column p-4 has-text-dark"
+      className="deck is-flex is-flex-direction-column is-justify-content-space-between p-4 has-text-dark"
       style={{
         backgroundImage: ` radial-gradient(transparent, rgb(0, 0, 0)),
         url("https://assets.moxfield.net/cards/card-${deck.mainCardId}-art_crop.webp")`,
@@ -25,8 +25,17 @@ export const Deck: FC<Props> = ({ deck, onClick }) => {
         backgroundSize: "100%",
       }}
       onClick={() => onClick(deck)}
+      title={deck.name}
     >
-      <div>{deck.name}</div>
+      <div
+        style={{
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+        }}
+      >
+        {deck.name}
+      </div>
       <div className="tags my-2">
         <span className="tag is-dark">{deck.format}</span>
       </div>

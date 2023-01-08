@@ -96,11 +96,17 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     setDeckData(undefined);
   };
 
+  const safelyChangePageIndex = (n: number) => {
+    if (n < 0) return setPageIndex(0);
+    if (n > totalPages - 1) return setPageIndex(totalPages - 1);
+    setPageIndex(n);
+  };
+
   const pagination = useMemo(
     () =>
       totalPages > 1 && !currentDeck ? (
         <div className="container my-2">
-          <Paginate pageIndex={pageIndex} setIndex={setPageIndex}>
+          <Paginate pageIndex={pageIndex} setIndex={safelyChangePageIndex}>
             {pages}
           </Paginate>
         </div>

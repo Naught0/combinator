@@ -17,7 +17,7 @@ interface Props {
 export const Deck: FC<Props> = ({ deck, onClick }) => {
   return (
     <div
-      className="deck is-flex is-flex-direction-column p-4 has-text-dark"
+      className="deck is-flex is-flex-direction-column is-justify-content-space-between p-4 has-text-dark"
       style={{
         backgroundImage: ` radial-gradient(transparent, rgb(0, 0, 0)),
         url("https://assets.moxfield.net/cards/card-${deck.mainCardId}-art_crop.webp")`,

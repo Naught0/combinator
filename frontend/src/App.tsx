@@ -14,6 +14,7 @@ import { getComboData } from "./services";
 import { cachedClient } from "./services/cachedRequest";
 import { faArrowRight, faLink } from "@fortawesome/free-solid-svg-icons";
 import { copyToClipboardAndToast } from "./util";
+import "./style/rainbow-button.sass";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
@@ -179,7 +180,7 @@ export const App = () => {
                 <div className="field">
                   <div className="buttons has-addons">
                     <button
-                      className={`button is-primary is-medium ${
+                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${
                         fetching && "is-loading"
                       }`}
                       disabled={

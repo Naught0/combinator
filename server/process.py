@@ -195,6 +195,8 @@ def scryfall_request(card_list_chunk: List[str]) -> Dict[str, str]:
     )
     data = resp.json()["data"]
     for card in data:
+        if "image_uris" not in card:
+            continue
         ret.update({card["name"]: card["image_uris"]["normal"]})
 
     return ret

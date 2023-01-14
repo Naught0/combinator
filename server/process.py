@@ -25,7 +25,9 @@ def chunk_array(l: list, n: int) -> List[List[any]]:
         yield l[i : i + n]
 
 
-def find_matches(data: List[dict], to_match: Set[str], identity: List[str]) -> List[dict]:
+def find_matches(
+    data: List[dict], to_match: Set[str], identity: List[str]
+) -> List[dict]:
     """Finds combos in a given decklist based on card names
 
     Args:
@@ -39,13 +41,17 @@ def find_matches(data: List[dict], to_match: Set[str], identity: List[str]) -> L
     db = pd.DataFrame(data)
     one_match, two_match = find_near_matches(db, to_match, identity)
     return {
-        "combos": db[db["c"].apply(lambda x: set(x).issubset(to_match))].to_dict("records"),
+        "combos": db[
+            db["c"].apply(lambda x: set(x).issubset(to_match))
+        ].to_dict("records"),
         "one": one_match,
         "two": two_match,
     }
 
 
-def find_near_matches(db: pd.DataFrame, to_match: Set[str], identity: List[str]) -> List[dict]:
+def find_near_matches(
+    db: pd.DataFrame, to_match: Set[str], identity: List[str]
+) -> List[dict]:
     """Finds combos that are within 1-2 cards away from adding to your deck
 
     Args:
@@ -58,12 +64,18 @@ def find_near_matches(db: pd.DataFrame, to_match: Set[str], identity: List[str])
     identity = set(identity)
     to_match = set(to_match)
     in_color = db[db["i"].apply(lambda x: set(x.split(",")) == set(identity))]
-    one = in_color[db["c"].apply(lambda x: (len(set(x) & to_match) > 1) and (len(set(x) - to_match) == 1))].to_dict(
-        "records"
-    )
-    two = in_color[db["c"].apply(lambda x: (len(set(x) & to_match) > 1) and (len(set(x) - to_match) == 2))].to_dict(
-        "records"
-    )
+    one = in_color[
+        db["c"].apply(
+            lambda x: (len(set(x) & to_match) > 1)
+            and (len(set(x) - to_match) == 1)
+        )
+    ].to_dict("records")
+    two = in_color[
+        db["c"].apply(
+            lambda x: (len(set(x) & to_match) > 1)
+            and (len(set(x) - to_match) == 2)
+        )
+    ].to_dict("records")
 
     return (one[:25], two[:25])
 
@@ -95,7 +107,15 @@ def get_moxfield_deck(url: str) -> dict:
             "url": url,
             "colors": [x.lower() for x in resp["main"]["colors"]],
         },
-        "cards": list(set([resp["main"]["name"], *resp["mainboard"].keys(), *resp["sideboard"].keys()])),
+        "cards": list(
+            set(
+                [
+                    resp["main"]["name"],
+                    *resp["mainboard"].keys(),
+                    *resp["sideboard"].keys(),
+                ]
+            )
+        ),
     }
 
 
@@ -127,9 +147,14 @@ def get_goldfish_deck(url: str) -> dict:
     author = soup.span.text[3:]
     title = soup.title.text.split("by ")[0]
     resp = requests.get(download_url.format(deck_id)).text
-    cards = list(set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x]))
+    cards = list(
+        set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x])
+    )
 
-    return {"meta": {"name": title, "author": author, "url": url, "colors": []}, "cards": cards}
+    return {
+        "meta": {"name": title, "author": author, "url": url, "colors": []},
+        "cards": cards,
+    }
 
 
 def get_archidekt_deck(url: str) -> dict:
@@ -191,7 +216,8 @@ def scryfall_request(card_list_chunk: List[str]) -> Dict[str, str]:
     """
     ret = {}
     resp = requests.post(
-        "https://api.scryfall.com/cards/collection", json={"identifiers": [{"name": x} for x in card_list_chunk]}
+        "https://api.scryfall.com/cards/collection",
+        json={"identifiers": [{"name": x} for x in card_list_chunk]},
     )
     data = resp.json()["data"]
     for card in data:

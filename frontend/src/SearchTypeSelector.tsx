@@ -1,8 +1,8 @@
 import { FC } from "react";
 
 export enum SearchType {
-  DECK,
-  USER,
+  DECK = "DECK",
+  USER = "USER",
 }
 interface Props {
   searchType: SearchType;

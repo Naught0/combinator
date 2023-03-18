@@ -28,9 +28,9 @@ export const manaFontMap = getPairs(symbols)
   .map(([l, r]) => ({ dataName: `{${l}/${r}}`, partialClassName: `${l}${r}` }))
   // https://stackoverflow.com/a/44325124/7770440
   .reduce(
-    (obj: { [k: string]: ReactNode }, item) => (
-      (obj[item.dataName] = (
-        <i className={`${iconClassName}${item.partialClassName}`}></i>
+    (obj: { [k: string]: (key: string) => ReactNode }, item) => (
+      (obj[item.dataName] = (key: string) => (
+        <i className={`${iconClassName}${item.partialClassName}`} key={key}></i>
       )),
       obj
     ),
@@ -38,5 +38,7 @@ export const manaFontMap = getPairs(symbols)
   );
 
 for (const s of symbols) {
-  manaFontMap[`{${s}}`] = <i className={`${iconClassName}${s}`}></i>;
+  manaFontMap[`{${s}}`] = (key: string) => (
+    <i className={`${iconClassName}${s}`} key={key}></i>
+  );
 }

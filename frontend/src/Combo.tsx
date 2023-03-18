@@ -15,7 +15,7 @@ const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
     .map((word, idx) => {
       const toCompare = word.toLowerCase().replaceAll(/[.,]/g, "");
       if (word && Object.keys(manaFontMap).includes(toCompare)) {
-        return manaFontMap[toCompare](`${uniqueKey}-${idx}-${word}`);
+        return manaFontMap[toCompare];
       }
       return ` ${word} `;
     });

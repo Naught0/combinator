@@ -8,14 +8,14 @@ interface props {
   deckData: DeckData;
 }
 
-const replaceManaSymbols = (uniqueKey: string | number, s: string) => {
+const replaceManaSymbols = (s: string) => {
   return s
     .replaceAll("}{", "} {")
     .split(" ")
     .map((word, idx) => {
       const toCompare = word.toLowerCase().replaceAll(/[.,]/g, "");
       if (word && Object.keys(manaFontMap).includes(toCompare)) {
-        return manaFontMap[toCompare];
+        return manaFontMap[toCompare](`${word}-${idx}`);
       }
       return ` ${word} `;
     });
@@ -45,7 +45,7 @@ export const Combo = ({ combo, deckData }: props) => {
                     .filter((p) => p)
                     .map((p, idx) => (
                       <li key={`combo-${combo.d}-${p}-${idx}`}>
-                        {replaceManaSymbols(p, p)}
+                        {replaceManaSymbols(p)}
                       </li>
                     ))}
                 </ul>
@@ -59,9 +59,7 @@ export const Combo = ({ combo, deckData }: props) => {
                     .split(".")
                     .filter((t) => t.trim().length > 0)
                     .map((s, idx) => (
-                      <li key={`${combo.d}-${idx}`}>
-                        {replaceManaSymbols(combo.d, s)}
-                      </li>
+                      <li key={`${combo.d}-${idx}`}>{replaceManaSymbols(s)}</li>
                     ))}
                 </ol>
               </div>

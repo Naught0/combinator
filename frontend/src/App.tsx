@@ -44,14 +44,6 @@ export const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!deckUrl) return;
-    if (userName) {
-      return setSearchType(SearchType.USER);
-    }
-    setSearchType(SearchType.DECK);
-  }, [deckUrl, userName]);
-
   const findCombos = useCallback(() => {
     setDeckData(undefined);
     setError(undefined);

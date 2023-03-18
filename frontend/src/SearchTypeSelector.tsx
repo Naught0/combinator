@@ -18,13 +18,21 @@ export const SearchTypeSelector: FC<Props> = ({
       <div className="tabs is-toggle">
         <div className="buttons has-addons">
           <button
-            className={`button ${searchType === SearchType.USER ? "is-primary" : "is-inverted is-dark"}`}
+            className={`button ${
+              searchType === SearchType.USER
+                ? "is-primary"
+                : "is-inverted is-dark"
+            }`}
             onClick={() => setSearchType(SearchType.USER)}
           >
             User
           </button>
           <button
-            className={`button ${searchType === SearchType.DECK ? "is-primary" : "is-inverted is-dark"}`}
+            className={`button ${
+              searchType === SearchType.DECK
+                ? "is-primary"
+                : "is-inverted is-dark"
+            }`}
             onClick={() => setSearchType(SearchType.DECK)}
           >
             Deck

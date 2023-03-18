@@ -36,10 +36,10 @@ export const App = () => {
     const url = params.get("deck_url");
     const user = params.get("moxfield_user");
 
-    if (url !== null) {
+    if (url) {
       setDeckUrl(url);
     }
-    if (user !== null) {
+    if (user) {
       setUserName(user);
     }
   }, []);

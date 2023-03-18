@@ -35,12 +35,18 @@ export const App = () => {
     const params = new URLSearchParams(window.location.search);
     const url = params.get("deck_url");
     const user = params.get("moxfield_user");
+    const searchType = localStorage.getItem("searchType");
+    if (searchType) {
+      setSearchType(SearchType[searchType as SearchType]);
+    }
 
     if (url) {
       setDeckUrl(url);
+      setSearchType(SearchType.DECK);
     }
     if (user) {
       setUserName(user);
+      setSearchType(SearchType.USER);
     }
   }, []);
 
@@ -81,6 +87,11 @@ export const App = () => {
     setFetching(false);
   };
 
+  const saveSearchType = (type: SearchType) => {
+    localStorage.setItem("searchType", type);
+    setSearchType(type);
+  };
+
   return (
     <React.Fragment>
       <ToastContainer theme="dark" />
@@ -105,7 +116,7 @@ export const App = () => {
         <div className="container mt-6">
           <SearchTypeSelector
             searchType={searchType}
-            setSearchType={(type) => setSearchType(type)}
+            setSearchType={saveSearchType}
           />
           <form
             onSubmit={(e) => {

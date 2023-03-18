@@ -1,26 +1,42 @@
-import { ReactElement } from "react";
+import { ReactNode } from "react";
 
-interface type {
-  [key: string]: (key: string) => ReactElement;
+function getPairs(a: unknown[]) {
+  var i,
+    j,
+    result = [];
+  for (i = 0; i < a.length; i++) {
+    for (j = i; j < a.length; j++) {
+      result.push([a[i], a[j]]);
+    }
+  }
+  return result;
 }
-export const manaFontMap: type = {
-  "{c}": (key) => <i className="mx-1 ms ms-cost ms-c" key={key}></i>,
-  "{w}": (key) => <i className="mx-1 ms ms-cost ms-w" key={key}></i>,
-  "{u}": (key) => <i className="mx-1 ms ms-cost ms-u" key={key}></i>,
-  "{b}": (key) => <i className="mx-1 ms ms-cost ms-b" key={key}></i>,
-  "{r}": (key) => <i className="mx-1 ms ms-cost ms-r" key={key}></i>,
-  "{g}": (key) => <i className="mx-1 ms ms-cost ms-g" key={key}></i>,
-  "{0}": (key) => <i className="mx-1 ms ms-cost ms-0" key={key}></i>,
-  "{1}": (key) => <i className="mx-1 ms ms-cost ms-1" key={key}></i>,
-  "{2}": (key) => <i className="mx-1 ms ms-cost ms-2" key={key}></i>,
-  "{3}": (key) => <i className="mx-1 ms ms-cost ms-3" key={key}></i>,
-  "{4}": (key) => <i className="mx-1 ms ms-cost ms-4" key={key}></i>,
-  "{5}": (key) => <i className="mx-1 ms ms-cost ms-5" key={key}></i>,
-  "{6}": (key) => <i className="mx-1 ms ms-cost ms-6" key={key}></i>,
-  "{7}": (key) => <i className="mx-1 ms ms-cost ms-7" key={key}></i>,
-  "{8}": (key) => <i className="mx-1 ms ms-cost ms-8" key={key}></i>,
-  "{9}": (key) => <i className="mx-1 ms ms-cost ms-9" key={key}></i>,
-  "{10}": (key) => <i className="mx-1 ms ms-cost ms-10" key={key}></i>,
-  "{11}": (key) => <i className="mx-1 ms ms-cost ms-11" key={key}></i>,
-  "{12}": (key) => <i className="mx-1 ms ms-cost ms-12" key={key}></i>,
-};
+
+const symbols = [
+  ...[...Array(21).keys()].map((n) => n.toString()),
+  "100",
+  "c",
+  "w",
+  "u",
+  "b",
+  "r",
+  "g",
+];
+const iconClassName = "ml-1 ms ms-shadow ms-cost ms-";
+export const manaFontMap = getPairs(symbols)
+  .filter(([l, r]) => l !== r)
+  .map(([l, r]) => ({ dataName: `{${l}/${r}}`, partialClassName: `${l}${r}` }))
+  // https://stackoverflow.com/a/44325124/7770440
+  .reduce(
+    (obj: { [k: string]: ReactNode }, item) => (
+      (obj[item.dataName] = (
+        <i className={`${iconClassName}${item.partialClassName}`}></i>
+      )),
+      obj
+    ),
+    {}
+  );
+
+for (const s of symbols) {
+  manaFontMap[`{${s}}`] = <i className={`${iconClassName}${s}`}></i>;
+}

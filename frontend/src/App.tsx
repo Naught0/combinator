@@ -36,10 +36,6 @@ export const App = () => {
     const url = params.get("deck_url");
     const user = params.get("moxfield_user");
     const searchType = localStorage.getItem("searchType");
-    if (searchType) {
-      setSearchType(SearchType[searchType as SearchType]);
-    }
-
     if (url) {
       setDeckUrl(url);
       setSearchType(SearchType.DECK);
@@ -48,6 +44,11 @@ export const App = () => {
       setUserName(user);
       setSearchType(SearchType.USER);
     }
+    
+    if (searchType) {
+      setSearchType(SearchType[searchType as SearchType]);
+    }
+
   }, []);
 
   const findCombos = useCallback(() => {

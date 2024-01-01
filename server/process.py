@@ -1,3 +1,4 @@
+import json
 import re
 import backoff
 from bs4 import BeautifulSoup
@@ -6,7 +7,8 @@ import requests
 from urllib.parse import urlparse
 from typing import Dict, List, Set
 
-COMBO_DATA_URL = "https://commanderspellbook.com/api/combo-data.json"
+# COMBO_DATA_URL = "https://commanderspellbook.com/api/combo-data.json"
+COMBO_DATA_URL = "data.json"
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
 
@@ -200,7 +202,8 @@ def get_combo_data():
     Returns:
         dict
     """
-    return requests.get(COMBO_DATA_URL).json()
+    # return requests.get(COMBO_DATA_URL).json()
+    return json.load(open(COMBO_DATA_URL))
 
 
 @backoff.on_exception(backoff.expo, requests.RequestException, max_tries=3)

@@ -1,3 +1,4 @@
+import json
 import re
 import backoff
 from bs4 import BeautifulSoup
@@ -6,7 +7,8 @@ import requests
 from urllib.parse import urlparse
 from typing import Dict, List, Set
 
-COMBO_DATA_URL = "https://commanderspellbook.com/api/combo-data.json"
+# COMBO_DATA_URL = "https://commanderspellbook.com/api/combo-data.json"
+COMBO_DATA_URL = "data.json"
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
 
@@ -41,9 +43,9 @@ def find_matches(
     db = pd.DataFrame(data)
     one_match, two_match = find_near_matches(db, to_match, identity)
     return {
-        "combos": db[
-            db["c"].apply(lambda x: set(x).issubset(to_match))
-        ].to_dict("records"),
+        "combos": db[db["c"].apply(lambda x: set(x).issubset(to_match))].to_dict(
+            "records"
+        ),
         "one": one_match,
         "two": two_match,
     }
@@ -66,14 +68,12 @@ def find_near_matches(
     in_color = db[db["i"].apply(lambda x: set(x.split(",")) == set(identity))]
     one = in_color[
         db["c"].apply(
-            lambda x: (len(set(x) & to_match) > 1)
-            and (len(set(x) - to_match) == 1)
+            lambda x: (len(set(x) & to_match) > 1) and (len(set(x) - to_match) == 1)
         )
     ].to_dict("records")
     two = in_color[
         db["c"].apply(
-            lambda x: (len(set(x) & to_match) > 1)
-            and (len(set(x) - to_match) == 2)
+            lambda x: (len(set(x) & to_match) > 1) and (len(set(x) - to_match) == 2)
         )
     ].to_dict("records")
 
@@ -147,9 +147,7 @@ def get_goldfish_deck(url: str) -> dict:
     author = soup.span.text[3:]
     title = soup.title.text.split("by ")[0]
     resp = requests.get(download_url.format(deck_id)).text
-    cards = list(
-        set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x])
-    )
+    cards = list(set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x]))
 
     return {
         "meta": {"name": title, "author": author, "url": url, "colors": []},
@@ -200,7 +198,8 @@ def get_combo_data():
     Returns:
         dict
     """
-    return requests.get(COMBO_DATA_URL).json()
+    # return requests.get(COMBO_DATA_URL).json()
+    return json.load(open(COMBO_DATA_URL))
 
 
 @backoff.on_exception(backoff.expo, requests.RequestException, max_tries=3)

@@ -1,0 +1,17 @@
+version: "3"
+services:
+  server:
+    build:
+      dockerfile: ./server/Dockerfile
+    ports:
+      - 5001:5001
+    volumes:
+      - ./server:/server
+  frontend:
+    build:
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules

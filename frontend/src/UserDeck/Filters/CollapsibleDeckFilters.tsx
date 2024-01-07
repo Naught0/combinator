@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export const CollapsibleDeckFilters: FC<UserDeckFilterProps> = (props) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     <div className={`collapsible-deck-filter`}>
       <div style={{ display: isCollapsed ? "none" : "flex" }}>
         <UserDeckFilters {...props} />
       </div>
-      <div className="control is-fullwidth" style={{width: "95%"}}>
+      <div className="control is-fullwidth" style={{ width: "95%" }}>
         <button
           className="is-text py-3"
           onClick={() => setIsCollapsed(!isCollapsed)}

@@ -1,9 +1,8 @@
 import { ReactNode } from "react";
 
 function getPairs(a: unknown[]) {
-  var i,
-    j,
-    result = [];
+  let i, j;
+  const result = [];
   for (i = 0; i < a.length; i++) {
     for (j = i; j < a.length; j++) {
       result.push([a[i], a[j]]);
@@ -34,7 +33,7 @@ export const manaFontMap = getPairs(symbols)
       )),
       obj
     ),
-    {}
+    {},
   );
 
 for (const s of symbols) {

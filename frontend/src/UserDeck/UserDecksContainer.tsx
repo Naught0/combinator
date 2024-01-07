@@ -9,11 +9,13 @@ import { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import { ComboContainer } from "../ComboContainer";
 import { Deck } from "../Deck";
 import { IconText } from "../IconText";
-import { getComboData } from "../services";
+import { getDeckData } from "../services";
 import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { comboDataAtom, deckDataAtom } from "../atoms";
 
 interface Props {
   decks: Deck[];
@@ -30,13 +32,16 @@ enum View {
 }
 
 export const sortDirIconMap = new Map<SortDirection, ReactNode>([
+  // eslint-disable-next-line react/jsx-key
   [SortDirection.ASC, <FontAwesomeIcon icon={faSortAmountUp} />],
+  // eslint-disable-next-line react/jsx-key
   [SortDirection.DESC, <FontAwesomeIcon icon={faSortAmountDown} />],
 ]);
 
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
-  const [deckData, setDeckData] = useState<DeckData>();
+  const [deckData, setDeckData] = useRecoilState(deckDataAtom);
+  const comboData = useRecoilValue(comboDataAtom);
   const [loading, setLoading] = useState(false);
   const [titleFilter, setTitleFilter] = useState<string>("");
   const [formatFilter, setFormatFilter] = useState<Format>();
@@ -74,10 +79,11 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     if (!currentDeck) return;
     setLoading(true);
     (async () => {
-      setDeckData(await getComboData(currentDeck.publicUrl));
+      const data = await getDeckData(currentDeck.publicUrl);
+      setDeckData(data);
       setLoading(false);
     })();
-  }, [currentDeck]);
+  }, [currentDeck, setDeckData]);
 
   const resetFilter = () => {
     setTitleFilter("");
@@ -111,7 +117,8 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           </Paginate>
         </div>
       ) : null,
-    [pageIndex, totalPages, pages, currentDeck]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pageIndex, totalPages, pages, currentDeck],
   );
 
   return (
@@ -155,8 +162,8 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         </div>
       )}
       {pagination}
-      {view === View.COMBO && currentDeck && deckData && (
-        <ComboContainer {...deckData} />
+      {view === View.COMBO && currentDeck && deckData && comboData && (
+        <ComboContainer deckData={deckData} comboData={comboData} />
       )}
       {view === View.COMBO && loading && (
         <div className="my-6">

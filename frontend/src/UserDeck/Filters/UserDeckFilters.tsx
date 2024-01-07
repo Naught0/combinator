@@ -10,8 +10,6 @@ import {
   uniqueDeckFormatMap,
 } from "./deckFilters";
 
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
 export interface UserDeckFilterProps {
   setSortBy: (k: keyof Deck) => void;
   setSortDir: (k: SortDirection) => void;
@@ -74,17 +72,15 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
           </div>
         </div>
         <Dropdown
-          title={`Format: ${
-            formatFilter
+          title={`Format: ${formatFilter
               ? uniqueDeckFormatMap.get(formatFilter) ||
-                dumbTitalize({ text: formatFilter })
+              dumbTitalize({ text: formatFilter })
               : "Any"
-          }`}
+            }`}
         >
           <a
-            className={`dropdown-item ${
-              formatFilter === undefined ? "is-active" : ""
-            }`}
+            className={`dropdown-item ${formatFilter === undefined ? "is-active" : ""
+              }`}
             onClick={() => setFormatFilter(undefined)}
           >
             Any
@@ -92,9 +88,8 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
           {formats.map((fmt) => (
             <a
               key={fmt}
-              className={`dropdown-item ${
-                formatFilter === fmt ? "is-active" : ""
-              }`}
+              className={`dropdown-item ${formatFilter === fmt ? "is-active" : ""
+                }`}
               onClick={() => setFormatFilter(fmt as Format)}
             >
               {uniqueDeckFormatMap.get(fmt) || dumbTitalize({ text: fmt })}
@@ -120,29 +115,26 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
               (legality) =>
                 legality && (
                   <a
-                    className={`dropdown-item ${legality.className} ${
-                      isLegal === legality.value ? "is-active" : ""
-                    }`}
+                    className={`dropdown-item ${legality.className} ${isLegal === legality.value ? "is-active" : ""
+                      }`}
                     onClick={() => setIsLegal(legality.value)}
                     key={legality.display}
                   >
                     {legality.display}
                   </a>
-                )
+                ),
             )}
           </Dropdown>
         </div>
         <div className="is-flex" style={{ gap: "0" }}>
           <Dropdown
-            title={`Sort by: ${
-              deckFilters.find((f) => f.key === sortBy)?.display
-            }`}
+            title={`Sort by: ${deckFilters.find((f) => f.key === sortBy)
+              ?.display}`}
           >
             {deckFilters.map((s) => (
               <a
-                className={`dropdown-item ${
-                  s.key === sortBy ? "is-active" : ""
-                }`}
+                className={`dropdown-item ${s.key === sortBy ? "is-active" : ""
+                  }`}
                 key={s.key}
                 onClick={() => setSortBy(s.key)}
               >
@@ -157,7 +149,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
                 setSortDir(
                   sortDirection === SortDirection.ASC
                     ? SortDirection.DESC
-                    : SortDirection.ASC
+                    : SortDirection.ASC,
                 )
               }
             >

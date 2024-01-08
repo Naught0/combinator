@@ -6,7 +6,7 @@ RUN pnpm build
 
 FROM python:3.9-slim
 WORKDIR /app
-COPY --from=build static ./static
+COPY --from=build static ./app/static
 COPY server/ .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn==20.1.0

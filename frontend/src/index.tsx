@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import "./style/style.sass";
 import "mana-font";
@@ -8,13 +8,14 @@ import { RecoilRoot } from "recoil";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/josefin-slab";
 
-ReactDOM.render(
+const elem = document.getElementById("root");
+const root = createRoot(elem);
+root.render(
   <React.StrictMode>
     <RecoilRoot>
       <App />
     </RecoilRoot>
   </React.StrictMode>,
-  document.getElementById("root"),
 );
 
 // If you want to start measuring performance in your app, pass a function

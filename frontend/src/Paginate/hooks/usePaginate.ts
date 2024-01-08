@@ -1,7 +1,7 @@
 import chunk from "lodash.chunk";
 
 interface props {
-  data: any[];
+  data: unknown[];
   pageSize?: number;
   pageIndex: number;
 }

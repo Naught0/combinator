@@ -1,11 +1,7 @@
 import pathlib
 
-
-from http import HTTPStatus
-
-from flask import Flask, jsonify, request, send_from_directory
-from routes.api import api_bp
-from user import get_moxfield_user_decks
+from flask import Flask, send_from_directory
+from app.routes.api import api_bp
 
 app = Flask(__name__, static_url_path="/", static_folder="static")
 
@@ -24,20 +20,3 @@ def _index(path):
 @app.errorhandler(404)
 def fourohfour(*args, **kwargs):
     return send_from_directory(app.static_folder, "index.html")
-
-
-@app.route("/api/user/search")
-def user_search():
-    params = request.args
-    user = params.get("userName")
-    if not user:
-        return (
-            jsonify({"error": True, "message": "Field `userName` must be supplied"}),
-            HTTPStatus.UNPROCESSABLE_ENTITY,
-        )
-
-    try:
-        decks = get_moxfield_user_decks(user)
-        return jsonify(decks), HTTPStatus.OK
-    except Exception as e:
-        return jsonify({"error": True, "message": str(e)}), HTTPStatus.BAD_REQUEST

@@ -14,7 +14,6 @@ import { cachedClient } from "./services/cachedRequest";
 import { faArrowRight, faShare } from "@fortawesome/free-solid-svg-icons";
 import { copyToClipboardAndToast } from "./util";
 import "./style/rainbow-button.sass";
-import { CardFilter } from "./CardFilter";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
@@ -25,6 +24,7 @@ export const App = () => {
   const [error, setError] = useState<string>();
   const [searchType, setSearchType] = useState(SearchType.USER);
   const [userDeckData, setUserDeckData] = useState<Deck[]>();
+  console.log(userDeckData);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

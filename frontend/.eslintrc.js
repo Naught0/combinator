@@ -18,6 +18,7 @@ const config = {
   parser: "@typescript-eslint/parser",
   rules: {
     "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
   },
 };
 

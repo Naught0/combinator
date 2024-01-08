@@ -1,18 +1,16 @@
 import traceback
-from flask import Blueprint, jsonify, request
 from http import HTTPStatus
 
 import requests
-from process import (
+from app.process import (
     get_archidekt_deck,
     get_goldfish_deck,
     get_moxfield_deck,
     get_scryfall_cards,
 )
-
-from resources.api import ComboSearchPayload
-from resources.commander_spellbook import SearchResponse
-
+from app.resources.api import ComboSearchPayload
+from app.resources.commander_spellbook import SearchResponse
+from flask import Blueprint, jsonify, request
 
 api_bp = Blueprint("combos", __name__, url_prefix="/api")
 

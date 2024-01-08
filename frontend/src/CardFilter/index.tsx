@@ -7,8 +7,7 @@ type ViewMode = "image" | "text";
 
 export const CardFilter = () => {
   const [filter, setFilter] = useState("");
-  const [viewMode, setViewMode] = useState<ViewMode>("image");
-  const [zoomedCardId, setZoomedCardId] = useState("");
+  const [viewMode, setViewMode] = useState<ViewMode>("text");
   const deckData = useRecoilValue(deckDataAtom);
   const filteredCards = useMemo(
     () =>
@@ -41,12 +40,12 @@ export const CardFilter = () => {
           </select>
         </div>
       </div>
-      <div className="flex flex-wrap flex-row gap-3 justify-between">
+      <div className="flex flex-wrap flex-row gap-6 justify-start">
         {filteredCards &&
           filteredCards.map((card) => {
             return (
               card.in_deck && (
-                <div className="min-w-72 basis-1/4">
+                <div className="min-w-72 basis-1/5">
                   <HoverableCard
                     key={card.id}
                     cardName={card.name}

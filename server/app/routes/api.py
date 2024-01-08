@@ -50,11 +50,7 @@ def deck_search():
     try:
         deck = fn(params["url"])
         all_cards: list[str] = deck["cards"]
-        deck["cards"] = get_scryfall_cards(
-            [
-                *({"name": c, "in_deck": True} for c in all_cards),
-            ]
-        )
+        deck["cards"] = get_scryfall_cards(deck["cards"])
     except Exception:
         traceback.print_exc()
         return jsonify("Deck not found or malformed"), HTTPStatus.BAD_REQUEST

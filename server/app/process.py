@@ -1,6 +1,5 @@
-import contextlib
 import re
-from typing import Dict, List, Literal, TypedDict
+from typing import Dict, List, Literal
 from urllib.parse import urlparse
 
 import backoff
@@ -58,6 +57,7 @@ def get_moxfield_deck(url: str) -> dict:
                 [
                     resp["main"]["name"],
                     *resp["mainboard"].keys(),
+                    # TODO: Only add sideboard for non-EDH
                     *resp["sideboard"].keys(),
                 ]
             )
@@ -138,11 +138,8 @@ def get_archidekt_deck(url: str) -> dict:
     }
 
 
-PartialCard = TypedDict("PartialCard", {"name": str, "in_deck": str})
-
-
 @backoff.on_exception(backoff.expo, requests.RequestException, max_tries=3)
-def scryfall_request(card_list_chunk: List[PartialCard]) -> Dict[str, str]:
+def scryfall_request(card_names: list[str]) -> list[dict]:
     """Takes a list of card names and spits out a dict w/ images.
     Respects 429 ratelimiting
 
@@ -155,24 +152,19 @@ def scryfall_request(card_list_chunk: List[PartialCard]) -> Dict[str, str]:
     ret = []
     resp = requests.post(
         "https://api.scryfall.com/cards/collection",
-        json={"identifiers": [{"name": x["name"]} for x in card_list_chunk]},
+        json={"identifiers": [{"name": n} for n in card_names]},
     )
     data = resp.json()["data"]
     for card in data:
         if "image_uris" not in card:
             continue
-        in_deck = False
-        with contextlib.suppress(IndexError):
-            in_deck = [c for c in card_list_chunk if c["name"] == card["name"]][0].get(
-                "in_deck", False
-            )
+
         ret.append(
             {
                 "name": card["name"],
                 "image": card["image_uris"]["normal"],
                 "id": card["id"],
                 "oracle_text": card["oracle_text"],
-                "in_deck": in_deck,
             }
         )
 
@@ -180,10 +172,10 @@ def scryfall_request(card_list_chunk: List[PartialCard]) -> Dict[str, str]:
 
 
 def get_scryfall_cards(
-    main_card_list: List[PartialCard],
+    card_names: list[str],
 ) -> Dict[Literal["id", "oracle_text", "name", "image"], str]:
     # Respect scryfall API
-    card_chunks = list(chunk_array(main_card_list, 75))
+    card_chunks = list(chunk_array(card_names, 75))
     ret = []
     for chunk in card_chunks:
         ret.extend(scryfall_request(chunk))

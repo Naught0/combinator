@@ -36,7 +36,7 @@ export const HoverableCard = ({
         </span>
       )}
       {!isImage && visible && (
-        <div className="bg-black rounded-2xl">
+        <div className="bg-transparent rounded-2xl">
           <img
             ref={setTooltipRef}
             src={cardImage}
@@ -46,7 +46,7 @@ export const HoverableCard = ({
         </div>
       )}
       {isImage && (
-        <div className="bg-black !rounded-2xl">
+        <div className="bg-transparent !rounded-2xl">
           <img src={cardImage} className="rounded-2xl w-full" />
         </div>
       )}

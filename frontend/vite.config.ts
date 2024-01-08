@@ -4,13 +4,10 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 import eslint from "vite-plugin-eslint";
 
 export default defineConfig({
-  // depending on your application, base can also be "/"
-  base: "/",
+  base: "",
   plugins: [react(), viteTsconfigPaths(), eslint({ useEslintrc: true })],
   server: {
-    // this ensures that the browser opens upon server start
     open: true,
-    // this sets a default port to 3000
     port: 3000,
     proxy: {
       "/api": {

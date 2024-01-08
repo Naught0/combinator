@@ -31,7 +31,7 @@ interface ComboData {
 
 interface AlmostIncluded {
   id: string;
-  status: Status;
+  status: string;
   uses: Use[];
   requires: never[];
   produces: Produce[];
@@ -63,8 +63,6 @@ interface Produce {
   name: string;
   description: string;
 }
-
-type Status = "OK";
 
 interface Use {
   card: ComboCard;

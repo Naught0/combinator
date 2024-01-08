@@ -48,13 +48,14 @@ export const App = () => {
   useEffect(
     function fetchComboData() {
       if (!deckData?.cards) return;
-
+      setFetching(true);
       (async () => {
         const data = await getComboData({
           main: deckData.cards.map((c) => c.name),
           commanders: [],
         });
         setComboData(data);
+        setFetching(false);
       })();
     },
     [deckData, setComboData],

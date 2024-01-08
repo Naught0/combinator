@@ -1,6 +1,6 @@
 import { faShare, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, ReactNode, useCallback, useMemo, useState } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { comboDataAtom, deckDataAtom } from "./atoms";
 import { CardFilter } from "./CardFilter";
@@ -10,8 +10,7 @@ import { copyToClipboardAndToast } from "./util";
 
 enum Tab {
   COMBOS,
-  ONE,
-  TWO,
+  ALMOST_INCLUDED,
   CARD_SEARCH,
 }
 
@@ -20,7 +19,7 @@ export const ComboContainer: FC = () => {
   const deckData = useRecoilValue(deckDataAtom);
   const [tab, setTab] = useState<Tab>(Tab.COMBOS);
   const addCardTabExplanation = useMemo<ReactNode>(() => {
-    if ([Tab.ONE, Tab.TWO].includes(tab)) {
+    if (tab === Tab.ALMOST_INCLUDED) {
       return (
         <div className="has-text-centered" style={{ width: "100%" }}>
           <span className="icon-text">
@@ -48,32 +47,36 @@ export const ComboContainer: FC = () => {
     copyToClipboardAndToast({ text: shareUrl });
   };
 
-  const comboTabs = useMemo(
-    () =>
-      deckData ? (
-        <>
-          <div className="columns">
-            <div className="column">
-              <p className="title is-5 has-text-centered">Cards</p>
-            </div>
-            <div className="column">
-              <p className="title is-5 has-text-centered">Effect</p>
-            </div>
-          </div>
-          {addCardTabExplanation}
-          {comboData?.included.map((c) => (
-            <Combo key={c.id} deckData={deckData} combo={c} />
-          ))}
-        </>
-      ) : (
+  const comboTabs = useMemo(() => {
+    if (!deckData || !comboData)
+      return (
         <h1 className="is-size-4">
           💡 Pro Tip: Try adding some{" "}
           <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
           to your list
         </h1>
-      ),
-    [addCardTabExplanation, comboData?.included, deckData],
-  );
+      );
+    const combos =
+      tab === Tab.ALMOST_INCLUDED
+        ? comboData.almostIncluded
+        : comboData.included;
+    return (
+      <>
+        <div className="columns">
+          <div className="column">
+            <p className="title is-5 has-text-centered">Cards</p>
+          </div>
+          <div className="column">
+            <p className="title is-5 has-text-centered">Effect</p>
+          </div>
+        </div>
+        {addCardTabExplanation}
+        {combos.map((c) => (
+          <Combo key={c.id} deckData={deckData} combo={c} />
+        ))}
+      </>
+    );
+  }, [addCardTabExplanation, tab, comboData, deckData]);
 
   return (
     <>
@@ -120,8 +123,8 @@ export const ComboContainer: FC = () => {
             </a>
           </li>
           {(comboData?.almostIncluded?.length ?? -1) > 0 && (
-            <li className={`${tab === Tab.ONE ? "is-active" : ""}`}>
-              <a role="button" onClick={() => setTab(Tab.ONE)}>
+            <li className={`${tab === Tab.ALMOST_INCLUDED ? "is-active" : ""}`}>
+              <a role="button" onClick={() => setTab(Tab.ALMOST_INCLUDED)}>
                 Add 1 &ndash;&nbsp;
                 <span className="text-sm">
                   ({comboData?.almostIncluded.length})

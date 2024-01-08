@@ -10,6 +10,7 @@ from app.process import (
 )
 from app.resources.api import ComboSearchPayload
 from app.resources.commander_spellbook import SearchResponse
+from app.user import get_moxfield_user_decks
 from flask import Blueprint, jsonify, request
 
 api_bp = Blueprint("combos", __name__, url_prefix="/api")
@@ -60,3 +61,20 @@ def deck_search():
         return jsonify("Deck not found or malformed"), HTTPStatus.BAD_REQUEST
 
     return jsonify(deck), HTTPStatus.OK
+
+
+@api_bp.route("/user/search")
+def user_search():
+    params = request.args
+    user = params.get("userName")
+    if not user:
+        return (
+            jsonify({"error": True, "message": "Field `userName` must be supplied"}),
+            HTTPStatus.UNPROCESSABLE_ENTITY,
+        )
+
+    try:
+        decks = get_moxfield_user_decks(user)
+        return jsonify(decks), HTTPStatus.OK
+    except Exception as e:
+        return jsonify({"error": True, "message": str(e)}), HTTPStatus.BAD_REQUEST

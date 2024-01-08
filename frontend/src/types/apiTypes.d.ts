@@ -32,7 +32,7 @@ interface ComboData {
 interface AlmostIncluded {
   id: string;
   status: string;
-  uses: Use[];
+  uses: ComboPiece[];
   requires: never[];
   produces: Produce[];
   of: Include[];
@@ -64,7 +64,7 @@ interface Produce {
   description: string;
 }
 
-interface Use {
+interface ComboPiece {
   card: ComboCard;
   zoneLocations: ZoneLocation[];
   battlefieldCardState: string;

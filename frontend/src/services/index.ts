@@ -1,12 +1,19 @@
 import { cachedClient } from "./cachedRequest";
 
-export const getComboData = async (url: string): Promise<DeckData> => {
-  try {
-    const { data } = await cachedClient.get("/api/search", {
-      params: { url: url },
-    });
-    return await data;
-  } catch (e) {
-    throw e;
-  }
+export const getDeckData = async (url: string): Promise<DeckData> => {
+  const { data } = await cachedClient.get<DeckData>("/api/deck/search", {
+    params: { url },
+  });
+  return data;
+};
+
+export const getComboData = async (json: {
+  main: string[];
+  commanders: string[];
+}): Promise<ComboData> => {
+  const { data } = await cachedClient.post<ComboData>(
+    "/api/combo/search",
+    json,
+  );
+  return data;
 };

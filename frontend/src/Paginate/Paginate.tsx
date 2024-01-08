@@ -1,6 +1,5 @@
 import { FC, ReactNode } from "react";
 import ReactPaginate from "react-paginate";
-/* eslint-disable jsx-a11y/anchor-is-valid */
 
 interface props {
   children: ReactNode[];

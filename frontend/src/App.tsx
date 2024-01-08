@@ -5,31 +5,26 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { Footer } from "./Footer";
 import { useRecoilState } from "recoil";
 import logo from "./images/logo.svg";
-import { hoveredCard } from "./atoms";
-import useOnclickOutside from "react-cool-onclickoutside";
+import { comboDataAtom, deckDataAtom } from "./atoms";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
 import { UserDecksContainer } from "./UserDeck/UserDecksContainer";
-import { getComboData } from "./services";
+import { getComboData, getDeckData } from "./services";
 import { cachedClient } from "./services/cachedRequest";
 import { faArrowRight, faShare } from "@fortawesome/free-solid-svg-icons";
 import { copyToClipboardAndToast } from "./util";
 import "./style/rainbow-button.sass";
+import { CardFilter } from "./CardFilter";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [userName, setUserName] = useState("");
-  const [deckData, setDeckData] = useState<DeckData>();
+  const [deckData, setDeckData] = useRecoilState(deckDataAtom);
+  const [comboData, setComboData] = useRecoilState(comboDataAtom);
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState<string>();
-  const [cardImageUrl, setCardImageUrl] = useRecoilState(hoveredCard);
   const [searchType, setSearchType] = useState(SearchType.USER);
   const [userDeckData, setUserDeckData] = useState<Deck[]>();
-  const [, setUserSelectedDeck] = useState<Deck>();
-
-  const ref = useOnclickOutside(() => {
-    setCardImageUrl("");
-  });
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -44,12 +39,26 @@ export const App = () => {
       setUserName(user);
       setSearchType(SearchType.USER);
     }
-    
+
     if (searchType) {
       setSearchType(SearchType[searchType as SearchType]);
     }
-
   }, []);
+
+  useEffect(
+    function fetchComboData() {
+      if (!deckData?.cards) return;
+
+      (async () => {
+        const data = await getComboData({
+          main: deckData.cards.map((c) => c.name),
+          commanders: [],
+        });
+        setComboData(data);
+      })();
+    },
+    [deckData, setComboData],
+  );
 
   const findCombos = useCallback(() => {
     setDeckData(undefined);
@@ -57,21 +66,20 @@ export const App = () => {
     (async () => {
       setFetching(true);
       try {
-        const data = await getComboData(deckUrl);
+        const data = await getDeckData(deckUrl);
         setDeckData(data);
       } catch (e) {
         setError(
-          "Error -- Ensure you provided a valid Moxfield, MTGGoldfish, or Archidekt URL."
+          "Error -- Ensure you provided a valid Moxfield, MTGGoldfish, or Archidekt URL.",
         );
       }
       setFetching(false);
     })();
-  }, [deckUrl]);
+  }, [deckUrl, setDeckData]);
 
   const getUserDecks = async () => {
     setUserDeckData(undefined);
     setError(undefined);
-    setUserSelectedDeck(undefined);
     setFetching(true);
     try {
       const data = await (
@@ -82,7 +90,7 @@ export const App = () => {
       setUserDeckData(data);
     } catch (e) {
       setError(
-        "Error -- Please supply only your Moxfield username. Other sites are not yet supported."
+        "Error -- Please supply only your Moxfield username. Other sites are not yet supported.",
       );
     }
     setFetching(false);
@@ -97,11 +105,6 @@ export const App = () => {
     <React.Fragment>
       <ToastContainer theme="dark" />
       <div className="section fullheight">
-        {cardImageUrl && (
-          <div className="card-popup" ref={ref}>
-            <img src={cardImageUrl} alt="Card" style={{ width: "100%" }} />
-          </div>
-        )}
         <div className="level">
           <div className="level-left">
             <div className="level-item">
@@ -142,9 +145,8 @@ export const App = () => {
                       <div className="control has-icons-right">
                         <input
                           type="text"
-                          className={`input is-medium ${
-                            error ? "is-danger" : ""
-                          }`}
+                          className={`input is-medium ${error ? "is-danger" : ""
+                            }`}
                           placeholder="Moxfield username"
                           onInput={(e) =>
                             setUserName((e.target as HTMLInputElement).value)
@@ -152,9 +154,8 @@ export const App = () => {
                           value={userName}
                         />
                         <span
-                          className={`icon is-right is-small is-clickable ${
-                            !(userName.length > 0) ? "is-hidden" : ""
-                          }`}
+                          className={`icon is-right is-small is-clickable ${!(userName.length > 0) ? "is-hidden" : ""
+                            }`}
                           role="button"
                           title="Share a link to this page"
                           onClick={() => {
@@ -184,9 +185,8 @@ export const App = () => {
                 <div className="field">
                   <div className="buttons has-addons">
                     <button
-                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${
-                        fetching && "is-loading"
-                      }`}
+                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${fetching && "is-loading"
+                        }`}
                       disabled={
                         searchType === SearchType.DECK
                           ? deckUrl.length === 0
@@ -204,8 +204,8 @@ export const App = () => {
               </div>
             </div>
           </form>
-          {searchType === SearchType.DECK && deckData && (
-            <ComboContainer {...deckData} />
+          {searchType === SearchType.DECK && deckData && comboData && (
+            <ComboContainer />
           )}
           {searchType === SearchType.USER && userDeckData && (
             <UserDecksContainer decks={userDeckData} />

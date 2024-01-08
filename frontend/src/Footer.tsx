@@ -20,7 +20,7 @@ export const Footer = () => {
             rel="noreferrer"
             target="_blank"
           >
-            Commander's Spellbook
+            Commander&apos;s Spellbook
           </a>
         </p>
         <p>
@@ -45,7 +45,8 @@ export const Footer = () => {
             <Hyperlink href="https://moxfield.com/">moxfield</Hyperlink>,{" "}
           </span>
           <span>
-            <Hyperlink href="https://archidekt.com/">archidekt</Hyperlink>{", & "}
+            <Hyperlink href="https://archidekt.com/">archidekt</Hyperlink>
+            {", & "}
           </span>
           <span>
             <Hyperlink href="https://www.mtggoldfish.com/">

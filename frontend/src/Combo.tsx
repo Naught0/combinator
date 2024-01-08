@@ -2,9 +2,10 @@ import { usePopperTooltip } from "react-popper-tooltip";
 import { manaFontMap } from "./manaFontMap";
 import { useSetRecoilState } from "recoil";
 import { hoveredCard } from "./atoms";
+import { HoverableCard } from "./HoverableCard";
 
 interface props {
-  combo: Combo;
+  combo: AlmostIncluded;
   deckData: DeckData;
 }
 
@@ -21,16 +22,15 @@ const replaceManaSymbols = (s: string) => {
     });
 };
 
-export const Combo = ({ combo, deckData }: props) => {
+export const Combo = ({ combo }: props) => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({ offset: [0, 15], trigger: "click" });
   const setCurrentCardUrl = useSetRecoilState(hoveredCard);
 
   return (
     <div
-      className={`combo is-gapless is-clickable is-flex is-align-items-center m-3 p-3 ${
-        visible ? "active" : ""
-      }`}
+      className={`combo is-gapless is-clickable is-flex is-align-items-center m-3 p-3 ${visible ? "active" : ""
+        }`}
       ref={setTriggerRef}
     >
       {visible && (
@@ -40,11 +40,11 @@ export const Combo = ({ combo, deckData }: props) => {
               <p className="subtitle has-text-black is-5 mb-1">Prequisites</p>
               <div className="content is-marginless is-paddingless">
                 <ul>
-                  {combo.p
+                  {combo.otherPrerequisites
                     .split(".")
                     .filter((p) => p)
                     .map((p, idx) => (
-                      <li key={`combo-${combo.d}-${p}-${idx}`}>
+                      <li key={`combo-${combo.id}-${p}-${idx}`}>
                         {replaceManaSymbols(p)}
                       </li>
                     ))}
@@ -55,11 +55,13 @@ export const Combo = ({ combo, deckData }: props) => {
               <p className="subtitle has-text-black is-5 mb-1">Steps</p>
               <div className="content is-marginless is-paddingless">
                 <ol>
-                  {combo.s
+                  {combo.description
                     .split(".")
                     .filter((t) => t.trim().length > 0)
                     .map((s, idx) => (
-                      <li key={`${combo.d}-${idx}`}>{replaceManaSymbols(s)}</li>
+                      <li key={`${combo.id}-${idx}`}>
+                        {replaceManaSymbols(s)}
+                      </li>
                     ))}
                 </ol>
               </div>
@@ -69,25 +71,21 @@ export const Combo = ({ combo, deckData }: props) => {
       )}
       <div className="column">
         <div className="tags are-medium">
-          {combo.c.map((card) => {
+          {combo.uses.map((used) => {
             return (
-              <span
-                key={`${combo.d}-${card}`}
-                className={`tag is-clickable ${
-                  deckData.cards.includes(card) ? "is-dark" : "is-danger"
-                }`}
-                onMouseOver={() => setCurrentCardUrl(deckData.cardImages[card])}
-                onClick={() => setCurrentCardUrl(deckData.cardImages[card])}
-                onMouseOut={() => setCurrentCardUrl("")}
-              >
-                {card}
-              </span>
+              <HoverableCard key={used.card.id} cardName={used.card.name} />
             );
           })}
         </div>
       </div>
       <div className="column">
-        <p>{combo.r}</p>
+        <ul>
+          {combo.produces.map((produces) => (
+            <li key={produces.id} className="list-item">
+              {produces.name}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

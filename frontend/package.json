@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fontsource-variable/inter": "^5.0.16",
+    "@fontsource-variable/josefin-slab": "^5.0.19",
     "@fortawesome/fontawesome-svg-core": "^6.1.0",
     "@fortawesome/free-regular-svg-icons": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
@@ -14,6 +16,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
+    "@vitejs/plugin-react": "^4.2.1",
     "axios": "^0.26.1",
     "axios-cache-adapter": "^2.7.3",
     "bulma": "^0.9.3",
@@ -30,6 +33,8 @@
     "recoil": "^0.7.5",
     "sass": "^1.49.9",
     "typescript": "^4.4.2",
+    "vite": "^5.0.11",
+    "vite-tsconfig-paths": "^4.2.3",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
@@ -39,7 +44,7 @@
     "eject": "react-scripts eject",
     "fix": "npx prettier --write 'src/**/*.ts*'"
   },
-  "proxy": "http://server:5001",
+  "proxy": "http://localhost:5001",
   "eslintConfig": {
     "extends": []
   },
@@ -59,5 +64,6 @@
     "@types/eslint": "^8.56.1",
     "@types/lodash.chunk": "^4.2.7",
     "eslint-plugin-jsx-a11y": "^6.8.0",
+    "tailwindcss": "^3.4.1"
   }
 }

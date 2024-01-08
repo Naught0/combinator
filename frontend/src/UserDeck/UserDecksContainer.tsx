@@ -163,7 +163,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       )}
       {pagination}
       {view === View.COMBO && currentDeck && deckData && comboData && (
-        <ComboContainer deckData={deckData} comboData={comboData} />
+        <ComboContainer />
       )}
       {view === View.COMBO && loading && (
         <div className="my-6">

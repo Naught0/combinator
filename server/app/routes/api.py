@@ -49,7 +49,6 @@ def deck_search():
 
     try:
         deck = fn(params["url"])
-        all_cards: list[str] = deck["cards"]
         deck["cards"] = get_scryfall_cards(deck["cards"])
     except Exception:
         traceback.print_exc()

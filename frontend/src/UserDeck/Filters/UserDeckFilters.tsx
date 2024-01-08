@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC } from "react";
 import { Dropdown } from "../../Dropdown/Dropdown";
 import { dumbTitalize } from "../../util";
-import { SortDirection, sortDirIconMap } from "../UserDecksContainer";
+import { SortDirection, sortDirIconMap } from "../util/sort";
 import {
   deckFilters,
   deckLegalityMap,

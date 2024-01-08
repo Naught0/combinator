@@ -8,6 +8,7 @@ interface Props {
   title: ReactNode;
   hoverable?: boolean;
   className?: string;
+  children: ReactNode;
 }
 export const Dropdown: FC<Props> = ({
   className,

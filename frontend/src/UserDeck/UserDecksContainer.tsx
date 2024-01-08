@@ -1,11 +1,6 @@
-import {
-  faArrowLeft,
-  faSortAmountDown,
-  faSortAmountUp,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, ReactNode, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ComboContainer } from "../ComboContainer";
 import { Deck } from "../Deck";
 import { IconText } from "../IconText";
@@ -14,27 +9,16 @@ import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
 import { useComboData } from "../hooks/useComboData";
+import { SortDirection } from "./util/sort";
 
 interface Props {
   decks: Deck[];
-}
-
-export enum SortDirection {
-  ASC = "asc",
-  DESC = "desc",
 }
 
 enum View {
   DECKS,
   COMBO,
 }
-
-export const sortDirIconMap = new Map<SortDirection, ReactNode>([
-  // eslint-disable-next-line react/jsx-key
-  [SortDirection.ASC, <FontAwesomeIcon icon={faSortAmountUp} />],
-  // eslint-disable-next-line react/jsx-key
-  [SortDirection.DESC, <FontAwesomeIcon icon={faSortAmountDown} />],
-]);
 
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();

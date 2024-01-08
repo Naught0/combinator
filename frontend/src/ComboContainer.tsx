@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { comboDataAtom, deckDataAtom } from "./atoms";
 import { CardFilter } from "./CardFilter";
 import { Combo } from "./Combo";
+import { useFilteredCombos } from "./hooks/useComboData";
 import { Hyperlink } from "./Hyperlink";
 import { copyToClipboardAndToast } from "./util";
 
@@ -15,7 +16,7 @@ enum Tab {
 }
 
 export const ComboContainer: FC = () => {
-  const comboData = useRecoilValue(comboDataAtom);
+  const allCombos = useRecoilValue(comboDataAtom);
   const deckData = useRecoilValue(deckDataAtom);
   const [tab, setTab] = useState<Tab>(Tab.COMBOS);
   const addCardTabExplanation = useMemo<ReactNode>(() => {
@@ -33,22 +34,32 @@ export const ComboContainer: FC = () => {
     }
     return null;
   }, [tab]);
+  const comboData = useMemo(
+    () =>
+      tab === Tab.ALMOST_INCLUDED
+        ? allCombos?.almostIncluded
+        : allCombos?.included,
+    [allCombos, tab],
+  );
+  const { filter, setFilter, filteredCombos } = useFilteredCombos({
+    combos: comboData ?? [],
+  });
 
   const shareUrl = useMemo(() => {
-    if (!comboData) return window.location.href;
+    if (!allCombos) return window.location.href;
     if (!deckData) return window.location.href;
 
     const base = window.location.origin;
     const qs = new URLSearchParams(`?deck_url=${deckData.meta.url}`).toString();
     return `${base}?${qs}`;
-  }, [comboData, deckData]);
+  }, [allCombos, deckData]);
 
   const doShareUrl = () => {
     copyToClipboardAndToast({ text: shareUrl });
   };
 
   const comboTabs = useMemo(() => {
-    if (!deckData || !comboData)
+    if (!deckData || !filteredCombos)
       return (
         <h1 className="is-size-4">
           💡 Pro Tip: Try adding some{" "}
@@ -56,27 +67,31 @@ export const ComboContainer: FC = () => {
           to your list
         </h1>
       );
-    const combos =
-      tab === Tab.ALMOST_INCLUDED
-        ? comboData.almostIncluded
-        : comboData.included;
     return (
-      <>
-        <div className="columns">
-          <div className="column">
-            <p className="title is-5 has-text-centered">Cards</p>
-          </div>
-          <div className="column">
-            <p className="title is-5 has-text-centered">Effect</p>
+      <div>
+        <div className="flex gap-6 flex-col">
+          <input
+            className="input is-medium"
+            placeholder="Filter combos by keyword or card name"
+            value={filter}
+            onChange={({ target }) => setFilter(target.value)}
+          />
+          <div className="columns">
+            <div className="column">
+              <p className="title is-5 has-text-centered">Cards</p>
+            </div>
+            <div className="column">
+              <p className="title is-5 has-text-centered">Effect</p>
+            </div>
           </div>
         </div>
         {addCardTabExplanation}
-        {combos.map((c) => (
+        {filteredCombos?.map((c) => (
           <Combo key={c.id} deckData={deckData} combo={c} />
         ))}
-      </>
+      </div>
     );
-  }, [addCardTabExplanation, tab, comboData, deckData]);
+  }, [addCardTabExplanation, filter, setFilter, filteredCombos, deckData]);
 
   return (
     <>
@@ -90,12 +105,12 @@ export const ComboContainer: FC = () => {
             )}
           </h1>
           <p className="subtitle mb-2">by {deckData?.meta.author}</p>
-          {(comboData?.included?.length ?? -1 > 0) && (
+          {(allCombos?.included?.length ?? -1 > 0) && (
             <p className="help">
               Click a combo to see its prerequisites and steps
             </p>
           )}
-          {(comboData?.almostIncluded?.length ?? 1) > 0 && (
+          {(allCombos?.almostIncluded?.length ?? 1) > 0 && (
             <p className="help">
               If more combos are found by adding one or two cards to the deck,
               you can access them by clicking the respective &apos;Add X&apos;
@@ -119,15 +134,15 @@ export const ComboContainer: FC = () => {
           <li className={`${tab === Tab.COMBOS ? "is-active" : ""}`}>
             <a role="button" onClick={() => setTab(Tab.COMBOS)}>
               Combos &ndash;&nbsp;
-              <span className="is-size-6">({comboData?.included.length})</span>
+              <span className="is-size-6">({allCombos?.included.length})</span>
             </a>
           </li>
-          {(comboData?.almostIncluded?.length ?? -1) > 0 && (
+          {(allCombos?.almostIncluded?.length ?? -1) > 0 && (
             <li className={`${tab === Tab.ALMOST_INCLUDED ? "is-active" : ""}`}>
               <a role="button" onClick={() => setTab(Tab.ALMOST_INCLUDED)}>
                 Add 1 &ndash;&nbsp;
                 <span className="text-sm">
-                  ({comboData?.almostIncluded.length})
+                  ({allCombos?.almostIncluded.length})
                 </span>
               </a>
             </li>

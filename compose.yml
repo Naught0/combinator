@@ -6,7 +6,7 @@ services:
     ports:
       - 5001:5001
     volumes:
-      - ./server:/server
+      - ./server:/app
   frontend:
     build:
       context: ./frontend

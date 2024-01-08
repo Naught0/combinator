@@ -49,7 +49,6 @@ def deck_search():
 
     try:
         deck = fn(params["url"])
-        print(deck)
         all_cards: list[str] = deck["cards"]
         deck["cards"] = get_scryfall_cards(
             [

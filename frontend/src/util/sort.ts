@@ -1,5 +1,5 @@
-import { SortDirection } from "../UserDeck/UserDecksContainer";
 import dayjs from "dayjs";
+import { SortDirection } from "../UserDeck/util/sort";
 
 interface props {
   decks: Deck[];
@@ -33,7 +33,7 @@ export const sortAndFilterUserDecks = ({
     ret.push(deck);
   }
 
-  if (isLegal !== null ) {
+  if (isLegal !== null) {
     ret = ret.filter((deck) => deck.isLegal === isLegal);
   }
 

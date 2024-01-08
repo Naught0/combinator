@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { sortAndFilterUserDecks } from "../../util";
-import { SortDirection } from "../UserDecksContainer";
+import { SortDirection } from "../util/sort";
 
 interface props {
   decks: Deck[];

@@ -21,11 +21,11 @@ export const copyToClipboardAndToast = ({
 }) => {
   navigator.clipboard
     .writeText(text)
-    .then((v) =>
+    .then(() =>
       toast(message || "Copied link to clipboard", {
         type: "success",
         ...toastOptions,
-      })
+      }),
     )
-    .catch((v) => toast.error("Couldn't copy text to clipboard"));
+    .catch(() => toast.error("Couldn't copy text to clipboard"));
 };

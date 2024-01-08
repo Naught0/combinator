@@ -1,27 +1,18 @@
-import {
-  faArrowLeft,
-  faSortAmountDown,
-  faSortAmountUp,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, ReactNode, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ComboContainer } from "../ComboContainer";
 import { Deck } from "../Deck";
 import { IconText } from "../IconText";
-import { getComboData } from "../services";
 import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
+import { useComboData } from "../hooks/useComboData";
+import { SortDirection } from "./util/sort";
 
 interface Props {
   decks: Deck[];
-}
-
-export enum SortDirection {
-  ASC = "asc",
-  DESC = "desc",
 }
 
 enum View {
@@ -29,15 +20,8 @@ enum View {
   COMBO,
 }
 
-export const sortDirIconMap = new Map<SortDirection, ReactNode>([
-  [SortDirection.ASC, <FontAwesomeIcon icon={faSortAmountUp} />],
-  [SortDirection.DESC, <FontAwesomeIcon icon={faSortAmountDown} />],
-]);
-
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
-  const [deckData, setDeckData] = useState<DeckData>();
-  const [loading, setLoading] = useState(false);
   const [titleFilter, setTitleFilter] = useState<string>("");
   const [formatFilter, setFormatFilter] = useState<Format>();
   const [isLegal, setIsLegal] = useState<boolean | null>(null);
@@ -52,6 +36,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
     return formats;
   }, [decks]);
+  const { get, deckData, comboData, isLoading } = useComboData();
   const filteredSortedDecks = useFilteredDeck({
     decks,
     sortBy,
@@ -70,30 +55,16 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     setPageIndex(0);
   }, [formatFilter, titleFilter, pageSize]);
 
-  useEffect(() => {
-    if (!currentDeck) return;
-    setLoading(true);
-    (async () => {
-      setDeckData(await getComboData(currentDeck.publicUrl));
-      setLoading(false);
-    })();
-  }, [currentDeck]);
-
   const resetFilter = () => {
     setTitleFilter("");
     setSortBy("createdAtUtc");
     setSortDir(SortDirection.DESC);
   };
 
-  const setDeck = (deck: Deck) => {
+  const setDeck = async (deck: Deck) => {
     setCurrentDeck(deck);
     setView(View.COMBO);
-  };
-
-  const clearDecks = () => {
-    setView(View.DECKS);
-    setCurrentDeck(undefined);
-    setDeckData(undefined);
+    await get(deck.publicUrl);
   };
 
   const safelyChangePageIndex = (n: number) => {
@@ -106,12 +77,15 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     () =>
       totalPages > 1 && !currentDeck ? (
         <div className="container my-2">
-          <Paginate pageIndex={pageIndex} setIndex={safelyChangePageIndex}>
-            {pages}
-          </Paginate>
+          <Paginate
+            pageIndex={pageIndex}
+            setIndex={safelyChangePageIndex}
+            totalPages={pages.length}
+          />
         </div>
       ) : null,
-    [pageIndex, totalPages, pages, currentDeck]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pageIndex, totalPages, pages, currentDeck],
   );
 
   return (
@@ -135,7 +109,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         />
       )}
       {view === View.COMBO && (
-        <button className="button my-3" onClick={clearDecks}>
+        <button className="button my-3" onClick={() => setView(View.DECKS)}>
           <span className="icon">
             <FontAwesomeIcon icon={faArrowLeft} />
           </span>
@@ -155,10 +129,10 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         </div>
       )}
       {pagination}
-      {view === View.COMBO && currentDeck && deckData && (
-        <ComboContainer {...deckData} />
+      {view === View.COMBO && currentDeck && deckData && comboData && (
+        <ComboContainer />
       )}
-      {view === View.COMBO && loading && (
+      {view === View.COMBO && isLoading && (
         <div className="my-6">
           <IconText className="is-size-2" icon={faSpinner} spin>
             <span className="ml-5">Loading</span>

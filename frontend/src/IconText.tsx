@@ -1,11 +1,12 @@
 import { IconDefinition } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 interface Props {
   className?: string;
   spin?: boolean;
   icon: IconDefinition;
+  children: ReactNode;
 }
 export const IconText: FC<Props> = ({ icon, className, spin, children }) => {
   return (

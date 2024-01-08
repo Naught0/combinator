@@ -8,6 +8,7 @@ interface Props {
   title: ReactNode;
   hoverable?: boolean;
   className?: string;
+  children: ReactNode;
 }
 export const Dropdown: FC<Props> = ({
   className,
@@ -23,9 +24,8 @@ export const Dropdown: FC<Props> = ({
   return (
     <>
       <div
-        className={`dropdown ${hoverable ? "is-hoverable" : ""} ${
-          !!className ? className : ""
-        } ${isActive ? "is-active" : ""}`}
+        className={`dropdown ${hoverable ? "is-hoverable" : ""} ${className ? className : ""
+          } ${isActive ? "is-active" : ""}`}
         onClick={() => setActive(!isActive)}
         ref={ref}
       >

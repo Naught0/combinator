@@ -1,21 +1,20 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import ReactPaginate from "react-paginate";
-/* eslint-disable jsx-a11y/anchor-is-valid */
 
 interface props {
-  children: ReactNode[];
+  totalPages: number;
   pageIndex: number;
   setIndex: (n: number) => void;
 }
 
-export const Paginate: FC<props> = ({ children, pageIndex, setIndex }) => {
+export const Paginate: FC<props> = ({ totalPages, pageIndex, setIndex }) => {
   return (
     <nav
       className="pagination is-left my-3 is-flex is-justify-content-flex-end"
       style={{ width: "100%" }}
     >
       <ReactPaginate
-        pageCount={children.length}
+        pageCount={totalPages}
         activeLinkClassName="is-current"
         pageLinkClassName="pagination-link"
         breakLinkClassName="pagination-ellipsis"

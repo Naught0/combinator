@@ -9,13 +9,11 @@ import { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import { ComboContainer } from "../ComboContainer";
 import { Deck } from "../Deck";
 import { IconText } from "../IconText";
-import { getDeckData } from "../services";
 import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { comboDataAtom, deckDataAtom } from "../atoms";
+import { useComboData } from "../hooks/useComboData";
 
 interface Props {
   decks: Deck[];
@@ -40,9 +38,6 @@ export const sortDirIconMap = new Map<SortDirection, ReactNode>([
 
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
-  const [deckData, setDeckData] = useRecoilState(deckDataAtom);
-  const comboData = useRecoilValue(comboDataAtom);
-  const [loading, setLoading] = useState(false);
   const [titleFilter, setTitleFilter] = useState<string>("");
   const [formatFilter, setFormatFilter] = useState<Format>();
   const [isLegal, setIsLegal] = useState<boolean | null>(null);
@@ -57,6 +52,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
     return formats;
   }, [decks]);
+  const { get, deckData, comboData, isLoading } = useComboData();
   const filteredSortedDecks = useFilteredDeck({
     decks,
     sortBy,
@@ -75,31 +71,16 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     setPageIndex(0);
   }, [formatFilter, titleFilter, pageSize]);
 
-  useEffect(() => {
-    if (!currentDeck) return;
-    setLoading(true);
-    (async () => {
-      const data = await getDeckData(currentDeck.publicUrl);
-      setDeckData(data);
-      setLoading(false);
-    })();
-  }, [currentDeck, setDeckData]);
-
   const resetFilter = () => {
     setTitleFilter("");
     setSortBy("createdAtUtc");
     setSortDir(SortDirection.DESC);
   };
 
-  const setDeck = (deck: Deck) => {
+  const setDeck = async (deck: Deck) => {
     setCurrentDeck(deck);
     setView(View.COMBO);
-  };
-
-  const clearDecks = () => {
-    setView(View.DECKS);
-    setCurrentDeck(undefined);
-    setDeckData(undefined);
+    await get(deck.publicUrl);
   };
 
   const safelyChangePageIndex = (n: number) => {
@@ -144,7 +125,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         />
       )}
       {view === View.COMBO && (
-        <button className="button my-3" onClick={clearDecks}>
+        <button className="button my-3" onClick={() => setView(View.DECKS)}>
           <span className="icon">
             <FontAwesomeIcon icon={faArrowLeft} />
           </span>
@@ -167,7 +148,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       {view === View.COMBO && currentDeck && deckData && comboData && (
         <ComboContainer />
       )}
-      {view === View.COMBO && loading && (
+      {view === View.COMBO && isLoading && (
         <div className="my-6">
           <IconText className="is-size-2" icon={faSpinner} spin>
             <span className="ml-5">Loading</span>

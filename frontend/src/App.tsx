@@ -1,29 +1,33 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Footer } from "./Footer";
-import { useRecoilState } from "recoil";
 import logo from "./images/logo.svg";
-import { comboDataAtom, deckDataAtom } from "./atoms";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
 import { UserDecksContainer } from "./UserDeck/UserDecksContainer";
-import { getComboData, getDeckData } from "./services";
 import { cachedClient } from "./services/cachedRequest";
 import { faArrowRight, faShare } from "@fortawesome/free-solid-svg-icons";
 import { copyToClipboardAndToast } from "./util";
 import "./style/rainbow-button.sass";
+import { useComboData } from "./hooks/useComboData";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [userName, setUserName] = useState("");
-  const [deckData, setDeckData] = useRecoilState(deckDataAtom);
-  const [comboData, setComboData] = useRecoilState(comboDataAtom);
-  const [fetching, setFetching] = useState(false);
-  const [error, setError] = useState<string>();
+  const [loadingUser, setLoadingUser] = useState(false);
+  const [userError, setUserError] = useState<string>();
   const [searchType, setSearchType] = useState(SearchType.USER);
   const [userDeckData, setUserDeckData] = useState<Deck[]>();
+  const {
+    deckData,
+    comboData,
+    isLoading: loadingCombos,
+    errorMessage: comboError,
+    get: findCombos,
+  } = useComboData();
+  const fetching = loadingUser || loadingCombos;
 
   useEffect(function consumeUrlParams() {
     const params = new URLSearchParams(window.location.search);
@@ -44,43 +48,10 @@ export const App = () => {
     }
   }, []);
 
-  useEffect(
-    function fetchComboData() {
-      if (!deckData?.cards) return;
-      setFetching(true);
-      (async () => {
-        const data = await getComboData({
-          main: deckData.cards.map((c) => c.name),
-          commanders: [],
-        });
-        setComboData(data);
-        setFetching(false);
-      })();
-    },
-    [deckData, setComboData],
-  );
-
-  const findCombos = useCallback(() => {
-    setDeckData(undefined);
-    setError(undefined);
-    (async () => {
-      setFetching(true);
-      try {
-        const data = await getDeckData(deckUrl);
-        setDeckData(data);
-      } catch (e) {
-        setError(
-          "Error -- Ensure you provided a valid Moxfield, MTGGoldfish, or Archidekt URL.",
-        );
-      }
-      setFetching(false);
-    })();
-  }, [deckUrl, setDeckData]);
-
   const getUserDecks = async () => {
     setUserDeckData(undefined);
-    setError(undefined);
-    setFetching(true);
+    setUserError(undefined);
+    setLoadingUser(true);
     try {
       const data = await (
         await cachedClient.get("/api/user/search", {
@@ -89,11 +60,11 @@ export const App = () => {
       ).data;
       setUserDeckData(data);
     } catch (e) {
-      setError(
+      setUserError(
         "Error -- Please supply only your Moxfield username. Other sites are not yet supported.",
       );
     }
-    setFetching(false);
+    setLoadingUser(false);
   };
 
   const saveSearchType = (type: SearchType) => {
@@ -127,7 +98,7 @@ export const App = () => {
               e.preventDefault();
               switch (searchType) {
                 case SearchType.DECK:
-                  findCombos();
+                  findCombos(deckUrl);
                   break;
                 case SearchType.USER:
                   getUserDecks();
@@ -146,7 +117,7 @@ export const App = () => {
                         <input
                           type="text"
                           className={`input is-medium ${
-                            error ? "is-danger" : ""
+                            userError ? "is-danger" : ""
                           }`}
                           placeholder="Moxfield username"
                           onInput={(e) =>
@@ -168,21 +139,30 @@ export const App = () => {
                         >
                           <FontAwesomeIcon icon={faShare} />
                         </span>
+                        {userError && (
+                          <p className="has-text-danger help">{userError}</p>
+                        )}
                       </div>
                     </div>
                   )}
                   {searchType === SearchType.DECK && (
-                    <input
-                      type="text"
-                      className={`input is-medium ${error ? "is-danger" : ""}`}
-                      placeholder="Archidekt, Moxfield, or MTGGoldfish deck URL"
-                      onInput={(e) => {
-                        setDeckUrl((e.target as HTMLInputElement).value);
-                      }}
-                      value={deckUrl}
-                    />
+                    <>
+                      <input
+                        type="text"
+                        className={`input is-medium ${
+                          comboError ? "is-danger" : ""
+                        }`}
+                        placeholder="Archidekt, Moxfield, or MTGGoldfish deck URL"
+                        onInput={(e) => {
+                          setDeckUrl((e.target as HTMLInputElement).value);
+                        }}
+                        value={deckUrl}
+                      />
+                      {comboError && (
+                        <p className="has-text-danger help">{comboError}</p>
+                      )}
+                    </>
                   )}
-                  {error && <p className="has-text-danger help">{error}</p>}
                 </div>
                 <div className="field">
                   <div className="buttons has-addons">

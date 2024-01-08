@@ -112,9 +112,11 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     () =>
       totalPages > 1 && !currentDeck ? (
         <div className="container my-2">
-          <Paginate pageIndex={pageIndex} setIndex={safelyChangePageIndex}>
-            {pages}
-          </Paginate>
+          <Paginate
+            pageIndex={pageIndex}
+            setIndex={safelyChangePageIndex}
+            totalPages={pages.length}
+          />
         </div>
       ) : null,
     // eslint-disable-next-line react-hooks/exhaustive-deps

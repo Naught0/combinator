@@ -1,8 +1,8 @@
-FROM node:16.13-alpine as build
+FROM --platform=amd64 node:18-alpine as build
 WORKDIR /frontend
 COPY frontend/ .
-RUN yarn install
-RUN yarn build
+RUN yarn global add pnpm && pnpm install
+RUN pnpm build
 
 FROM python:3.9-slim
 WORKDIR /app
@@ -14,4 +14,4 @@ RUN pip install eventlet==0.30.2
 ENV FLASK_ENV production
 ARG PORT=8080
 ENV PORT=${PORT}
-CMD gunicorn --worker-class eventlet -w 1 --threads 8 --timeout 0 -b 0.0.0.0:${PORT} app:app
+CMD gunicorn --worker-class eventlet -w 1 --threads 8 --timeout 0 -b 0.0.0.0:${PORT} app.app:app

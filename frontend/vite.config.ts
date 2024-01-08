@@ -16,4 +16,11 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: "../static",
+  },
+  esbuild: {
+    target: "esnext",
+    platform: "browser",
+  },
 });

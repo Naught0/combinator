@@ -69,5 +69,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1"
+  },
+  "overrides": {
+    "vite": {
+      "rollup": "npm:@rollup/wasm-node"
+    }
   }
 }

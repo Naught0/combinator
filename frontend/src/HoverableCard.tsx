@@ -12,8 +12,10 @@ export const HoverableCard = ({
   const deckData = useRecoilValue(deckDataAtom);
   const deckCard = deckData?.cards.find((dc) => dc.name === cardName);
   const isImage = display === "image";
+  const cardImage =
+    deckCard?.image ??
+    `https://api.scryfall.com/cards/named?exact=${cardName}&format=image`;
 
-  const { image, in_deck } = deckCard ?? { image: undefined, in_deck: false };
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
       placement: "auto",
@@ -25,8 +27,9 @@ export const HoverableCard = ({
     <>
       {!isImage && display === "text" && (
         <span
-          className={`tag is-clickable !text-base ${in_deck ? "is-dark" : "is-danger"
-            }`}
+          className={`tag is-clickable !text-base ${
+            deckCard?.in_deck ? "is-dark" : "is-danger"
+          }`}
           ref={setTriggerRef}
         >
           {cardName}
@@ -36,7 +39,7 @@ export const HoverableCard = ({
         <div className="bg-black rounded-2xl">
           <img
             ref={setTooltipRef}
-            src={image}
+            src={cardImage}
             className="rounded-2xl max-w-[90vw] max-h-[60vh] lg:max-h-[50vh] shadow-black shadow-lg"
             {...getTooltipProps()}
           />
@@ -44,7 +47,7 @@ export const HoverableCard = ({
       )}
       {isImage && (
         <div className="bg-black !rounded-2xl">
-          <img src={image} className="rounded-2xl w-full" />
+          <img src={cardImage} className="rounded-2xl w-full" />
         </div>
       )}
     </>

@@ -1,8 +1,13 @@
+FROM --platform=amd64 node:18-alpine as deps
+WORKDIR /deps
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN yarn global add pnpm && pnpm install
+
 FROM --platform=amd64 node:18-alpine as build
 WORKDIR /frontend
 COPY frontend/ .
-RUN yarn global add pnpm && pnpm install
-RUN pnpm build
+COPY --from=deps /deps/node_modules ./node_modules
+RUN yarn global add pnpm && pnpm build
 
 FROM python:3.9-slim
 WORKDIR /app

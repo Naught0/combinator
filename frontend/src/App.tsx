@@ -24,9 +24,8 @@ export const App = () => {
   const [error, setError] = useState<string>();
   const [searchType, setSearchType] = useState(SearchType.USER);
   const [userDeckData, setUserDeckData] = useState<Deck[]>();
-  console.log(userDeckData);
 
-  useEffect(() => {
+  useEffect(function consumeUrlParams() {
     const params = new URLSearchParams(window.location.search);
     const url = params.get("deck_url");
     const user = params.get("moxfield_user");
@@ -146,8 +145,9 @@ export const App = () => {
                       <div className="control has-icons-right">
                         <input
                           type="text"
-                          className={`input is-medium ${error ? "is-danger" : ""
-                            }`}
+                          className={`input is-medium ${
+                            error ? "is-danger" : ""
+                          }`}
                           placeholder="Moxfield username"
                           onInput={(e) =>
                             setUserName((e.target as HTMLInputElement).value)
@@ -155,8 +155,9 @@ export const App = () => {
                           value={userName}
                         />
                         <span
-                          className={`icon is-right is-small is-clickable ${!(userName.length > 0) ? "is-hidden" : ""
-                            }`}
+                          className={`icon is-right is-small is-clickable ${
+                            !(userName.length > 0) ? "is-hidden" : ""
+                          }`}
                           role="button"
                           title="Share a link to this page"
                           onClick={() => {
@@ -186,8 +187,9 @@ export const App = () => {
                 <div className="field">
                   <div className="buttons has-addons">
                     <button
-                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${fetching && "is-loading"
-                        }`}
+                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${
+                        fetching && "is-loading"
+                      }`}
                       disabled={
                         searchType === SearchType.DECK
                           ? deckUrl.length === 0

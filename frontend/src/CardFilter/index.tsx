@@ -44,15 +44,9 @@ export const CardFilter = () => {
         {filteredCards &&
           filteredCards.map((card) => {
             return (
-              card.in_deck && (
-                <div className="min-w-72 basis-1/5">
-                  <HoverableCard
-                    key={card.id}
-                    cardName={card.name}
-                    display={viewMode}
-                  />
-                </div>
-              )
+              <div key={card.id} className="min-w-72 basis-1/5">
+                <HoverableCard cardName={card.name} display={viewMode} />
+              </div>
             );
           })}
       </div>

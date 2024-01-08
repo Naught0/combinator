@@ -11,7 +11,6 @@ interface DeckCard {
   name: string;
   image: string;
   oracle_text: string;
-  in_deck: boolean;
 }
 
 interface DeckData {

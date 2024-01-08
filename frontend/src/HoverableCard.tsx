@@ -33,14 +33,20 @@ export const HoverableCard = ({
         </span>
       )}
       {!isImage && visible && (
-        <img
-          ref={setTooltipRef}
-          src={image}
-          className="rounded-xl max-w-[90vw] max-h-[60vh] lg:max-h-[50vh]"
-          {...getTooltipProps()}
-        />
+        <div className="bg-black rounded-2xl">
+          <img
+            ref={setTooltipRef}
+            src={image}
+            className="rounded-2xl max-w-[90vw] max-h-[60vh] lg:max-h-[50vh] shadow-black shadow-lg"
+            {...getTooltipProps()}
+          />
+        </div>
       )}
-      {isImage && <img src={image} className="rounded-2xl w-full" />}
+      {isImage && (
+        <div className="bg-black !rounded-2xl">
+          <img src={image} className="rounded-2xl w-full" />
+        </div>
+      )}
     </>
   );
 };

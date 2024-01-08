@@ -90,8 +90,8 @@ dependencies:
     specifier: ^9.0.3
     version: 9.0.3(react-dom@18.2.0)(react@18.2.0)
   recoil:
-    specifier: ^0.7.5
-    version: 0.7.5(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.7.7
+    version: 0.7.7(react-dom@18.2.0)(react@18.2.0)
   sass:
     specifier: ^1.49.9
     version: 1.49.9
@@ -3018,8 +3018,8 @@ packages:
     dependencies:
       picomatch: 2.3.1
 
-  /recoil@0.7.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-GVShsj5+M/2GULWBs5WBJGcsNis/d3YvDiaKjYh3mLKXftjtmk9kfaQ8jwjoIXySCwn8/RhgJ4Sshwgzj2UpFA==}
+  /recoil@0.7.7(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-8Og5KPQW9LwC577Vc7Ug2P0vQshkv1y3zG3tSSkWMqkWSwHmE+by06L8JtnGocjW6gcCvfwB3YtrJG6/tWivNQ==}
     peerDependencies:
       react: '>=16.13.1'
       react-dom: '*'

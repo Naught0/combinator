@@ -54,12 +54,11 @@ export const App = () => {
     setLoadingUser(true);
     try {
       const data = await (
-        await cachedClient.get("/api/user/search", {
-          params: { userName: userName },
-        })
+        await cachedClient.post("/api/search/user", { userName })
       ).data;
       setUserDeckData(data);
     } catch (e) {
+      console.error(e);
       setUserError(
         "Error -- Please supply only your Moxfield username. Other sites are not yet supported.",
       );

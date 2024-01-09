@@ -7,6 +7,7 @@ services:
       - 5001:5001
     volumes:
       - ./server:/app
+      - /app/static
   frontend:
     build:
       context: ./frontend

@@ -33,7 +33,7 @@
   "scripts": {
     "start": "vite",
     "docker:start": "vite --open 0 --host 0.0.0.0",
-    "build": "tsc && vite build",
+    "build": "NODE_ENV=production tsc && vite build",
     "fix": "npx prettier --write 'src/**/*.ts*'"
   },
   "eslintConfig": {

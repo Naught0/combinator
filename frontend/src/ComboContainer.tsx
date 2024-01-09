@@ -112,9 +112,8 @@ export const ComboContainer: FC = () => {
           )}
           {(allCombos?.almostIncluded?.length ?? 1) > 0 && (
             <p className="help">
-              If more combos are found by adding one or two cards to the deck,
-              you can access them by clicking the respective &apos;Add X&apos;
-              tab
+              If more combos are found by adding a card to the deck, you can
+              access them by clicking the &quot;Add 1&quot; tab
             </p>
           )}
         </div>

@@ -59,7 +59,7 @@ export const ComboContainer: FC = () => {
   };
 
   const comboTabs = useMemo(() => {
-    if (!deckData || !filteredCombos)
+    if (!deckData || filteredCombos.length < 1)
       return (
         <h1 className="is-size-4">
           💡 Pro Tip: Try adding some{" "}
@@ -134,7 +134,9 @@ export const ComboContainer: FC = () => {
           <li className={`${tab === Tab.COMBOS ? "is-active" : ""}`}>
             <a role="button" onClick={() => setTab(Tab.COMBOS)}>
               Combos &ndash;&nbsp;
-              <span className="is-size-6">({allCombos?.included.length})</span>
+              <span className="is-size-6">
+                ({allCombos?.included?.length ?? 0})
+              </span>
             </a>
           </li>
           {(allCombos?.almostIncluded?.length ?? -1) > 0 && (

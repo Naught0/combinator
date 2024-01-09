@@ -9,6 +9,7 @@ const config = {
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
+    "prettier",
   ],
   plugins: ["react", "@typescript-eslint"],
   parserOptions: {

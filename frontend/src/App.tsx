@@ -13,6 +13,10 @@ import { copyToClipboardAndToast } from "./util";
 import "./style/rainbow-button.sass";
 import { useComboData } from "./hooks/useComboData";
 
+const parseMoxfieldUsername = (nameOrUrl: string): string => {
+  return nameOrUrl.split("/").pop() ?? "";
+};
+
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [userName, setUserName] = useState("");
@@ -60,7 +64,7 @@ export const App = () => {
     } catch (e) {
       console.error(e);
       setUserError(
-        "Error -- Please supply only your Moxfield username. Other sites are not yet supported.",
+        "Error -- Please supply only your Moxfield username. Other sites are not yet supported."
       );
     }
     setLoadingUser(false);
@@ -118,8 +122,12 @@ export const App = () => {
                           className={`input is-medium ${userError ? "is-danger" : ""
                             }`}
                           placeholder="Moxfield username"
-                          onInput={(e) =>
-                            setUserName((e.target as HTMLInputElement).value)
+                          onInput={({ target }) =>
+                            setUserName(
+                              parseMoxfieldUsername(
+                                (target as HTMLInputElement).value
+                              )
+                            )
                           }
                           value={userName}
                         />

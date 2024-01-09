@@ -13,6 +13,10 @@ import { copyToClipboardAndToast } from "./util";
 import "./style/rainbow-button.sass";
 import { useComboData } from "./hooks/useComboData";
 
+const parseMoxfieldUsername = (nameOrUrl: string): string => {
+  return nameOrUrl.split("/").pop() ?? "";
+};
+
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [userName, setUserName] = useState("");
@@ -115,17 +119,23 @@ export const App = () => {
                       <div className="control has-icons-right">
                         <input
                           type="text"
-                          className={`input is-medium ${userError ? "is-danger" : ""
-                            }`}
+                          className={`input is-medium ${
+                            userError ? "is-danger" : ""
+                          }`}
                           placeholder="Moxfield username"
-                          onInput={(e) =>
-                            setUserName((e.target as HTMLInputElement).value)
+                          onInput={({ target }) =>
+                            setUserName(
+                              parseMoxfieldUsername(
+                                (target as HTMLInputElement).value,
+                              ),
+                            )
                           }
                           value={userName}
                         />
                         <span
-                          className={`icon is-right is-small is-clickable ${!(userName.length > 0) ? "is-hidden" : ""
-                            }`}
+                          className={`icon is-right is-small is-clickable ${
+                            !(userName.length > 0) ? "is-hidden" : ""
+                          }`}
                           role="button"
                           title="Share a link to this page"
                           onClick={() => {
@@ -146,8 +156,9 @@ export const App = () => {
                     <>
                       <input
                         type="text"
-                        className={`input is-medium ${comboError ? "is-danger" : ""
-                          }`}
+                        className={`input is-medium ${
+                          comboError ? "is-danger" : ""
+                        }`}
                         placeholder="Archidekt, Moxfield, or MTGGoldfish deck URL"
                         onInput={(e) => {
                           setDeckUrl((e.target as HTMLInputElement).value);
@@ -163,8 +174,9 @@ export const App = () => {
                 <div className="field">
                   <div className="buttons has-addons">
                     <button
-                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${fetching && "is-loading"
-                        }`}
+                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${
+                        fetching && "is-loading"
+                      }`}
                       disabled={
                         searchType === SearchType.DECK
                           ? deckUrl.length === 0

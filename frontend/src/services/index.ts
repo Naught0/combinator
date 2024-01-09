@@ -1,7 +1,7 @@
 import { cachedClient } from "./cachedRequest";
 
 export const getDeckData = async (url: string): Promise<DeckData> => {
-  const { data } = await cachedClient.get<DeckData>("/api/deck/search", {
+  const { data } = await cachedClient.get<DeckData>("/api/search/deck", {
     params: { url },
   });
   return data;
@@ -12,7 +12,7 @@ export const getComboData = async (json: {
   commanders: string[];
 }): Promise<ComboData> => {
   const { data } = await cachedClient.post<ComboData>(
-    "/api/combo/search",
+    "/api/search/combo",
     json,
   );
   return data;

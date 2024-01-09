@@ -40,7 +40,6 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
   setSortDir,
   setPageSize,
   setIsLegal,
-  resetFilters,
 }) => {
   return (
     <>

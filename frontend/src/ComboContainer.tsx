@@ -59,7 +59,7 @@ export const ComboContainer: FC = () => {
   };
 
   const comboTabs = useMemo(() => {
-    if (!deckData || !filteredCombos)
+    if (!deckData || filteredCombos.length < 1)
       return (
         <h1 className="is-size-4">
           💡 Pro Tip: Try adding some{" "}
@@ -112,9 +112,8 @@ export const ComboContainer: FC = () => {
           )}
           {(allCombos?.almostIncluded?.length ?? 1) > 0 && (
             <p className="help">
-              If more combos are found by adding one or two cards to the deck,
-              you can access them by clicking the respective &apos;Add X&apos;
-              tab
+              If more combos are found by adding a card to the deck, you can
+              access them by clicking the &quot;Add 1&quot; tab
             </p>
           )}
         </div>
@@ -134,7 +133,9 @@ export const ComboContainer: FC = () => {
           <li className={`${tab === Tab.COMBOS ? "is-active" : ""}`}>
             <a role="button" onClick={() => setTab(Tab.COMBOS)}>
               Combos &ndash;&nbsp;
-              <span className="is-size-6">({allCombos?.included.length})</span>
+              <span className="is-size-6">
+                ({allCombos?.included?.length ?? 0})
+              </span>
             </a>
           </li>
           {(allCombos?.almostIncluded?.length ?? -1) > 0 && (

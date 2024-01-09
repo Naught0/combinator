@@ -4,11 +4,12 @@ from urllib.parse import urlparse
 
 import backoff
 import requests
+from app.models.api import Deck
 from bs4 import BeautifulSoup
 
-COMBO_DATA_URL = "data.json"
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
+CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 
 def chunk_array(lst: list, n: int) -> List[List[any]]:
@@ -25,7 +26,7 @@ def chunk_array(lst: list, n: int) -> List[List[any]]:
         yield lst[i : i + n]
 
 
-def get_moxfield_deck(url: str) -> dict:
+def get_moxfield_deck(url: str) -> Deck:
     """Retrieve a deck from moxfield
 
     Args:
@@ -44,15 +45,18 @@ def get_moxfield_deck(url: str) -> dict:
     except IndexError:
         raise ValueError("Invalid or malformed URL supplied.")
 
-    resp = requests.get(MOXFIELD_BASE_URL.format(deck_id)).json()
-    return {
-        "meta": {
+    resp = requests.get(
+        MOXFIELD_BASE_URL.format(deck_id), headers={"User-Agent": CHROME_USER_AGENT}
+    )
+    resp = resp.json()
+    return Deck(
+        meta={
             "name": resp.get("name"),
             "author": resp["createdByUser"]["userName"],
             "url": url,
             "colors": [x.lower() for x in resp["main"]["colors"]],
         },
-        "cards": list(
+        cards=list(
             set(
                 [
                     resp["main"]["name"],
@@ -62,10 +66,10 @@ def get_moxfield_deck(url: str) -> dict:
                 ]
             )
         ),
-    }
+    )
 
 
-def get_goldfish_deck(url: str) -> dict:
+def get_goldfish_deck(url: str) -> Deck:
     """Retrieve an mtggoldfish deck
 
     Args:
@@ -95,13 +99,12 @@ def get_goldfish_deck(url: str) -> dict:
     resp = requests.get(download_url.format(deck_id)).text
     cards = list(set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x]))
 
-    return {
-        "meta": {"name": title, "author": author, "url": url, "colors": []},
-        "cards": cards,
-    }
+    return Deck(
+        meta={"name": title, "author": author, "url": url, "colors": []}, cards=cards
+    )
 
 
-def get_archidekt_deck(url: str) -> dict:
+def get_archidekt_deck(url: str) -> Deck:
     """Retrieve an archidekt deck
 
     Args:
@@ -127,15 +130,15 @@ def get_archidekt_deck(url: str) -> dict:
     for card in data["cards"]:
         colors.extend(card["card"]["oracleCard"]["colorIdentity"])
 
-    return {
-        "meta": {
+    return Deck(
+        meta={
             "name": title,
             "author": author,
             "url": url,
             "colors": list(set(COLOR_MAP[x.lower()] for x in colors)),
         },
-        "cards": list(cards),
-    }
+        cards=list(cards),
+    )
 
 
 @backoff.on_exception(backoff.expo, requests.RequestException, max_tries=3)
@@ -173,7 +176,7 @@ def scryfall_request(card_names: list[str]) -> list[dict]:
 
 def get_scryfall_cards(
     card_names: list[str],
-) -> Dict[Literal["id", "oracle_text", "name", "image"], str]:
+) -> list[Dict[Literal["id", "oracle_text", "name", "image"], str]]:
     # Respect scryfall API
     card_chunks = list(chunk_array(card_names, 75))
     ret = []

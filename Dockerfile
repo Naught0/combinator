@@ -9,14 +9,9 @@ COPY frontend/ .
 COPY --from=deps /deps/node_modules ./node_modules
 RUN yarn global add pnpm && pnpm build
 
-FROM python:3.9-slim
+FROM python:3.10-alpine
 WORKDIR /app
-COPY --from=build static ./app/static
+COPY --from=build static ./static
 COPY server/ .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install gunicorn==20.1.0
-RUN pip install eventlet==0.30.2
-ENV FLASK_ENV production
-ARG PORT=8080
-ENV PORT=${PORT}
-CMD gunicorn --worker-class eventlet -w 1 --threads 8 --timeout 0 -b 0.0.0.0:${PORT} app.app:app
+CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8080"]

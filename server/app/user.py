@@ -1,24 +1,35 @@
 import requests
 
+from app.models.moxfield import MoxfieldDeck, UserDecksResponse
+from app.process import CHROME_USER_AGENT
 
-def get_moxfield_user_decks(user_name: str):
+
+class MoxfieldError(Exception):
+    pass
+
+
+def get_moxfield_user_decks(user_name: str) -> list[MoxfieldDeck]:
     decks = []
 
     page = 1
     while True:
         resp = requests.get(
-            f"https://api2.moxfield.com/v2/users/{user_name}/decks?pageNumber={page}&pageSize=100",
-            headers={"Content-Type": "application/json"},
+            f"https://api2.moxfield.com/v2/users/{user_name}/decks",
+            params={"pageNumber": page, "pageSize": 100},
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": CHROME_USER_AGENT,
+            },
         )
-        data = resp.json()
+        data = UserDecksResponse(**resp.json())
         page += 1
 
-        if data["totalResults"] == 0:
-            raise ValueError(f"User {user_name} does not have any decks")
+        if data.total_results == 0:
+            raise MoxfieldError(f"User {user_name} does not have any decks")
 
-        decks.extend(data["data"])
+        decks.extend(data.data)
 
-        if page >= data["totalPages"]:
+        if page >= data.total_pages:
             break
 
     return decks

@@ -1,7 +1,5 @@
 import { usePopperTooltip } from "react-popper-tooltip";
 import { manaFontMap } from "./manaFontMap";
-import { useSetRecoilState } from "recoil";
-import { hoveredCard } from "./atoms";
 import { HoverableCard } from "./HoverableCard";
 
 interface props {
@@ -25,7 +23,6 @@ const replaceManaSymbols = (s: string) => {
 export const Combo = ({ combo }: props) => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({ offset: [0, 15], trigger: "click" });
-  const setCurrentCardUrl = useSetRecoilState(hoveredCard);
 
   return (
     <div

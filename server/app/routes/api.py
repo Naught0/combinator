@@ -1,74 +1,56 @@
 import traceback
-from http import HTTPStatus
 
 import requests
+from app.models.api import ComboSearchPayload, Deck, UserSearchRequest
+from app.models.commanders_spellbook import Results
+from app.models.moxfield import MoxfieldDeck
 from app.process import (
     get_archidekt_deck,
     get_goldfish_deck,
     get_moxfield_deck,
     get_scryfall_cards,
 )
-from app.resources.api import ComboSearchPayload
-from app.resources.commander_spellbook import SearchResponse
-from app.user import get_moxfield_user_decks
-from flask import Blueprint, jsonify, request
+from app.user import MoxfieldError, get_moxfield_user_decks
+from fastapi import APIRouter, HTTPException
 
-api_bp = Blueprint("combos", __name__, url_prefix="/api")
+router = APIRouter(prefix="/api/search")
 
 
-def combo_search(payload: ComboSearchPayload) -> SearchResponse:
+@router.post("/combo", response_model=Results)
+def combo_search(data: ComboSearchPayload):
     return requests.get(
-        "https://backend.commanderspellbook.com/find-my-combos", json=payload
-    ).json()
+        "https://backend.commanderspellbook.com/find-my-combos",
+        json=data.model_dump(mode="json"),
+    ).json()["results"]
 
 
-@api_bp.post("/combo/search")
-def _combo_search():
-    data: ComboSearchPayload | None = request.get_json(silent=True)
-    if not data:
-        return ("", HTTPStatus.BAD_REQUEST)
-
-    resp = combo_search(data)
-    return jsonify(resp["results"]), HTTPStatus.OK
-
-
-@api_bp.get("/deck/search")
-def deck_search():
-    params = request.args
+@router.get("/deck", response_model=Deck)
+def deck_search(url: str):
     fn = None
-    url = params["url"].lower()
-    if "moxfield" in url:
+    lowered = url.lower()
+    if "moxfield" in lowered:
         fn = get_moxfield_deck
-    if "mtggoldfish" in url:
+    if "mtggoldfish" in lowered:
         fn = get_goldfish_deck
-    if "archidekt" in url:
+    if "archidekt" in lowered:
         fn = get_archidekt_deck
 
     if fn is None:
         return ("Provider not found", 404)
 
     try:
-        deck = fn(params["url"])
-        deck["cards"] = get_scryfall_cards(deck["cards"])
+        deck = fn(url)
+        deck.cards = get_scryfall_cards(deck.cards)
     except Exception:
         traceback.print_exc()
-        return jsonify("Deck not found or malformed"), HTTPStatus.BAD_REQUEST
+        raise HTTPException(status_code=404, detail="Deck not found")
 
-    return jsonify(deck), HTTPStatus.OK
+    return deck
 
 
-@api_bp.route("/user/search")
-def user_search():
-    params = request.args
-    user = params.get("userName")
-    if not user:
-        return (
-            jsonify({"error": True, "message": "Field `userName` must be supplied"}),
-            HTTPStatus.UNPROCESSABLE_ENTITY,
-        )
-
+@router.post("/user", response_model=list[MoxfieldDeck])
+def user_search(user: UserSearchRequest):
     try:
-        decks = get_moxfield_user_decks(user)
-        return jsonify(decks), HTTPStatus.OK
-    except Exception as e:
-        return jsonify({"error": True, "message": str(e)}), HTTPStatus.BAD_REQUEST
+        return get_moxfield_user_decks(user.user_name)
+    except MoxfieldError as e:
+        raise HTTPException(status_code=400, detail=str(e))

@@ -26,8 +26,9 @@ export const Combo = ({ combo }: props) => {
 
   return (
     <div
-      className={`combo is-gapless is-clickable is-flex is-align-items-center m-3 p-3 ${visible ? "active" : ""
-        }`}
+      className={`combo is-gapless is-clickable is-flex is-align-items-center m-3 p-3 ${
+        visible ? "active" : ""
+      }`}
       ref={setTriggerRef}
     >
       {visible && (

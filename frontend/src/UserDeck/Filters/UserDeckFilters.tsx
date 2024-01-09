@@ -71,15 +71,17 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
           </div>
         </div>
         <Dropdown
-          title={`Format: ${formatFilter
+          title={`Format: ${
+            formatFilter
               ? uniqueDeckFormatMap.get(formatFilter) ||
-              dumbTitalize({ text: formatFilter })
+                dumbTitalize({ text: formatFilter })
               : "Any"
-            }`}
+          }`}
         >
           <a
-            className={`dropdown-item ${formatFilter === undefined ? "is-active" : ""
-              }`}
+            className={`dropdown-item ${
+              formatFilter === undefined ? "is-active" : ""
+            }`}
             onClick={() => setFormatFilter(undefined)}
           >
             Any
@@ -87,8 +89,9 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
           {formats.map((fmt) => (
             <a
               key={fmt}
-              className={`dropdown-item ${formatFilter === fmt ? "is-active" : ""
-                }`}
+              className={`dropdown-item ${
+                formatFilter === fmt ? "is-active" : ""
+              }`}
               onClick={() => setFormatFilter(fmt as Format)}
             >
               {uniqueDeckFormatMap.get(fmt) || dumbTitalize({ text: fmt })}
@@ -114,8 +117,9 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
               (legality) =>
                 legality && (
                   <a
-                    className={`dropdown-item ${legality.className} ${isLegal === legality.value ? "is-active" : ""
-                      }`}
+                    className={`dropdown-item ${legality.className} ${
+                      isLegal === legality.value ? "is-active" : ""
+                    }`}
                     onClick={() => setIsLegal(legality.value)}
                     key={legality.display}
                   >
@@ -132,8 +136,9 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
           >
             {deckFilters.map((s) => (
               <a
-                className={`dropdown-item ${s.key === sortBy ? "is-active" : ""
-                  }`}
+                className={`dropdown-item ${
+                  s.key === sortBy ? "is-active" : ""
+                }`}
                 key={s.key}
                 onClick={() => setSortBy(s.key)}
               >

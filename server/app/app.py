@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 origins = [
     "https://mtgcombinator.com",
+    "https://www.mtgcombinator.com",
+    "https://combinator.pages.dev",
 ]
 
 app = FastAPI()

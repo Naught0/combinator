@@ -17,14 +17,8 @@ export default defineConfig({
     }),
   ],
   server: {
-    open: true,
+    open: false,
     port: 3000,
-    proxy: {
-      "/api": {
-        target: "http://server:5001",
-        changeOrigin: true,
-      },
-    },
   },
   esbuild: {
     target: "esnext",

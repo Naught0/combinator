@@ -12,4 +12,5 @@ FROM node:18-alpine as runner
 workdir /frontend
 COPY --from=deps /deps/node_modules ./node_modules
 COPY . .
+ENV VITE_API_URL=http://localhost:5001
 CMD ["yarn", "docker:start"]

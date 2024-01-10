@@ -2,7 +2,11 @@ from app.routes import api
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-origins = ["https://mtgcombinator.com", "https://www.mtgcombinator.com"]
+origins = [
+    "https://mtgcombinator.com",
+    "https://www.mtgcombinator.com",
+    "https://combinator.pages.dev",
+]
 
 app = FastAPI()
 app.add_middleware(

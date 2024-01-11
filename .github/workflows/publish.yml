@@ -40,5 +40,5 @@ jobs:
           workingDirectory: "./frontend"
           directory: "./dist"
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: production
           wranglerVersion: "3"

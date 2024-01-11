@@ -59,14 +59,8 @@ export const ComboContainer: FC = () => {
   };
 
   const comboTabs = useMemo(() => {
-    if (!deckData || filteredCombos.length < 1)
-      return (
-        <h1 className="is-size-4">
-          💡 Pro Tip: Try adding some{" "}
-          <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
-          to your list
-        </h1>
-      );
+    const noCombos = !comboData?.length;
+    const noCombosFound = !noCombos && filteredCombos.length < 1;
     return (
       <div>
         <div className="flex gap-6 flex-col">
@@ -86,12 +80,30 @@ export const ComboContainer: FC = () => {
           </div>
         </div>
         {addCardTabExplanation}
-        {filteredCombos?.map((c) => (
-          <Combo key={c.id} deckData={deckData} combo={c} />
-        ))}
+        {noCombos && (
+          <h1 className="text-2xl mt-6">
+            💡 Pro Tip: Try adding some{" "}
+            <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
+            to your list
+          </h1>
+        )}
+        {noCombosFound && (
+          <h1 className="text-2xl mt-6">❌ No combos matching search</h1>
+        )}
+        {deckData &&
+          filteredCombos?.map((c) => (
+            <Combo key={c.id} deckData={deckData} combo={c} />
+          ))}
       </div>
     );
-  }, [addCardTabExplanation, filter, setFilter, filteredCombos, deckData]);
+  }, [
+    addCardTabExplanation,
+    comboData,
+    filter,
+    setFilter,
+    filteredCombos,
+    deckData,
+  ]);
 
   return (
     <>

@@ -20,12 +20,15 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.11.0
     version: 11.11.0(@emotion/react@11.11.3)(@types/react@18.2.47)(react@18.2.0)
-  '@fontsource-variable/inter':
+  '@fontsource/inter':
     specifier: ^5.0.16
     version: 5.0.16
-  '@fontsource-variable/josefin-slab':
-    specifier: ^5.0.19
-    version: 5.0.19
+  '@fontsource/jetbrains-mono':
+    specifier: ^5.0.18
+    version: 5.0.18
+  '@fontsource/josefin-slab':
+    specifier: ^5.0.18
+    version: 5.0.18
   '@fortawesome/fontawesome-svg-core':
     specifier: ^6.1.0
     version: 6.1.0
@@ -2038,12 +2041,16 @@ packages:
     resolution: {integrity: sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  /@fontsource-variable/inter@5.0.16:
-    resolution: {integrity: sha512-k+BUNqksTL+AN+o+OV7ILeiE9B5M5X+/jA7LWvCwjbV9ovXTqZyKRhA/x7uYv/ml8WQ0XNLBM7cRFIx4jW0/hg==}
+  /@fontsource/inter@5.0.16:
+    resolution: {integrity: sha512-qF0aH5UiZvCmneX5orJbVRoc2VTyLTV3X/7laMp03Qt28L+B9tFlZODOGUL64wDWc69YVdi1LeJB0cIgd51lvw==}
     dev: false
 
-  /@fontsource-variable/josefin-slab@5.0.19:
-    resolution: {integrity: sha512-G8KQUf7JBotsndxKkPFs55t6yiAujGPtVVcLzgLpT8LohDmeDb3xKf4hlnDfa0hbSvTjSJ7QjE+6xUd3ZfXzJQ==}
+  /@fontsource/jetbrains-mono@5.0.18:
+    resolution: {integrity: sha512-0+YDAaAnCdXjirHFO3NfHLUW8xtKCT5rlm23Q0qG3TpZp3QBrZh5r9ikUxh3ufHc2+fVnk4Y6GWNEnVIfB7u/g==}
+    dev: false
+
+  /@fontsource/josefin-slab@5.0.18:
+    resolution: {integrity: sha512-mNIJ2LAJAzQDSX1amxYte1aEJpIJJDmkW6Kz6oqX0v/mZbhxF9G4y3xJbjVrxW7gKQzixTKc6GmhOJQi5CDVgQ==}
     dev: false
 
   /@fortawesome/fontawesome-common-types@6.1.0:
@@ -2164,8 +2171,8 @@ packages:
       picomatch: 2.3.1
     dev: false
 
-  /@rollup/wasm-node@4.9.4:
-    resolution: {integrity: sha512-K9ZPYMCxP7sBElj5du0En/zpbhXTQxpWI7RlF+8bNpLUozhzg2Pcx2h3cBCzV7xtiUt0dc+pF2Ib3/Sg8R0JMA==}
+  /@rollup/wasm-node@4.9.5:
+    resolution: {integrity: sha512-Xhabb9BwobkC3NFnI9spB+AvHt+iXruRAtBZRlrCDaBnkT7hWUcSF+J+T/nW/qqqGKtYJ/1RzBRv6vCCxEIgpg==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
     dependencies:
@@ -4893,7 +4900,7 @@ packages:
       '@rollup/pluginutils': 4.2.1
       '@types/eslint': 8.56.1
       eslint: 8.56.0
-      rollup: /@rollup/wasm-node@4.9.4
+      rollup: /@rollup/wasm-node@4.9.5
       vite: 5.0.11(@types/node@16.7.13)(sass@1.49.9)
     dev: false
 
@@ -4953,7 +4960,7 @@ packages:
       '@types/node': 16.7.13
       esbuild: 0.19.11
       postcss: 8.4.33
-      rollup: /@rollup/wasm-node@4.9.4
+      rollup: /@rollup/wasm-node@4.9.5
       sass: 1.49.9
     optionalDependencies:
       fsevents: 2.3.3

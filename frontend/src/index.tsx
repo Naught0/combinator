@@ -5,10 +5,11 @@ import "./style/style.sass";
 import "mana-font";
 import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
-import "@fontsource-variable/inter";
-import "@fontsource-variable/josefin-slab";
-import { ChakraBaseProvider, ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { chakraTheme } from "./chakra/theme";
+import "@fontsource/josefin-slab";
+import "@fontsource/inter";
+import "@fontsource/jetbrains-mono";
 
 const elem = document.getElementById("root");
 if (elem) {

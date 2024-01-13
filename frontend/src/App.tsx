@@ -12,7 +12,7 @@ import { faArrowRight, faShare } from "@fortawesome/free-solid-svg-icons";
 import { copyToClipboardAndToast } from "./util";
 import "./style/rainbow-button.sass";
 import { useComboData } from "./hooks/useComboData";
-import { Stack } from "@chakra-ui/react";
+import { HStack, Heading, Image, Stack, StackItem } from "@chakra-ui/react";
 
 const parseMoxfieldUsername = (nameOrUrl: string): string => {
   return nameOrUrl.split("/").pop() ?? "";
@@ -65,7 +65,7 @@ export const App = () => {
     } catch (e) {
       console.error(e);
       setUserError(
-        "Error -- Please supply only your Moxfield username. Other sites are not yet supported."
+        "Error -- Please supply only your Moxfield username. Other sites are not yet supported.",
       );
     }
     setLoadingUser(false);
@@ -79,18 +79,31 @@ export const App = () => {
   return (
     <React.Fragment>
       <ToastContainer theme="dark" />
-      <Stack minH={"100vh"} bgColor={""}>
-        <div className="level">
-          <div className="level-left">
-            <div className="level-item">
-              <img src={logo} alt="" width={64} />
-            </div>
-            <div className="level-item">
+      <Stack minH={"100vh"} alignItems={"center"} justifyContent={"flex-start"}>
+        <HStack
+          alignItems={"center"}
+          justifyContent={"center"}
+          mt={8}
+          mb={3}
+          gap={6}
+          wrap={"wrap"}
+        >
+          <StackItem>
+            <Image src={logo} alt="" width={["100px", null, null, "128px"]} />
+          </StackItem>
+          <Stack textAlign={"center"} gap={0}>
+            <Heading fontSize={["xxx-large", null, "72"]}>combinator</Heading>
+            <Heading
+              fontFamily="body"
+              size={"md"}
+              fontStyle={"italic"}
+              color={"textLight"}
+            >
               infinite combos, finite brain cells
-            </div>
-          </div>
-        </div>
-        <div className="container mt-6">
+            </Heading>
+          </Stack>
+        </HStack>
+        <Stack>
           <SearchTypeSelector
             searchType={searchType}
             setSearchType={saveSearchType}
@@ -118,9 +131,8 @@ export const App = () => {
                       <div className="control has-icons-right">
                         <input
                           type="text"
-                          className={`input is-medium ${
-                            userError ? "is-danger" : ""
-                          }`}
+                          className={`input is-medium ${userError ? "is-danger" : ""
+                            }`}
                           placeholder="Moxfield username"
                           onInput={({ target }) =>
                             setUserName(
@@ -132,9 +144,8 @@ export const App = () => {
                           value={userName}
                         />
                         <span
-                          className={`icon is-right is-small is-clickable ${
-                            !(userName.length > 0) ? "is-hidden" : ""
-                          }`}
+                          className={`icon is-right is-small is-clickable ${!(userName.length > 0) ? "is-hidden" : ""
+                            }`}
                           role="button"
                           title="Share a link to this page"
                           onClick={() => {
@@ -155,9 +166,8 @@ export const App = () => {
                     <>
                       <input
                         type="text"
-                        className={`input is-medium ${
-                          comboError ? "is-danger" : ""
-                        }`}
+                        className={`input is-medium ${comboError ? "is-danger" : ""
+                          }`}
                         placeholder="Archidekt, Moxfield, or MTGGoldfish deck URL"
                         onInput={(e) => {
                           setDeckUrl((e.target as HTMLInputElement).value);
@@ -173,9 +183,8 @@ export const App = () => {
                 <div className="field">
                   <div className="buttons has-addons">
                     <button
-                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${
-                        fetching && "is-loading"
-                      }`}
+                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${fetching && "is-loading"
+                        }`}
                       disabled={
                         searchType === SearchType.DECK
                           ? deckUrl.length === 0
@@ -199,7 +208,7 @@ export const App = () => {
           {searchType === SearchType.USER && userDeckData && (
             <UserDecksContainer decks={userDeckData} />
           )}
-        </div>
+        </Stack>
       </Stack>
       <Footer />
     </React.Fragment>

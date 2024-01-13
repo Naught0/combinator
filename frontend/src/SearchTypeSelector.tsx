@@ -1,9 +1,11 @@
+import { Tab, TabList, Tabs } from "@chakra-ui/react";
 import { FC } from "react";
 
 export enum SearchType {
   DECK = "DECK",
   USER = "USER",
 }
+const tabIndexes = [SearchType.USER, SearchType.DECK] as const;
 interface Props {
   searchType: SearchType;
   setSearchType: (type: SearchType) => void;
@@ -14,31 +16,15 @@ export const SearchTypeSelector: FC<Props> = ({
 }) => {
   return (
     <>
-      <p>Search for a...</p>
-      <div className="tabs is-toggle">
-        <div className="buttons has-addons">
-          <button
-            className={`button ${
-              searchType === SearchType.USER
-                ? "is-primary"
-                : "is-inverted is-dark"
-            }`}
-            onClick={() => setSearchType(SearchType.USER)}
-          >
-            User
-          </button>
-          <button
-            className={`button ${
-              searchType === SearchType.DECK
-                ? "is-primary"
-                : "is-inverted is-dark"
-            }`}
-            onClick={() => setSearchType(SearchType.DECK)}
-          >
-            Deck
-          </button>
-        </div>
-      </div>
+      <Tabs
+        onChange={(idx) => setSearchType(tabIndexes[idx])}
+        tabIndex={tabIndexes.indexOf(searchType) ?? 0}
+      >
+        <TabList>
+          <Tab>User search</Tab>
+          <Tab>Deck search</Tab>
+        </TabList>
+      </Tabs>
     </>
   );
 };

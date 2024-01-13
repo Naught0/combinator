@@ -12,6 +12,7 @@ import { faArrowRight, faShare } from "@fortawesome/free-solid-svg-icons";
 import { copyToClipboardAndToast } from "./util";
 import "./style/rainbow-button.sass";
 import { useComboData } from "./hooks/useComboData";
+import { Stack } from "@chakra-ui/react";
 
 const parseMoxfieldUsername = (nameOrUrl: string): string => {
   return nameOrUrl.split("/").pop() ?? "";
@@ -64,7 +65,7 @@ export const App = () => {
     } catch (e) {
       console.error(e);
       setUserError(
-        "Error -- Please supply only your Moxfield username. Other sites are not yet supported.",
+        "Error -- Please supply only your Moxfield username. Other sites are not yet supported."
       );
     }
     setLoadingUser(false);
@@ -78,16 +79,14 @@ export const App = () => {
   return (
     <React.Fragment>
       <ToastContainer theme="dark" />
-      <div className="section fullheight">
+      <Stack minH={"100vh"} bgColor={""}>
         <div className="level">
           <div className="level-left">
             <div className="level-item">
               <img src={logo} alt="" width={64} />
             </div>
             <div className="level-item">
-              <span className="fancy title is-1">
-                infinite combos, finite brain cells
-              </span>
+              infinite combos, finite brain cells
             </div>
           </div>
         </div>
@@ -201,7 +200,7 @@ export const App = () => {
             <UserDecksContainer decks={userDeckData} />
           )}
         </div>
-      </div>
+      </Stack>
       <Footer />
     </React.Fragment>
   );

@@ -1,87 +1,83 @@
-@tailwind base
-@tailwind components
-@tailwind utilities
-
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Inter&display=swap')
-@import ./colors
-
-$family-sans-serif: "Inter", sans-serif
-$body-size: 16px
-$radius-large: 6px
-
-button,
-div,
-select,
-a,
-span,
-input
-  border-radius: 0 !important
-
-.section.fullheight
-  min-height: calc(100vh - 3.25rem)
-
-.title,
-.subtitle,
-.fancy
-  font-family: "Josefin Sans", sans-serif
-
-.tooltip
-  background: $alabaster
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.5)
-  padding: 1.25rem !important
-  border-radius: $radius-large
-  border-bottom: 3px solid $mac
-  color: $smokey
-  ol, ul
-    margin-top: 0 !important
-    padding: 0
-  ol
-    margin-left: 1rem !important
-  ul
-    margin-left: 0.9rem !important
-
-.tabs:not(.is-toggle)
-  a
-    border-bottom-width: 5px !important
-
-.tooltip-arrow
-  background: $blue
-
-.combo
-  border-radius: $radius-large
-  &:hover,
-  &.active
-    background: $smokey
-    transition: 0.3s ease all
-  @media screen and (max-width: 1024px)
-    flex-direction: column
-
-.card-popup
-  position: fixed
-  top: 1rem
-  right: 1rem
-  max-width: 300px
-  z-index: 999
-  @media screen and (max-width: 640px)
-    position: fixed
-    margin: auto
-
-  img
-    border-radius: 1rem
-
-.icon-text
-  .icon
-    margin-right: 0 !important
-
-.deck
-  border-radius: $radius-large
-  transition: 0.2s ease all
-  width: 45%
-  min-width: 400px
-  cursor: pointer
-  &:hover
-    filter: brightness(1.1) drop-shadow(0 0 10px rgb(0 0 0 / 0.5))
-  @media screen and (max-width: 875px)
-    width: 100%
-
-@import "../../node_modules/bulma/bulma"
+// @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Inter&display=swap')
+// @import ./colors
+//
+// $family-sans-serif: "Inter", sans-serif
+// $body-size: 16px
+// $radius-large: 6px
+//
+// button,
+// div,
+// select,
+// a,
+// span,
+// input
+//   border-radius: 0 !important
+//
+// .section.fullheight
+//   min-height: calc(100vh - 3.25rem)
+//
+// .title,
+// .subtitle,
+// .fancy
+//   font-family: "Josefin Sans", sans-serif
+//
+// .tooltip
+//   background: $alabaster
+//   box-shadow: 0 3px 10px rgb(0 0 0 / 0.5)
+//   padding: 1.25rem !important
+//   border-radius: $radius-large
+//   border-bottom: 3px solid $mac
+//   color: $smokey
+//   ol, ul
+//     margin-top: 0 !important
+//     padding: 0
+//   ol
+//     margin-left: 1rem !important
+//   ul
+//     margin-left: 0.9rem !important
+//
+// .tabs:not(.is-toggle)
+//   a
+//     border-bottom-width: 5px !important
+//
+// .tooltip-arrow
+//   background: $blue
+//
+// .combo
+//   border-radius: $radius-large
+//   &:hover,
+//   &.active
+//     background: $smokey
+//     transition: 0.3s ease all
+//   @media screen and (max-width: 1024px)
+//     flex-direction: column
+//
+// .card-popup
+//   position: fixed
+//   top: 1rem
+//   right: 1rem
+//   max-width: 300px
+//   z-index: 999
+//   @media screen and (max-width: 640px)
+//     position: fixed
+//     margin: auto
+//
+//   img
+//     border-radius: 1rem
+//
+// .icon-text
+//   .icon
+//     margin-right: 0 !important
+//
+// .deck
+//   border-radius: $radius-large
+//   transition: 0.2s ease all
+//   width: 45%
+//   min-width: 400px
+//   cursor: pointer
+//   &:hover
+//     filter: brightness(1.1) drop-shadow(0 0 10px rgb(0 0 0 / 0.5))
+//   @media screen and (max-width: 875px)
+//     width: 100%
+//
+// @import "../../node_modules/bulma/bulma"

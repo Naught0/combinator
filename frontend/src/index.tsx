@@ -7,6 +7,8 @@ import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/josefin-slab";
+import { ChakraBaseProvider, ChakraProvider } from "@chakra-ui/react";
+import { chakraTheme } from "./chakra/theme";
 
 const elem = document.getElementById("root");
 if (elem) {
@@ -14,7 +16,9 @@ if (elem) {
   root.render(
     <React.StrictMode>
       <RecoilRoot>
-        <App />
+        <ChakraProvider theme={chakraTheme}>
+          <App />
+        </ChakraProvider>
       </RecoilRoot>
     </React.StrictMode>,
   );

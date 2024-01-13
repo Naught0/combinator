@@ -2,7 +2,6 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, ReactNode, useState } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
-import "./index.sass";
 
 interface Props {
   title: ReactNode;

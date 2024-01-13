@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { UserDeckFilters, UserDeckFilterProps } from "./UserDeckFilters";
-import "./index.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 

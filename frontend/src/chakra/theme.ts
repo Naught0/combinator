@@ -2,9 +2,26 @@ import { extendTheme, ChakraTheme } from "@chakra-ui/react";
 
 export const chakraTheme = extendTheme({
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
-  fontFamily: {
-    sans: ["Inter", "sans-serif"],
-    serif: ["Joesfin Slab", "serif"],
+  styles: {
+    global: {
+      body: {
+        bg: "bg",
+        color: "text",
+      },
+    },
+  },
+  fonts: {
+    body: "'Inter', sans-serif",
+    heading: "'Jetbrains Mono', sans-serif",
+  },
+  semanticTokens: {
+    colors: {
+      text: "gray.100",
+      textLight: "gray.400",
+      bg: "alabaster.950",
+      accent: "hit-pink.200",
+      accentSteel: "steel.300",
+    },
   },
   colors: {
     fern: {
@@ -57,7 +74,7 @@ export const chakraTheme = extendTheme({
       700: "#4d563f",
       800: "#404635",
       900: "#353a2d",
-      950: "#1a1e15",
+      950: "#151313",
     },
     rose: {
       50: "#fdf2f6",

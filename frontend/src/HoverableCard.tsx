@@ -40,7 +40,7 @@ export const HoverableCard = ({
           <img
             ref={setTooltipRef}
             src={cardImage}
-            className="rounded-2xl max-w-[256px] lg:max-w-[300px] max-h-[60vh] shadow-black shadow-lg"
+            className="rounded-2xl max-w-[256px] lg:max-w-[300px] shadow-black shadow-lg"
             {...getTooltipProps()}
           />
         </div>

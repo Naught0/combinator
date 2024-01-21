@@ -18,18 +18,18 @@ export const HoverableCard = ({
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
-      placement: "auto",
-      offset: [0, 15],
+      placement: "auto-start",
+      offset: [0, 5],
       trigger: ["click", "hover"],
       delayShow: 75,
+      delayHide: 150,
     });
   return (
     <>
       {!isImage && display === "text" && (
         <span
-          className={`tag is-clickable !text-base ${
-            deckCard ? "is-dark" : "is-danger"
-          }`}
+          className={`tag is-clickable !text-base ${deckCard ? "is-dark" : "is-danger"
+            }`}
           ref={setTriggerRef}
         >
           {cardName}
@@ -40,7 +40,7 @@ export const HoverableCard = ({
           <img
             ref={setTooltipRef}
             src={cardImage}
-            className="rounded-2xl max-w-[90vw] max-h-[60vh] lg:max-h-[50vh] shadow-black shadow-lg"
+            className="rounded-2xl max-w-[256px] lg:max-w-[300px] max-h-[60vh] shadow-black shadow-lg"
             {...getTooltipProps()}
           />
         </div>

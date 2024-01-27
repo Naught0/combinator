@@ -7,6 +7,7 @@ import { CardFilter } from "./CardFilter";
 import { Combo } from "./Combo";
 import { useFilteredCombos } from "./hooks/useComboData";
 import { Hyperlink } from "./Hyperlink";
+import { MissingCardAccordion } from "./MissingCardAccordion";
 import { copyToClipboardAndToast } from "./util";
 
 enum Tab {
@@ -19,21 +20,6 @@ export const ComboContainer: FC = () => {
   const allCombos = useRecoilValue(comboDataAtom);
   const deckData = useRecoilValue(deckDataAtom);
   const [tab, setTab] = useState<Tab>(Tab.COMBOS);
-  const addCardTabExplanation = useMemo<ReactNode>(() => {
-    if (tab === Tab.ALMOST_INCLUDED) {
-      return (
-        <div className="has-text-centered" style={{ width: "100%" }}>
-          <span className="icon-text">
-            <span className="icon">
-              <FontAwesomeIcon icon={faSquare} className="has-text-danger" />
-            </span>
-            <span>= card not in deck</span>
-          </span>
-        </div>
-      );
-    }
-    return null;
-  }, [tab]);
   const comboData = useMemo(
     () =>
       tab === Tab.ALMOST_INCLUDED
@@ -41,9 +27,10 @@ export const ComboContainer: FC = () => {
         : allCombos?.included,
     [allCombos, tab],
   );
-  const { filter, setFilter, filteredCombos } = useFilteredCombos({
-    combos: comboData ?? [],
-  });
+  const { filter, setFilter, filteredCombos, groupedByMissing } =
+    useFilteredCombos({
+      combos: comboData ?? [],
+    });
 
   const shareUrl = useMemo(() => {
     if (!allCombos) return window.location.href;
@@ -61,8 +48,10 @@ export const ComboContainer: FC = () => {
   const comboTabs = useMemo(() => {
     const noCombos = !comboData?.length;
     const noCombosFound = !noCombos && filteredCombos.length < 1;
+    const showGroups =
+      tab === Tab.ALMOST_INCLUDED && deckData && groupedByMissing;
     return (
-      <div>
+      <div className={"flex flex-col gap-6 flex-1"}>
         <div className="flex gap-6 flex-col">
           <input
             className="input is-medium"
@@ -70,16 +59,7 @@ export const ComboContainer: FC = () => {
             value={filter}
             onChange={({ target }) => setFilter(target.value)}
           />
-          <div className="columns">
-            <div className="column">
-              <p className="title is-5 has-text-centered">Cards</p>
-            </div>
-            <div className="column">
-              <p className="title is-5 has-text-centered">Effect</p>
-            </div>
-          </div>
         </div>
-        {addCardTabExplanation}
         {noCombos && (
           <h1 className="text-2xl mt-6">
             💡 Pro Tip: Try adding some{" "}
@@ -90,16 +70,35 @@ export const ComboContainer: FC = () => {
         {noCombosFound && (
           <h1 className="text-2xl mt-6">❌ No combos matching search</h1>
         )}
-        {deckData &&
-          filteredCombos?.map((c) => (
-            <Combo key={c.id} deckData={deckData} combo={c} />
-          ))}
+        {showGroups
+          ? Object.entries(groupedByMissing)
+              .sort(
+                ([, combosA], [, combosB]) => combosB.length - combosA.length,
+              )
+              .map(([cardName, combos]) => (
+                <MissingCardAccordion
+                  cardName={cardName}
+                  key={cardName}
+                  count={combos.length}
+                >
+                  <div className="p-3">
+                    {combos.map((combo) => (
+                      <Combo key={combo.id} deckData={deckData} combo={combo} />
+                    ))}
+                  </div>
+                </MissingCardAccordion>
+              ))
+          : deckData &&
+            filteredCombos?.map((c) => (
+              <Combo key={c.id} deckData={deckData} combo={c} />
+            ))}
       </div>
     );
   }, [
-    addCardTabExplanation,
+    tab,
     comboData,
     filter,
+    groupedByMissing,
     setFilter,
     filteredCombos,
     deckData,
@@ -107,7 +106,7 @@ export const ComboContainer: FC = () => {
 
   return (
     <>
-      <div className="is-flex mt-4">
+      <div className="flex mt-4">
         <div className="is-flex is-flex-grow-1 is-flex-direction-column">
           <h1 className="title">
             {deckData?.meta?.url && (
@@ -170,7 +169,7 @@ export const ComboContainer: FC = () => {
           )}
         </ul>
       </div>
-      <div className="container combo-container has-background-grey p-5">
+      <div className="has-background-grey p-5">
         {tab !== Tab.CARD_SEARCH && comboTabs}
         {tab === Tab.CARD_SEARCH && <CardFilter />}
       </div>

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { deckDataAtom, comboDataAtom } from "../atoms";
 import { getComboData, getDeckData } from "../services";
 
@@ -52,6 +52,7 @@ export const useComboData = () => {
 };
 
 export const useFilteredCombos = ({ combos }: { combos: AlmostIncluded[] }) => {
+  const deckData = useRecoilValue(deckDataAtom);
   const [filter, setFilter] = useState("");
   const filteredCombos = useMemo(() => {
     const f = filter.toLowerCase();
@@ -68,5 +69,22 @@ export const useFilteredCombos = ({ combos }: { combos: AlmostIncluded[] }) => {
     });
   }, [filter, combos]);
 
-  return { filteredCombos, setFilter, filter };
+  const groupedByMissing = useMemo(() => {
+    if (!deckData || !filteredCombos) return;
+
+    const deckCards = deckData.cards.map((c) => c.name);
+    const comboCards = filteredCombos.flatMap((c) =>
+      c.uses.map((u) => u.card.name),
+    );
+    const missingCards = comboCards.filter((c) => !deckCards.includes(c));
+    const grouped: Record<string, AlmostIncluded[]> = {};
+    for (const card of missingCards) {
+      grouped[card] = filteredCombos.filter((combo) =>
+        combo.uses.map((c) => c.card.name).includes(card),
+      );
+    }
+    return grouped;
+  }, [filteredCombos, deckData]);
+
+  return { filteredCombos, groupedByMissing, setFilter, filter };
 };

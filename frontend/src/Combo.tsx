@@ -26,30 +26,32 @@ export const Combo = ({ combo }: props) => {
 
   return (
     <div
-      className={`combo is-gapless is-clickable is-flex is-align-items-center m-3 p-3 ${
+      className={`combo flex items-center justify-between cursor-pointer m-3 px-6 py-5 ${
         visible ? "active" : ""
       }`}
       ref={setTriggerRef}
     >
       {visible && (
         <div className="tooltip" ref={setTooltipRef} {...getTooltipProps()}>
-          <div className="columns">
-            <div className="column">
-              <p className="subtitle has-text-black is-5 mb-1">Prequisites</p>
-              <div className="content is-marginless is-paddingless">
-                <ul>
-                  {combo.otherPrerequisites
-                    .split(".")
-                    .filter((p) => p)
-                    .map((p, idx) => (
-                      <li key={`combo-${combo.id}-${p}-${idx}`}>
-                        {replaceManaSymbols(p)}
-                      </li>
-                    ))}
-                </ul>
+          <div className="flex flex-row justify-evenly gap-3 max-w-3xl">
+            {!!combo.otherPrerequisites.trim() && (
+              <div className="flex flex-col basis-1/2 flex-1">
+                <p className="subtitle has-text-black is-5 mb-1">Prequisites</p>
+                <div className="content is-marginless is-paddingless">
+                  <ul>
+                    {combo.otherPrerequisites
+                      .split(".")
+                      .filter((p) => p)
+                      .map((p, idx) => (
+                        <li key={`combo-${combo.id}-${p}-${idx}`}>
+                          {replaceManaSymbols(p)}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-            <div className="column">
+            )}
+            <div className="flex flex-col basis-1/2 flex-1">
               <p className="subtitle has-text-black is-5 mb-1">Steps</p>
               <div className="content is-marginless is-paddingless">
                 <ol>
@@ -67,7 +69,7 @@ export const Combo = ({ combo }: props) => {
           </div>
         </div>
       )}
-      <div className="column">
+      <div className="flex flex-col basis-1/2">
         <div className="tags are-medium">
           {combo.uses.map((used) => {
             return (
@@ -76,7 +78,7 @@ export const Combo = ({ combo }: props) => {
           })}
         </div>
       </div>
-      <div className="column">
+      <div className="flex flex-col basis-1/2">
         <ul>
           {combo.produces.map((produces) => (
             <li key={produces.id} className="list-item">

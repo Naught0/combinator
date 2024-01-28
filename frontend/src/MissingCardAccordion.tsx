@@ -1,9 +1,11 @@
 import {
   faChevronDown,
   faChevronRight,
+  faMinusSquare,
+  faPlusSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 
 export const MissingCardAccordion = (props: {
   cardName: string;
@@ -12,23 +14,27 @@ export const MissingCardAccordion = (props: {
 }) => {
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className={"flex flex-col gap-3 flex-1 border-gray-500"}>
+    <div className={"flex flex-col flex-1"}>
       <div
-        className="flex flex-row gap-3 cursor-pointer"
+        className="flex flex-row gap-3 cursor-pointer items-center"
         onClick={() => setExpanded(!expanded)}
       >
         <div>
           <FontAwesomeIcon
-            icon={expanded ? faChevronDown : faChevronRight}
+            icon={expanded ? faMinusSquare : faPlusSquare}
             className="text-xl"
           />
         </div>
 
-        <div className="underline text-lg">
+        <div className="text-lg select-none">
           Add {props.cardName} ({props.count})
         </div>
       </div>
-      {expanded && <div>{props.children}</div>}
+      {expanded && (
+        <div className="border-l-width-[3px] border-l border-l-solid border-l-">
+          {props.children}
+        </div>
+      )}
     </div>
   );
 };

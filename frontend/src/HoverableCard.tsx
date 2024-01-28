@@ -28,8 +28,9 @@ export const HoverableCard = ({
     <>
       {!isImage && display === "text" && (
         <span
-          className={`tag is-clickable !text-base ${deckCard ? "is-dark" : "is-danger"
-            }`}
+          className={`tag is-clickable !text-base ${
+            deckCard ? "is-dark" : "is-danger !text-black"
+          }`}
           ref={setTriggerRef}
         >
           {cardName}

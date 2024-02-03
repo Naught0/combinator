@@ -29,8 +29,9 @@ export const Combo = ({ combo, initialExpanded }: props) => {
     <div className={`flex flex-col ${expanded ? "active" : ""} m-3`}>
       <div className={"flex flex-row justify-start items-enter"}>
         <div
-          className={`combo px-5 py-5 cursor-pointer ${expanded ? "active" : ""
-            } flex items-center px-3 justify-between flex-grow gap-6`}
+          className={`combo px-5 py-5 cursor-pointer ${
+            expanded ? "active" : ""
+          } flex items-center px-3 justify-between flex-grow gap-6`}
           onClick={() => setExpanded(!expanded)}
         >
           <FontAwesomeIcon
@@ -47,10 +48,10 @@ export const Combo = ({ combo, initialExpanded }: props) => {
             </div>
           </div>
           <div className="flex flex-col basis-1/2">
-            <ul className="list-['-']">
+            <ul>
               {combo.produces.map((produces) => (
                 <li key={produces.id} className="list-item">
-                  {produces.name}
+                  - {produces.name}
                 </li>
               ))}
             </ul>

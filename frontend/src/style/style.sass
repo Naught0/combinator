@@ -15,7 +15,7 @@ select,
 a,
 span,
 input
-  border-radius: 0 !important
+  border-radius: 0
 
 .section.fullheight
   min-height: calc(100vh - 3.25rem)
@@ -26,12 +26,10 @@ input
   font-family: "Josefin Sans", sans-serif
 
 .tooltip
-  background: $alabaster
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.5)
+  background: $smokey
   padding: 1.25rem !important
-  border-radius: $radius-large
-  border-bottom: 3px solid $mac
-  color: $smokey
+  border-radius: 0 0 $radius-large $radius-large
+  color: $alabaster
   ol, ul
     margin-top: 0 !important
     padding: 0
@@ -49,6 +47,7 @@ input
 
 .combo
   border-radius: $radius-large
+  transition: 0.1s ease all
   &:hover,
   &.active
     background: $smokey

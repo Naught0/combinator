@@ -1,6 +1,6 @@
-import { faShare, faSquare } from "@fortawesome/free-solid-svg-icons";
+import { faShare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, ReactNode, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { comboDataAtom, deckDataAtom } from "./atoms";
 import { CardFilter } from "./CardFilter";
@@ -72,26 +72,26 @@ export const ComboContainer: FC = () => {
         )}
         {showGroups
           ? Object.entries(groupedByMissing)
-              .sort(
-                ([, combosA], [, combosB]) => combosB.length - combosA.length,
-              )
-              .map(([cardName, combos]) => (
-                <MissingCardAccordion
-                  cardName={cardName}
-                  key={cardName}
-                  count={combos.length}
-                >
-                  <div className="p-3">
-                    {combos.map((combo) => (
-                      <Combo key={combo.id} deckData={deckData} combo={combo} />
-                    ))}
-                  </div>
-                </MissingCardAccordion>
-              ))
+            .sort(
+              ([, combosA], [, combosB]) => combosB.length - combosA.length,
+            )
+            .map(([cardName, combos]) => (
+              <MissingCardAccordion
+                cardName={cardName}
+                key={cardName}
+                count={combos.length}
+              >
+                <div className="px-6 py-3">
+                  {combos.map((combo) => (
+                    <Combo key={combo.id} deckData={deckData} combo={combo} />
+                  ))}
+                </div>
+              </MissingCardAccordion>
+            ))
           : deckData &&
-            filteredCombos?.map((c) => (
-              <Combo key={c.id} deckData={deckData} combo={c} />
-            ))}
+          filteredCombos?.map((c) => (
+            <Combo key={c.id} deckData={deckData} combo={c} />
+          ))}
       </div>
     );
   }, [

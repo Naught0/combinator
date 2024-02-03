@@ -81,7 +81,7 @@ export const ComboContainer: FC = () => {
                 key={cardName}
                 count={combos.length}
               >
-                <div className="px-6 py-3">
+                <div className="p-3">
                   {combos.map((combo) => (
                     <Combo key={combo.id} deckData={deckData} combo={combo} />
                   ))}

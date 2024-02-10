@@ -28,7 +28,7 @@ export const Combo = ({ combo, initialExpanded }: props) => {
   return (
     <div className={`flex flex-col ${expanded ? "active" : ""} m-3`}>
       <div
-        className={`combo flex items-center px-5 py-5 cursor-pointer ${
+        className={`combo !rounded-b-none flex items-center p-3 lg:p-5 cursor-pointer ${
           expanded ? "active" : ""
         }`}
         onClick={() => setExpanded(!expanded)}
@@ -49,7 +49,7 @@ export const Combo = ({ combo, initialExpanded }: props) => {
               })}
             </div>
           </div>
-          <div className="flex flex-col basis-5/12 flex-1 min-w-72">
+          <div className="flex flex-col basis-5/12 flex-1 lg:min-w-72">
             <ul>
               {combo.produces.map((produces) => (
                 <li key={produces.id} className="list-item list-disc">
@@ -61,10 +61,10 @@ export const Combo = ({ combo, initialExpanded }: props) => {
         </div>
       </div>
       {expanded && (
-        <div className="tooltip mt-[-10px] p-6 justify-start border-t border-t-zinc-600 rounded-b-md flex flex-1">
+        <div className="tooltip p-5 lg:p-6 justify-start border-t border-t-zinc-600 rounded-b-md flex flex-1">
           <div className="flex flex-wrap gap-6 lg:gap-10 justify-between">
             {!!combo.otherPrerequisites.trim() && (
-              <div className="flex flex-col min-w-64 basis-5/12">
+              <div className="flex flex-col lg:min-w-64 basis-5/12">
                 <p className="subtitle text-lg mb-1">Prequisites</p>
                 <ul>
                   {combo.otherPrerequisites
@@ -81,7 +81,7 @@ export const Combo = ({ combo, initialExpanded }: props) => {
                 </ul>
               </div>
             )}
-            <div className="flex flex-col min-w-72 basis-1/2 flex-1">
+            <div className="flex flex-col md:min-w-72 basis-1/2 flex-1">
               <p className="subtitle is-5 mb-1">Steps</p>
               <ol>
                 {combo.description

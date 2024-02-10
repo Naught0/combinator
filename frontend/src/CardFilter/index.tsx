@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { deckDataAtom } from "../atoms";
+import { CardImage } from "../CardImage";
 import { HoverableCard } from "../HoverableCard";
 
 type ViewMode = "image" | "text";
@@ -45,7 +46,11 @@ export const CardFilter = () => {
           filteredCards.map((card) => {
             return (
               <div key={card.id} className="min-w-72 basis-1/5">
-                <HoverableCard cardName={card.name} display={viewMode} />
+                {viewMode === "text" ? (
+                  <HoverableCard cardName={card.name} />
+                ) : (
+                  <CardImage cardImage={card.image} />
+                )}
               </div>
             );
           })}

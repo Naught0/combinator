@@ -9,14 +9,6 @@ $family-sans-serif: "Inter", sans-serif
 $body-size: 16px
 $radius-large: 6px
 
-button,
-div,
-select,
-a,
-span,
-input
-  border-radius: 0 !important
-
 .section.fullheight
   min-height: calc(100vh - 3.25rem)
 
@@ -26,19 +18,8 @@ input
   font-family: "Josefin Sans", sans-serif
 
 .tooltip
-  background: $alabaster
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.5)
-  padding: 1.25rem !important
-  border-radius: $radius-large
-  border-bottom: 3px solid $mac
-  color: $smokey
-  ol, ul
-    margin-top: 0 !important
-    padding: 0
-  ol
-    margin-left: 1rem !important
-  ul
-    margin-left: 0.9rem !important
+  background: $smokey
+  color: $alabaster
 
 .tabs:not(.is-toggle)
   a
@@ -49,12 +30,11 @@ input
 
 .combo
   border-radius: $radius-large
+  transition: 0.1s ease all
   &:hover,
   &.active
     background: $smokey
     transition: 0.3s ease all
-  @media screen and (max-width: 1024px)
-    flex-direction: column
 
 .card-popup
   position: fixed

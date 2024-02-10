@@ -16,17 +16,17 @@ ${expanded ? "bg-[rgba(0,0,0,0.25)]" : "hover:bg-[rgba(0,0,0,0.15)]"}
       `}
     >
       <div
-        className={`flex flex-1 flex-row gap-3 p-5 cursor-pointer rounded-md `}
+        className={`flex flex-1 flex-row gap-3 p-5 cursor-pointer rounded-md items-center`}
         onClick={() => setExpanded(!expanded)}
       >
         <div>
           <FontAwesomeIcon
             icon={expanded ? faMinus : faPlus}
-            className="text-2xl"
+            className="text-base lg:text-2xl"
           />
         </div>
 
-        <div className="text-2xl select-none">
+        <div className="text-base md:text-lg lg:text-2xl select-none">
           Add{" "}
           <HoverableCard
             cardName={props.cardName}
@@ -35,7 +35,7 @@ ${expanded ? "bg-[rgba(0,0,0,0.25)]" : "hover:bg-[rgba(0,0,0,0.15)]"}
           ({props.count})
         </div>
       </div>
-      {expanded && <div className=" flex flex-col gap-6">{props.children}</div>}
+      {expanded && <div className="flex flex-col gap-6">{props.children}</div>}
     </div>
   );
 };

@@ -143,7 +143,7 @@ export const ComboContainer: FC = () => {
           </div>
         </div>
       </div>
-      <div className="tabs is-medium is-fullwidth mb-0">
+      <div className="tabs text-base md:text-lg lg:text-2xl is-fullwidth mb-0">
         <ul>
           <li className={`${tab === Tab.COMBOS ? "is-active" : ""}`}>
             <a role="button" onClick={() => setTab(Tab.COMBOS)}>

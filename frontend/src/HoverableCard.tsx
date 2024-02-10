@@ -30,8 +30,9 @@ export const HoverableCard = ({
         className={
           classNameOverride
             ? classNameOverride
-            : `tag is-clickable !text-base ${deckCard ? "is-dark" : "is-danger"
-            }`
+            : `tag is-clickable !text-base ${
+                deckCard ? "is-dark" : "is-danger"
+              }`
         }
         ref={setTriggerRef}
       >

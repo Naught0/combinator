@@ -59,7 +59,7 @@ export const Combo = ({ combo, initialExpanded }: props) => {
         </div>
       </div>
       {expanded && (
-        <div className="tooltip mt-[-10px] pl-6">
+        <div className="tooltip mt-[-10px] pl-6 border-t border-t-zinc-600">
           <div className="flex flex-row justify-evenly gap-3 max-w-3xl">
             {!!combo.otherPrerequisites.trim() && (
               <div className="flex flex-col basis-1/2 flex-1">

@@ -30,7 +30,7 @@ export const MissingCardAccordion = (props: {
           Add{" "}
           <HoverableCard
             cardName={props.cardName}
-            classNameOverride={"underline"}
+            classNameOverride={"underline underline-offset-8"}
           />{" "}
           ({props.count})
         </div>

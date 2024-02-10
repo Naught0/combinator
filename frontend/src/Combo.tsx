@@ -50,8 +50,8 @@ export const Combo = ({ combo, initialExpanded }: props) => {
           <div className="flex flex-col basis-1/2">
             <ul>
               {combo.produces.map((produces) => (
-                <li key={produces.id} className="list-item">
-                  - {produces.name}
+                <li key={produces.id} className="list-item list-disc">
+                  {produces.name}
                 </li>
               ))}
             </ul>

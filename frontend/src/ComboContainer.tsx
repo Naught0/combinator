@@ -70,28 +70,32 @@ export const ComboContainer: FC = () => {
         {noCombosFound && (
           <h1 className="text-2xl mt-6">❌ No combos matching search</h1>
         )}
-        {showGroups
-          ? Object.entries(groupedByMissing)
-            .sort(
-              ([, combosA], [, combosB]) => combosB.length - combosA.length,
-            )
-            .map(([cardName, combos]) => (
-              <MissingCardAccordion
-                cardName={cardName}
-                key={cardName}
-                count={combos.length}
-              >
-                <div className="p-3">
-                  {combos.map((combo) => (
-                    <Combo key={combo.id} deckData={deckData} combo={combo} />
-                  ))}
-                </div>
-              </MissingCardAccordion>
-            ))
-          : deckData &&
+        {showGroups ? (
+          <div className="flex flex-col gap-2">
+            {Object.entries(groupedByMissing)
+              .sort(
+                ([, combosA], [, combosB]) => combosB.length - combosA.length,
+              )
+              .map(([cardName, combos]) => (
+                <MissingCardAccordion
+                  cardName={cardName}
+                  key={cardName}
+                  count={combos.length}
+                >
+                  <div className="p-3">
+                    {combos.map((combo) => (
+                      <Combo key={combo.id} deckData={deckData} combo={combo} />
+                    ))}
+                  </div>
+                </MissingCardAccordion>
+              ))}
+          </div>
+        ) : (
+          deckData &&
           filteredCombos?.map((c) => (
             <Combo key={c.id} deckData={deckData} combo={c} />
-          ))}
+          ))
+        )}
       </div>
     );
   }, [

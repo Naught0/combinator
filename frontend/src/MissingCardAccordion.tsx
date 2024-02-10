@@ -11,12 +11,12 @@ export const MissingCardAccordion = (props: {
   const [expanded, setExpanded] = useState(false);
   return (
     <div
-      className={`flex basis-1/2 flex-col rounded-lg transition-colors p-5 ${
-        expanded ? "bg-[rgba(0,0,0,0.25)]" : "hover:bg-[rgba(0,0,0,0.15)]"
-      }`}
+      className={`flex basis-1/2 flex-col rounded-lg transition-colors
+${expanded ? "bg-[rgba(0,0,0,0.25)]" : "hover:bg-[rgba(0,0,0,0.15)]"}
+      `}
     >
       <div
-        className="flex flex-row gap-3 cursor-pointer items-center"
+        className={`flex flex-1 flex-row gap-3 p-5 cursor-pointer rounded-md `}
         onClick={() => setExpanded(!expanded)}
       >
         <div>

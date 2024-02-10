@@ -9,14 +9,6 @@ $family-sans-serif: "Inter", sans-serif
 $body-size: 16px
 $radius-large: 6px
 
-button,
-div,
-select,
-a,
-span,
-input
-  border-radius: 0
-
 .section.fullheight
   min-height: calc(100vh - 3.25rem)
 
@@ -27,16 +19,7 @@ input
 
 .tooltip
   background: $smokey
-  padding: 1.25rem !important
-  border-radius: 0 0 $radius-large $radius-large
   color: $alabaster
-  ol, ul
-    margin-top: 0 !important
-    padding: 0
-  ol
-    margin-left: 1rem !important
-  ul
-    margin-left: 0.9rem !important
 
 .tabs:not(.is-toggle)
   a
@@ -52,8 +35,6 @@ input
   &.active
     background: $smokey
     transition: 0.3s ease all
-  @media screen and (max-width: 1024px)
-    flex-direction: column
 
 .card-popup
   position: fixed

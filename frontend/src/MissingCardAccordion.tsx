@@ -16,7 +16,7 @@ ${expanded ? "bg-[rgba(0,0,0,0.25)]" : "hover:bg-[rgba(0,0,0,0.15)]"}
       `}
     >
       <div
-        className={`flex flex-1 flex-row gap-2 p-5 cursor-pointer rounded-md items-center`}
+        className={`flex flex-1 flex-row gap-3 p-5 cursor-pointer rounded-md items-center`}
         onClick={() => setExpanded(!expanded)}
       >
         <div>

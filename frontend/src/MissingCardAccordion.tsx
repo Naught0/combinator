@@ -11,7 +11,7 @@ export const MissingCardAccordion = (props: {
   const [expanded, setExpanded] = useState(false);
   return (
     <div
-      className={`flex basis-1/2 flex-col rounded-lg transition-colors
+      className={`flex basis-1/2 flex-col rounded-lg transition-colors rounded-t-none
 ${expanded ? "bg-[rgba(0,0,0,0.25)]" : "hover:bg-[rgba(0,0,0,0.15)]"}
       `}
     >

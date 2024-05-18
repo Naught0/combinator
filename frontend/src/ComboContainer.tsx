@@ -71,7 +71,7 @@ export const ComboContainer: FC = () => {
           <h1 className="text-2xl mt-6">❌ No combos matching search</h1>
         )}
         {showGroups ? (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 divide-y divide-zinc-500">
             {Object.entries(groupedByMissing)
               .sort(
                 ([, combosA], [, combosB]) => combosB.length - combosA.length,

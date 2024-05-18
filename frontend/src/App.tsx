@@ -79,17 +79,12 @@ export const App = () => {
     <React.Fragment>
       <ToastContainer theme="dark" />
       <div className="section fullheight">
-        <div className="level">
-          <div className="level-left">
-            <div className="level-item">
-              <img src={logo} alt="" width={64} />
-            </div>
-            <div className="level-item">
-              <span className="fancy title is-1">
-                infinite combos, finite brain cells
-              </span>
-            </div>
-          </div>
+        <div className="flex flex-row gap-5 lg:gap-8 items-center">
+          <img src={logo} alt="" className="w-16 lg:w-20 -rotate-[33.34deg]" />
+
+          <span className="fancy text-3xl lg:text-5xl">
+            infinite combos, finite brain cells
+          </span>
         </div>
         <div className="container mt-6">
           <SearchTypeSelector

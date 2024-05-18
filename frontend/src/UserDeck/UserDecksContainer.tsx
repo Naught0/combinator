@@ -50,6 +50,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     pageIndex: pageIndex,
     pageSize: pageSize,
   });
+  useEffect(function unsetDeck() {}, []);
 
   useEffect(() => {
     setPageIndex(0);
@@ -72,21 +73,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     if (n > totalPages - 1) return setPageIndex(totalPages - 1);
     setPageIndex(n);
   };
-
-  const pagination = useMemo(
-    () =>
-      totalPages > 1 && !currentDeck ? (
-        <div className="container my-2">
-          <Paginate
-            pageIndex={pageIndex}
-            setIndex={safelyChangePageIndex}
-            totalPages={pages.length}
-          />
-        </div>
-      ) : null,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pageIndex, totalPages, pages, currentDeck],
-  );
 
   return (
     <>
@@ -128,7 +114,15 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           </div>
         </div>
       )}
-      {pagination}
+      {!currentDeck && (
+        <div className="container my-2">
+          <Paginate
+            pageIndex={pageIndex}
+            setIndex={safelyChangePageIndex}
+            totalPages={pages.length}
+          />
+        </div>
+      )}
       {view === View.COMBO && currentDeck && deckData && comboData && (
         <ComboContainer />
       )}

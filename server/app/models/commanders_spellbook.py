@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Any
+from typing import Any, Optional
 from uuid import UUID
 
 
@@ -64,7 +64,7 @@ class AlmostIncluded(BaseModel):
     manaValueNeeded: int
     otherPrerequisites: str
     description: str
-    popularity: int
+    popularity: Optional[int]
     spoiler: bool
     legalities: Legalities
     prices: Prices

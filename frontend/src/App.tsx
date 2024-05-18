@@ -17,6 +17,8 @@ const parseMoxfieldUsername = (nameOrUrl: string): string => {
   return nameOrUrl.split("/").pop() ?? "";
 };
 
+const formTextClassName = "!text-base lg:!text-xl";
+
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [userName, setUserName] = useState("");
@@ -79,14 +81,18 @@ export const App = () => {
     <React.Fragment>
       <ToastContainer theme="dark" />
       <div className="section fullheight">
-        <div className="flex flex-row gap-5 lg:gap-8 items-center">
-          <img src={logo} alt="" className="w-16 lg:w-20 -rotate-[33.34deg]" />
+        <div className="container">
+          <div className="flex flex-row gap-5 lg:gap-8 items-center mb-6">
+            <img
+              src={logo}
+              alt=""
+              className="w-16 lg:w-20 -rotate-[33.34deg]"
+            />
 
-          <span className="fancy text-3xl lg:text-5xl">
-            infinite combos, finite brain cells
-          </span>
-        </div>
-        <div className="container mt-6">
+            <span className="fancy text-3xl md:text-4xl lg:text-5xl">
+              Infinite Combos. Finite Brain Cells.
+            </span>
+          </div>
           <SearchTypeSelector
             searchType={searchType}
             setSearchType={saveSearchType}
@@ -151,7 +157,7 @@ export const App = () => {
                     <>
                       <input
                         type="text"
-                        className={`input is-medium ${
+                        className={`input ${formTextClassName} is-medium ${
                           comboError ? "is-danger" : ""
                         }`}
                         placeholder="Archidekt, Moxfield, or MTGGoldfish deck URL"
@@ -169,7 +175,7 @@ export const App = () => {
                 <div className="field">
                   <div className="buttons has-addons">
                     <button
-                      className={`button is-primary is-medium wowee-that-is-a-nice-button ${
+                      className={`button ${formTextClassName} is-primary is-medium wowee-that-is-a-nice-button ${
                         fetching && "is-loading"
                       }`}
                       disabled={
@@ -179,7 +185,7 @@ export const App = () => {
                       }
                       type="submit"
                     >
-                      <span>think for me</span>
+                      <span>Think for me</span>
                       <span className="icon">
                         <FontAwesomeIcon icon={faArrowRight} />
                       </span>

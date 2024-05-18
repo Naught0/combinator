@@ -28,7 +28,7 @@ export const Combo = ({ combo, initialExpanded }: props) => {
   return (
     <div className={`flex flex-col ${expanded ? "active" : ""} m-3`}>
       <div
-        className={`combo !rounded-b-none flex items-center p-3 lg:p-5 cursor-pointer ${
+        className={`combo flex items-center p-3 lg:p-5 cursor-pointer ${
           expanded ? "active" : ""
         }`}
         onClick={() => setExpanded(!expanded)}
@@ -61,7 +61,7 @@ export const Combo = ({ combo, initialExpanded }: props) => {
         </div>
       </div>
       {expanded && (
-        <div className="tooltip p-5 lg:p-6 justify-start border-t border-t-zinc-600 rounded-b-md flex flex-1">
+        <div className="tooltip p-5 lg:p-6 justify-start border-t border-t-zinc-600 flex flex-1">
           <div className="flex flex-wrap gap-6 lg:gap-10 justify-between">
             {!!combo.otherPrerequisites.trim() && (
               <div className="flex flex-col lg:min-w-64 basis-5/12">

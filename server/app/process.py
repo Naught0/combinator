@@ -97,7 +97,7 @@ def get_goldfish_deck(url: str) -> Deck:
     author = soup.span.text[3:]
     title = soup.title.text.split("by ")[0]
     resp = requests.get(download_url.format(deck_id)).text
-    cards = list(set([re.findall("\D+", x)[0].strip() for x in resp.split("\n") if x]))
+    cards = list(set([re.findall(r"\D+", x)[0].strip() for x in resp.split("\n") if x]))
 
     return Deck(
         meta={"name": title, "author": author, "url": url, "colors": []}, cards=cards

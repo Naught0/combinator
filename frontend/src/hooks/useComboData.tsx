@@ -64,7 +64,7 @@ export const useFilteredCombos = ({ combos }: { combos: AlmostIncluded[] }) => {
         u.card?.name.toLowerCase().includes(f),
       );
       const inProduces = c.produces.some((p) =>
-        p.name?.toLowerCase().includes(f),
+        p.feature.name?.toLowerCase().includes(f),
       );
 
       return inMeta || inCards || inProduces;

@@ -2,14 +2,9 @@ import { createPortal } from "react-dom";
 import { usePopperTooltip } from "react-popper-tooltip";
 import { useRecoilValue } from "recoil";
 import { deckDataAtom } from "./atoms";
+import { Tag } from "./Tag";
 
-export const HoverableCard = ({
-  cardName,
-  classNameOverride,
-}: {
-  cardName: string;
-  classNameOverride?: string;
-}) => {
+export const HoverableCard = ({ cardName }: { cardName: string }) => {
   const deckData = useRecoilValue(deckDataAtom);
   const deckCard = deckData?.cards.find((dc) => dc.name === cardName);
   const cardImage =
@@ -26,18 +21,7 @@ export const HoverableCard = ({
     });
   return (
     <>
-      <span
-        className={
-          classNameOverride
-            ? classNameOverride
-            : `tag is-clickable !text-base ${
-                deckCard ? "is-dark" : "is-danger"
-              }`
-        }
-        ref={setTriggerRef}
-      >
-        {cardName}
-      </span>
+      <Tag ref={setTriggerRef}>{cardName}</Tag>
       {visible &&
         createPortal(
           <div className="bg-transparent rounded-2xl">

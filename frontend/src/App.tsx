@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Footer } from "./Footer";
@@ -6,7 +6,6 @@ import logo from "./images/logo.svg";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
 import { UserDecksContainer } from "./UserDeck/UserDecksContainer";
-import { cachedClient } from "./services/cachedRequest";
 import "./style/rainbow-button.sass";
 import { useComboData } from "./hooks/useComboData";
 import { Form } from "./Form";
@@ -31,8 +30,8 @@ export const App = () => {
   return (
     <React.Fragment>
       <ToastContainer theme="dark" />
-      <div className="section fullheight">
-        <div className="container">
+      <main className="bg-zinc-900 text-zinc-200 flex flex-col min-h-screen p-6 items-center">
+        <div className="lg:max-w-screen-lg pb-24">
           <div className="flex flex-row gap-5 lg:gap-8 items-center mb-6">
             <img
               src={logo}
@@ -64,7 +63,7 @@ export const App = () => {
             <UserDecksContainer decks={userDeckData} />
           )}
         </div>
-      </div>
+      </main>
       <Footer />
     </React.Fragment>
   );

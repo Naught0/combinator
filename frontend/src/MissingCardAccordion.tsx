@@ -27,12 +27,7 @@ ${expanded ? "bg-[rgba(0,0,0,0.25)]" : "hover:bg-[rgba(0,0,0,0.15)]"}
         </div>
 
         <div className="text-base md:text-lg lg:text-2xl select-none">
-          Add{" "}
-          <HoverableCard
-            cardName={props.cardName}
-            classNameOverride={"underline underline-offset-8"}
-          />{" "}
-          ({props.count})
+          Add <HoverableCard cardName={props.cardName} /> ({props.count})
         </div>
       </div>
       {expanded && <div className="flex flex-col">{props.children}</div>}

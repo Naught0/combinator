@@ -41,7 +41,7 @@ export const Combo = ({ combo, initialExpanded }: props) => {
         </div>
         <div className="flex items-center px-3 flex-1 flex-wrap gap-6 lg:gap-10">
           <div className="flex flex-col basis-5/12 flex-1">
-            <div className="tags are-medium">
+            <div className="inline-flex gap-1 flex-wrap">
               {combo.uses.map((used) => {
                 return (
                   <HoverableCard key={used.card.id} cardName={used.card.name} />
@@ -65,7 +65,7 @@ export const Combo = ({ combo, initialExpanded }: props) => {
           <div className="flex flex-wrap gap-6 lg:gap-10 justify-between">
             {!!combo.otherPrerequisites.trim() && (
               <div className="flex flex-col lg:min-w-64 basis-5/12">
-                <p className="subtitle text-lg mb-1">Prequisites</p>
+                <p className="subtitle text-lg mb-1">Prerequisites</p>
                 <ul>
                   {combo.otherPrerequisites
                     .split(".")

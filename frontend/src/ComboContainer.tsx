@@ -7,6 +7,7 @@ import { CardFilter } from "./CardFilter";
 import { Combo } from "./Combo";
 import { useFilteredCombos } from "./hooks/useComboData";
 import { Hyperlink } from "./Hyperlink";
+import { Input } from "./Input";
 import { MissingCardAccordion } from "./MissingCardAccordion";
 import { copyToClipboardAndToast } from "./util";
 
@@ -53,11 +54,12 @@ export const ComboContainer: FC = () => {
     return (
       <div className={"flex flex-col gap-6 flex-1"}>
         <div className="flex gap-6 flex-col">
-          <input
-            className="input is-medium"
+          <Input
             placeholder="Filter combos by keyword or card name"
             value={filter}
-            onChange={({ target }) => setFilter(target.value)}
+            onChange={({ target }) =>
+              setFilter((target as HTMLInputElement).value)
+            }
           />
         </div>
         {noCombos && (
@@ -110,7 +112,7 @@ export const ComboContainer: FC = () => {
     <>
       <div className="flex mt-4">
         <div className="is-flex is-flex-grow-1 is-flex-direction-column">
-          <h1 className="title">
+          <h1 className="font-serif">
             {deckData?.meta?.url && (
               <Hyperlink href={deckData?.meta.url}>
                 {deckData?.meta.name}

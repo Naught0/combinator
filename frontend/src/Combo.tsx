@@ -42,18 +42,19 @@ export const Combo = ({ combo, initialExpanded }: props) => {
         <div className="flex items-center px-3 flex-1 flex-wrap gap-6 lg:gap-10">
           <div className="flex flex-col basis-5/12 flex-1">
             <div className="tags are-medium">
-              {combo.uses.map((used) => {
-                return (
-                  <HoverableCard key={used.card.id} cardName={used.card.name} />
-                );
-              })}
+              {combo.uses
+                .filter((used) => !!used.card)
+                .map((used) => {
+                  const card = used.card as Card;
+                  return <HoverableCard key={card.id} cardName={card.name} />;
+                })}
             </div>
           </div>
           <div className="flex flex-col basis-5/12 flex-1 lg:min-w-72">
             <ul>
               {combo.produces.map((produces) => (
-                <li key={produces.id} className="list-item list-disc">
-                  {produces.name}
+                <li key={produces.feature.id} className="list-item list-disc">
+                  {produces.feature.name}
                 </li>
               ))}
             </ul>

@@ -5,7 +5,7 @@ export const deckDataAtom = atom<DeckData | undefined>({
   default: undefined,
 });
 
-export const comboDataAtom = atom<ComboData | undefined>({
+export const comboDataAtom = atom<Results | undefined>({
   key: "ComboData",
   default: undefined,
 });

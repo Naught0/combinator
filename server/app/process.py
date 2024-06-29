@@ -1,8 +1,10 @@
 import re
-from typing import Dict, List, Literal
+from typing import Dict, Generator, List, Literal
 from urllib.parse import urlparse
+from typing import Set, List
 
 import backoff
+import pandas as pd
 import requests
 from app.models.api import Deck
 from bs4 import BeautifulSoup
@@ -12,7 +14,7 @@ COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
 CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 
-def chunk_array(lst: list, n: int) -> List[List[any]]:
+def chunk_array(lst: list, n: int) -> Generator[any, any, any]:
     """https://www.geeksforgeeks.org/break-list-chunks-size-n-python/
 
     Args:
@@ -184,3 +186,30 @@ def get_scryfall_cards(
         ret.extend(scryfall_request(chunk))
 
     return ret
+
+
+def find_matches(data: List[dict], to_match: Set[str], identity: List[str]):
+    identity = set(identity)
+    db = pd.DataFrame(data)
+    one_match = find_near_matches(db, to_match, identity)
+    return {
+        "combos": db[db["c"].apply(lambda x: set(x).issubset(to_match))].to_dict(
+            "records"
+        ),
+        "one": one_match,
+    }
+
+
+def find_near_matches(
+    db: pd.DataFrame, to_match: Set[str], identity: List[str]
+) -> List[dict]:
+    identity = set(identity)
+    to_match = set(to_match)
+    in_color = db[db["i"].apply(lambda x: set(x.split(",")) == set(identity))]
+    one = in_color[
+        db["c"].apply(
+            lambda x: (len(set(x) & to_match) > 1) and (len(set(x) - to_match) == 1)
+        )
+    ].to_dict("records")
+
+    return one

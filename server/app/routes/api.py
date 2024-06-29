@@ -1,3 +1,4 @@
+import json
 import traceback
 
 import requests
@@ -5,6 +6,7 @@ from app.models.api import ComboSearchPayload, Deck, UserSearchRequest
 from app.models.commanders_spellbook import Results
 from app.models.moxfield import MoxfieldDeck
 from app.process import (
+    find_matches,
     get_archidekt_deck,
     get_goldfish_deck,
     get_moxfield_deck,
@@ -14,6 +16,9 @@ from app.user import MoxfieldError, get_moxfield_user_decks
 from fastapi import APIRouter, HTTPException
 
 router = APIRouter(prefix="/api/search")
+
+with open("./app/data/combos.json") as f:
+    COMBO_DATA = json.load(f)
 
 
 @router.post("/combo", response_model=Results)
@@ -45,7 +50,7 @@ def deck_search(url: str):
         traceback.print_exc()
         raise HTTPException(status_code=404, detail="Deck not found")
 
-    return deck
+    return find_matches(COMBO_DATA, set(deck.cards), deck.meta.colors)
 
 
 @router.post("/user", response_model=list[MoxfieldDeck])

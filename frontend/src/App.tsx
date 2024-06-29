@@ -58,7 +58,10 @@ export const App = () => {
     setLoadingUser(true);
     try {
       const data = await (
-        await cachedClient.post("/api/search/user", { userName })
+        await cachedClient.post(
+          import.meta.env.VITE_GCLOUD_URL + "/api/search/user",
+          { userName },
+        )
       ).data;
       setUserDeckData(data);
     } catch (e) {

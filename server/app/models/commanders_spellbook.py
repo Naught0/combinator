@@ -1,87 +1,103 @@
+from __future__ import annotations
+
 from pydantic import BaseModel
-from typing import Any, Optional
+from typing import List, Any
 from uuid import UUID
-
-
-class Card(BaseModel):
-    id: int
-    name: str
-    oracleId: UUID
-    spoiler: bool
-
-
-class Use(BaseModel):
-    card: Card
-    zoneLocations: list[str]
-    battlefieldCardState: str
-    exileCardState: str
-    libraryCardState: str
-    graveyardCardState: str
-    mustBeCommander: bool
-
 
 class IncludeOrOf(BaseModel):
     id: int
 
-
-class Produce(BaseModel):
+class Card(BaseModel):
     id: int
     name: str
-    description: str
+    spoiler: bool
+    oracleId: UUID
 
-
-class Legalities(BaseModel):
-    commander: bool
-    pauperCommanderMain: bool
-    pauperCommander: bool
-    oathbreaker: bool
-    predh: bool
-    brawl: bool
-    vintage: bool
-    legacy: bool
-    modern: bool
-    pioneer: bool
-    standard: bool
-    pauper: bool
-
+class Use(BaseModel):
+    card: Card
+    quantity: int
+    zoneLocations: List[str]
+    exileCardState: str
+    mustBeCommander: bool
+    libraryCardState: str
+    graveyardCardState: str
+    battlefieldCardState: str
 
 class Prices(BaseModel):
     tcgplayer: str
-    cardkingdom: str
     cardmarket: str
+    cardkingdom: str
 
+class Feature(BaseModel):
+    id: int
+    name: str
+    uncountable: bool
 
-class AlmostIncluded(BaseModel):
+class Produce(BaseModel):
+    feature: Feature
+    quantity: int
+
+class Template(BaseModel):
+    id: int
+    name: str
+    scryfallApi: str
+    scryfallQuery: str
+
+class Require(BaseModel):
+    quantity: int
+    template: Template
+    zoneLocations: List[str]
+    exileCardState: str
+    mustBeCommander: bool
+    libraryCardState: str
+    graveyardCardState: str
+    battlefieldCardState: str
+
+class Legalities(BaseModel):
+    brawl: bool
+    predh: bool
+    legacy: bool
+    modern: bool
+    pauper: bool
+    pioneer: bool
+    vintage: bool
+    standard: bool
+    commander: bool
+    oathbreaker: bool
+    pauperCommander: bool
+    pauperCommanderMain: bool
+
+class IncludedOrAlmostIncludedOrAlmostIncludedByAddingColor(BaseModel):
     id: str
+    of: List[IncludeOrOf]
+    uses: List[Use]
+    notes: str
+    prices: Prices
     status: str
-    uses: list[Use]
-    requires: list[Any]
-    produces: list[Produce]
-    of: list[IncludeOrOf]
-    includes: list[IncludeOrOf]
+    spoiler: bool
     identity: str
+    includes: List[IncludeOrOf]
+    produces: List[Produce]
+    requires: List[Require]
+    legalities: Legalities
+    popularity: int
+    description: str
     manaNeeded: str
+    variantCount: int
     manaValueNeeded: int
     otherPrerequisites: str
-    description: str
-    popularity: Optional[int]
-    spoiler: bool
-    legalities: Legalities
-    prices: Prices
-
 
 class Results(BaseModel):
     identity: str
-    included: list[AlmostIncluded]
-    includedByChangingCommanders: list[Any]
-    almostIncluded: list[AlmostIncluded]
-    almostIncludedByAddingColors: list[AlmostIncluded]
-    almostIncludedByChangingCommanders: list[AlmostIncluded]
-    almostIncludedByAddingColorsAndChangingCommanders: list[AlmostIncluded]
-
+    included: List[IncludedOrAlmostIncludedOrAlmostIncludedByAddingColor]
+    includedByChangingCommanders: List[Any]
+    almostIncluded: List[IncludedOrAlmostIncludedOrAlmostIncludedByAddingColor]
+    almostIncludedByAddingColors: List[IncludedOrAlmostIncludedOrAlmostIncludedByAddingColor]
+    almostIncludedByChangingCommanders: List[Any]
+    almostIncludedByAddingColorsAndChangingCommanders: List[Any]
 
 class SearchResponse(BaseModel):
     count: int
-    next: str | None
-    previous: str | None
+    next: None
+    previous: None
     results: Results

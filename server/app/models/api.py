@@ -4,10 +4,13 @@ from pydantic import BaseModel, Field
 class UserSearchRequest(BaseModel):
     user_name: str = Field(..., alias="userName")
 
+class Card(BaseModel):
+    card: str
+    quantity: int
 
 class ComboSearchPayload(BaseModel):
-    main: list[str]
-    commanders: list[str]
+    main: list[Card]
+    commanders: list[Card]
 
 
 class DeckMeta(BaseModel):

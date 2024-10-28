@@ -32,7 +32,7 @@ export const useComboData = () => {
     if (deckResp?.cards)
       setComboData(
         await getComboData({
-          main: deckResp.cards.map((c) => c.name),
+          main: deckResp.cards.map(({ name }) => ({ card: name, quantity: 1 })),
           commanders: [],
         }),
       );

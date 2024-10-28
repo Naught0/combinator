@@ -10,12 +10,16 @@ export const getDeckData = async (url: string): Promise<DeckData> => {
   return data;
 };
 
+type Card = {
+  card: string;
+  quantity: number;
+};
 export const getComboData = async (json: {
-  main: string[];
-  commanders: string[];
+  main: Card[];
+  commanders: Card[];
 }): Promise<Results> => {
   const { data } = await cachedClient.post<Results>(
-    import.meta.env.VITE_WORKER_URL,
+    import.meta.env.VITE_GCLOUD_URL + "/api/search/combo",
     json,
     {
       headers: { "Content-Type": "application/json" },

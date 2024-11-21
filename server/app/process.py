@@ -1,5 +1,5 @@
 import re
-from typing import Dict, List, Literal
+from typing import Dict, Literal
 from urllib.parse import urlparse
 
 import backoff

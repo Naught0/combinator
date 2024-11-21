@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { SortDirection } from "../UserDeck/util/sort";
+import fuzzysort from "fuzzysort";
 
 interface props {
   decks: Deck[];
@@ -17,22 +18,11 @@ export const sortAndFilterUserDecks = ({
   formatFilter,
   isLegal,
 }: props): Deck[] => {
-  const pattern = /[^\w]+/g;
-  let ret = [];
-  for (const deck of decks) {
-    if (
-      titleFilter &&
-      !deck.name.replaceAll(pattern, "").toLowerCase().includes(titleFilter)
-    )
-      continue;
-    if (
-      formatFilter &&
-      !(deck.format.toLowerCase() === formatFilter.toLowerCase())
-    )
-      continue;
-    ret.push(deck);
-  }
-
+  let ret = titleFilter
+    ? fuzzysort
+        .go(titleFilter, decks, { key: "name", threshold: 0.5 })
+        .map((res) => res.obj)
+    : decks;
   if (isLegal !== null) {
     ret = ret.filter((deck) => deck.isLegal === isLegal);
   }

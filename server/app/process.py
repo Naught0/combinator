@@ -14,7 +14,7 @@ COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
 CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 
-def chunk_array(lst: list, n: int) -> List[List[any]]:
+def chunk_array(lst: list, n: int):
     """https://www.geeksforgeeks.org/break-list-chunks-size-n-python/
 
     Args:
@@ -179,7 +179,7 @@ def scryfall_request(card_names: list[str]) -> list[dict]:
 
     try:
         resp.raise_for_status()
-    except requests.HTTPError as e:
+    except requests.HTTPError:
         logger.error(
             f"Scryfall request failed with status {resp.status_code}:\n{resp.json()}"
         )

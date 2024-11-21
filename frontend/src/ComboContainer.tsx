@@ -120,7 +120,7 @@ export const ComboContainer: FC = () => {
             )}
           </h1>
           <p className="subtitle mb-2">by {deckData?.meta.author}</p>
-          {(allCombos?.included?.length ?? -1 > 0) && (
+          {(allCombos?.included?.length ?? -1) > 0 && (
             <p className="help">
               Click a combo to see its prerequisites and steps
             </p>

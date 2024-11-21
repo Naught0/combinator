@@ -4,7 +4,9 @@ from urllib.parse import urlparse
 
 import backoff
 import requests
+from app.const import ACCEPT, USER_AGENT
 from app.models.api import Deck
+from app.logs import logger
 from bs4 import BeautifulSoup
 
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
@@ -81,7 +83,7 @@ def get_goldfish_deck(url: str) -> Deck:
     Returns:
         dict
     """
-    parsed = urlparse(url)
+    parsed = urlparse(url, allow_fragments=True)
     download_url = "https://www.mtggoldfish.com/deck/download/{}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36",
@@ -93,7 +95,18 @@ def get_goldfish_deck(url: str) -> Deck:
     except IndexError:
         raise ValueError("Invalid or malformed URL supplied.")
 
-    soup = BeautifulSoup(requests.get(url, headers=headers).text, "lxml")
+    url = (
+        f"{'https://' if not parsed.scheme else ''}"
+        f"{'www.' if not (parsed.netloc or parsed.path).startswith('www.') else ''}"
+        f"{parsed.geturl()}"
+    )
+    soup = BeautifulSoup(
+        requests.get(
+            url,
+            headers=headers,
+        ).text,
+        "lxml",
+    )
     author = soup.span.text[3:]
     title = soup.title.text.split("by ")[0]
     resp = requests.get(download_url.format(deck_id)).text
@@ -141,7 +154,12 @@ def get_archidekt_deck(url: str) -> Deck:
     )
 
 
-@backoff.on_exception(backoff.expo, requests.RequestException, max_tries=3)
+@backoff.on_exception(
+    backoff.expo,
+    requests.RequestException,
+    max_tries=3,
+    giveup=lambda x: x.status_code != 429 or x.status,
+)
 def scryfall_request(card_names: list[str]) -> list[dict]:
     """Takes a list of card names and spits out a dict w/ images.
     Respects 429 ratelimiting
@@ -155,8 +173,18 @@ def scryfall_request(card_names: list[str]) -> list[dict]:
     ret = []
     resp = requests.post(
         "https://api.scryfall.com/cards/collection",
-        json={"identifiers": [{"name": n} for n in card_names]},
+        json={"identifiers": [{"name": n} for n in card_names if n]},
+        headers={"User-Agent": USER_AGENT, "Accept": ACCEPT},
     )
+
+    try:
+        resp.raise_for_status()
+    except requests.HTTPError as e:
+        logger.error(
+            f"Scryfall request failed with status {resp.status_code}:\n{resp.json()}"
+        )
+        raise
+
     data = resp.json()["data"]
     for card in data:
         if "image_uris" not in card:
@@ -178,7 +206,7 @@ def get_scryfall_cards(
     card_names: list[str],
 ) -> list[Dict[Literal["id", "oracle_text", "name", "image"], str]]:
     # Respect scryfall API
-    card_chunks = list(chunk_array(card_names, 75))
+    card_chunks = chunk_array(card_names, 75)
     ret = []
     for chunk in card_chunks:
         ret.extend(scryfall_request(chunk))

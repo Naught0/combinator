@@ -5,7 +5,7 @@ const instance = axios.create();
 const cachedClient = setupCache(instance, {
   methods: ["post", "get"],
   interpretHeader: true,
-  ttl: 3 * 60 * 1000, // 3 min cache
+  ttl: 1 * 60 * 1000, // 1 min cache
 });
 
 export { cachedClient };

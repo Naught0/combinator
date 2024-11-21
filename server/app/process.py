@@ -4,10 +4,11 @@ from urllib.parse import urlparse
 
 import backoff
 import requests
-from app.const import ACCEPT, USER_AGENT
-from app.models.api import Deck
-from app.logs import logger
 from bs4 import BeautifulSoup
+
+from app.const import ACCEPT, USER_AGENT
+from app.logs import logger
+from app.models.api import Deck
 
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
@@ -83,23 +84,18 @@ def get_goldfish_deck(url: str) -> Deck:
     Returns:
         dict
     """
-    parsed = urlparse(url, allow_fragments=True)
+    url_parts = url.split("/")
+    deck_id = url_parts[url_parts.index("deck") + 1]
+    if not all(substr in url for substr in ("www.", "https")):
+        url = f"https://www.mtggoldfish.com/deck/{deck_id}"
+
     download_url = "https://www.mtggoldfish.com/deck/download/{}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36",
         "Accept": "text/html",
         "Accept-Language": "en-US",
     }
-    try:
-        deck_id = parsed.path.split("/")[-1]
-    except IndexError:
-        raise ValueError("Invalid or malformed URL supplied.")
 
-    url = (
-        f"{'https://' if not parsed.scheme else ''}"
-        f"{'www.' if not (parsed.netloc or parsed.path).startswith('www.') else ''}"
-        f"{parsed.geturl()}"
-    )
     soup = BeautifulSoup(
         requests.get(
             url,

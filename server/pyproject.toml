@@ -12,6 +12,7 @@ dependencies = [
     "fastapi<1.0.0,>=0.108.0",
     "uvicorn[standard]<1.0.0,>=0.25.0",
     "uvicorn-worker<1.0.0,>=0.2.0",
+    "sentry-sdk[fastapi]>=2.19.0",
 ]
 name = "combinator"
 version = "0.1.5"

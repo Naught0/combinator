@@ -160,7 +160,7 @@ wheels = [
 [[package]]
 name = "combinator"
 version = "0.1.5"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "backoff" },
     { name = "beautifulsoup4" },
@@ -168,6 +168,7 @@ dependencies = [
     { name = "fastapi" },
     { name = "gunicorn" },
     { name = "requests" },
+    { name = "sentry-sdk", extra = ["fastapi"] },
     { name = "uvicorn", extra = ["standard"] },
     { name = "uvicorn-worker" },
 ]
@@ -185,6 +186,7 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.108.0,<1.0.0" },
     { name = "gunicorn", specifier = ">=20.1.0,<21.0.0" },
     { name = "requests", specifier = ">=2.27.1,<3.0.0" },
+    { name = "sentry-sdk", extras = ["fastapi"], specifier = ">=2.19.0" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.25.0,<1.0.0" },
     { name = "uvicorn-worker", specifier = ">=0.2.0,<1.0.0" },
 ]
@@ -445,6 +447,24 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760", size = 131218 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f9/9b/335f9764261e915ed497fcdeb11df5dfd6f7bf257d4a6a2a686d80da4d54/requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6", size = 64928 },
+]
+
+[[package]]
+name = "sentry-sdk"
+version = "2.19.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "certifi" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a2/0e/cc0e60f0e0cfd5a9e42622ff5a227301c6475a56bcfa82e8e893bc209f20/sentry_sdk-2.19.0.tar.gz", hash = "sha256:ee4a4d2ae8bfe3cac012dcf3e4607975904c137e1738116549fc3dbbb6ff0e36", size = 298045 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c6/6b/191ca63f05d3ecc7600b5b3abd493a4c1b8468289c9737a7735ade1fedca/sentry_sdk-2.19.0-py2.py3-none-any.whl", hash = "sha256:7b0b3b709dee051337244a09a30dbf6e95afe0d34a1f8b430d45e0982a7c125b", size = 322158 },
+]
+
+[package.optional-dependencies]
+fastapi = [
+    { name = "fastapi" },
 ]
 
 [[package]]

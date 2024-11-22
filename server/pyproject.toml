@@ -15,7 +15,7 @@ dependencies = [
     "sentry-sdk[fastapi]>=2.19.0",
 ]
 name = "combinator"
-version = "0.1.5"
+version = "0.1.6"
 description = ""
 
 [dependency-groups]

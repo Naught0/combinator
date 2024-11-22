@@ -1,27 +1,23 @@
-[tool.poetry]
+[project]
+authors = [
+    {name = "James", email = "4589250+Naught0@users.noreply.github.com"},
+]
+requires-python = "<4.0,>=3.10"
+dependencies = [
+    "requests<3.0.0,>=2.27.1",
+    "gunicorn<21.0.0,>=20.1.0",
+    "bs4<1.0.0,>=0.0.1",
+    "beautifulsoup4<5.0.0,>=4.10.0",
+    "backoff<3.0.0,>=2.2.1",
+    "fastapi<1.0.0,>=0.108.0",
+    "uvicorn[standard]<1.0.0,>=0.25.0",
+    "uvicorn-worker<1.0.0,>=0.2.0",
+]
 name = "combinator"
-version = "0.1.0"
+version = "0.1.5"
 description = ""
-authors = ["James <4589250+Naught0@users.noreply.github.com>"]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-requests = "^2.27.1"
-gunicorn = "^20.1.0"
-bs4 = "^0.0.1"
-beautifulsoup4 = "^4.10.0"
-lxml = "^4.9.1"
-backoff = "^2.2.1"
-fastapi = "^0.108.0"
-uvicorn = {extras = ["standard"], version = "^0.25.0"}
-uvicorn-worker = "^0.2.0"
-
-[tool.poetry.dev-dependencies]
-black = {version = "^22.1.0", allow-prereleases = true}
-
-[tool.poetry.group.dev.dependencies]
-isort = "^5.13.2"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "isort<6.0.0,>=5.13.2",
+]

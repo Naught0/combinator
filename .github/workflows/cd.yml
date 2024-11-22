@@ -40,6 +40,7 @@ jobs:
       - name: Restart services
         run: |
           cd combinator
+          git pull
           docker compose up -d
       - name: Cleanup temp files
         run: rm /tmp/combinator.tar

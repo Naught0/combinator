@@ -35,8 +35,9 @@ jobs:
           scp combinator.tar server:/tmp/combinator.tar
       - name: Load container
         run: |
-          ssh server
+          ssh server << 'ENDSSH'
           docker load -i /tmp/combinator.tar
+          ENDSSH
       - name: Restart services
         run: |
           cd combinator

@@ -37,6 +37,10 @@ jobs:
         run: |
           ssh server
           docker load -i /tmp/combinator.tar
+      - name: Restart services
+        run: |
           cd combinator
           docker compose up -d
+      - name: Cleanup temp files
+        run: rm /tmp/combinator.tar
           

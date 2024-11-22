@@ -15,6 +15,10 @@ jobs:
       - name: Docker Export
         run: docker save -o combinator.tar combinator:latest
       - name: SSH Setup
+        env:
+          SSH_USER: ${{ secrets.SERVER_SSH_USER }}
+          SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          SSH_HOST: ${{ secrets.SERVER_SSH_HOST }}
         run: |
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/server.key
@@ -26,10 +30,6 @@ jobs:
             IdentityFile ~/.ssh/server.key
             StrictHostKeyChecking no
           END
-        env:
-          SSH_USER: ${{ secrets.SERVER_SSH_USER }}
-          SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          SSH_HOST: ${{ secrets.SERVER_SSH_HOST }} 
       - name: Copy container to server
         run: |
           scp combinator.tar server:/tmp/combinator.tar

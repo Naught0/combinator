@@ -1,7 +1,7 @@
 import requests
 
+from app.const import USER_AGENT
 from app.models.moxfield import MoxfieldDeck, UserDecksResponse
-from app.process import CHROME_USER_AGENT
 
 
 class MoxfieldError(Exception):
@@ -19,10 +19,10 @@ def get_moxfield_user_decks(user_name: str) -> list[MoxfieldDeck]:
     while True:
         resp = requests.get(
             f"https://api2.moxfield.com/v2/users/{user_name}/decks",
-            params={"pageNumber": page, "pageSize": 100},
+            params={"pageNumber": page, "pageSize": 50},
             headers={
                 "Content-Type": "application/json",
-                "User-Agent": CHROME_USER_AGENT,
+                "User-Agent": USER_AGENT,
             },
         )
         data = UserDecksResponse(**resp.json())

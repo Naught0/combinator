@@ -12,7 +12,6 @@ from app.models.api import Deck
 
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
-CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 
 def chunk_array(lst: list, n: int):
@@ -49,7 +48,7 @@ def get_moxfield_deck(url: str) -> Deck:
         raise ValueError("Invalid or malformed URL supplied.")
 
     resp = requests.get(
-        MOXFIELD_BASE_URL.format(deck_id), headers={"User-Agent": CHROME_USER_AGENT}
+        MOXFIELD_BASE_URL.format(deck_id), headers={"User-Agent": USER_AGENT}
     )
     resp = resp.json()
     return Deck(

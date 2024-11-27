@@ -3,6 +3,7 @@ import traceback
 import requests
 from fastapi import APIRouter, HTTPException
 
+from app.const import USER_AGENT
 from app.models.api import ComboSearchPayload, Deck, UserSearchRequest
 from app.models.commanders_spellbook import Results
 from app.models.moxfield import MoxfieldDeck
@@ -22,6 +23,7 @@ def combo_search(data: ComboSearchPayload):
     return requests.get(
         "https://backend.commanderspellbook.com/find-my-combos",
         json=data.model_dump(mode="json"),
+        headers={"User-Agent": USER_AGENT},
     ).json()["results"]
 
 

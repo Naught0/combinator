@@ -1,4 +1,4 @@
-FROM python:3.10-alpine
+FROM python:3.12-alpine
 WORKDIR /app
 COPY server/ .
 RUN pip install --no-cache-dir -r requirements.txt

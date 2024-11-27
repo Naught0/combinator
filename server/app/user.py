@@ -8,6 +8,10 @@ class MoxfieldError(Exception):
     pass
 
 
+class NoDecksFoundError(MoxfieldError):
+    pass
+
+
 def get_moxfield_user_decks(user_name: str) -> list[MoxfieldDeck]:
     decks = []
 
@@ -25,7 +29,7 @@ def get_moxfield_user_decks(user_name: str) -> list[MoxfieldDeck]:
         page += 1
 
         if data.total_results == 0:
-            raise MoxfieldError(f"User {user_name} does not have any decks")
+            raise NoDecksFoundError(f"User {user_name} does not have any decks")
 
         decks.extend(data.data)
 

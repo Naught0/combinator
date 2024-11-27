@@ -2,7 +2,7 @@
 /**
  * @type {import("eslint").Linter.Config}
  */
-export default [
+const config = [
   {
     extends: [
       "eslint:recommended",

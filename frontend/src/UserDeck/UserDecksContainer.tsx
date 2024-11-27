@@ -36,7 +36,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
     return formats;
   }, [decks]);
-  const { get, deckData, comboData, isLoading } = useComboData();
+  const { getUrl, deckData, comboData, isLoading } = useComboData();
   const filteredSortedDecks = useFilteredDeck({
     decks,
     sortBy,
@@ -64,7 +64,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const setDeck = async (deck: Deck) => {
     setCurrentDeck(deck);
     setView(View.COMBO);
-    await get(deck.publicUrl);
+    await getUrl(deck.publicUrl);
   };
 
   const safelyChangePageIndex = (n: number) => {

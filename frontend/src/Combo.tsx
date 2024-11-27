@@ -6,8 +6,8 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface props {
   combo: AlmostIncluded;
-  deckData: DeckData;
   initialExpanded?: boolean;
+  cardNames: string[];
 }
 
 const replaceManaSymbols = (s: string) => {
@@ -23,7 +23,7 @@ const replaceManaSymbols = (s: string) => {
     });
 };
 
-export const Combo = ({ combo, initialExpanded }: props) => {
+export const Combo = ({ combo, initialExpanded, cardNames }: props) => {
   const [expanded, setExpanded] = useState(initialExpanded);
   return (
     <div className={`flex flex-col ${expanded ? "active" : ""} m-3`}>
@@ -46,7 +46,13 @@ export const Combo = ({ combo, initialExpanded }: props) => {
                 .filter((used) => !!used.card)
                 .map((used) => {
                   const card = used.card as Card;
-                  return <HoverableCard key={card.id} cardName={card.name} />;
+                  return (
+                    <HoverableCard
+                      key={card.id}
+                      cardName={card.name}
+                      inDeck={cardNames.includes(card.name)}
+                    />
+                  );
                 })}
             </div>
           </div>

@@ -2,7 +2,7 @@ import { faShare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { comboDataAtom, deckDataAtom } from "./atoms";
+import { comboDataAtom, deckDataAtom, pastedCardNamesAtom } from "./atoms";
 import { CardFilter } from "./CardFilter";
 import { Combo } from "./Combo";
 import { useFilteredCombos } from "./hooks/useComboData";
@@ -19,6 +19,10 @@ enum Tab {
 export const ComboContainer: FC = () => {
   const allCombos = useRecoilValue(comboDataAtom);
   const deckData = useRecoilValue(deckDataAtom);
+  const pastedCardNames = useRecoilValue(pastedCardNamesAtom);
+  const cardNames = useMemo(() => {
+    return deckData?.cards?.map((c) => c.name) ?? pastedCardNames ?? [];
+  }, [deckData, pastedCardNames]);
   const [tab, setTab] = useState<Tab>(Tab.COMBOS);
   const comboData = useMemo(
     () =>
@@ -84,17 +88,21 @@ export const ComboContainer: FC = () => {
                 >
                   <div className="p-3">
                     {combos.map((combo) => (
-                      <Combo key={combo.id} deckData={deckData} combo={combo} />
+                      <Combo
+                        key={combo.id}
+                        cardNames={cardNames}
+                        combo={combo}
+                      />
                     ))}
                   </div>
                 </MissingCardAccordion>
               ))}
           </div>
         ) : (
-          deckData &&
-          filteredCombos?.map((c) => (
-            <Combo key={c.id} deckData={deckData} combo={c} />
-          ))
+          filteredCombos &&
+          filteredCombos.map((c) => {
+            return <Combo cardNames={cardNames} key={c.id} combo={c} />;
+          })
         )}
       </div>
     );
@@ -106,43 +114,49 @@ export const ComboContainer: FC = () => {
     setFilter,
     filteredCombos,
     deckData,
+    cardNames,
   ]);
 
   return (
     <>
-      <div className="flex mt-4">
-        <div className="is-flex is-flex-grow-1 is-flex-direction-column">
-          <h1 className="title">
-            {deckData?.meta?.url && (
-              <Hyperlink href={deckData?.meta.url}>
-                {deckData?.meta.name}
-              </Hyperlink>
+      {deckData && (
+        <div className="flex mt-4">
+          <div className="is-flex is-flex-grow-1 is-flex-direction-column">
+            <h1 className="title">
+              {deckData?.meta?.url && (
+                <Hyperlink href={deckData?.meta.url}>
+                  {deckData?.meta.name}
+                </Hyperlink>
+              )}
+            </h1>
+            <p className="subtitle mb-2">by {deckData?.meta.author}</p>
+            {(allCombos?.included?.length ?? -1) > 0 && (
+              <p className="help">
+                Click a combo to see its prerequisites and steps
+              </p>
             )}
-          </h1>
-          <p className="subtitle mb-2">by {deckData?.meta.author}</p>
-          {(allCombos?.included?.length ?? -1) > 0 && (
-            <p className="help">
-              Click a combo to see its prerequisites and steps
-            </p>
-          )}
-          {(allCombos?.almostIncluded?.length ?? 1) > 0 && (
-            <p className="help">
-              If more combos are found by adding a card to the deck, you can
-              access them by clicking the &quot;Add 1&quot; tab
-            </p>
-          )}
-        </div>
-        <div className="is-flex is-flex-grow-0">
-          <div className="buttons is-right">
-            <button className="button is-dark is-outlined" onClick={doShareUrl}>
-              <span>Share</span>
-              <span className="icon">
-                <FontAwesomeIcon icon={faShare} />
-              </span>
-            </button>
+            {(allCombos?.almostIncluded?.length ?? 1) > 0 && (
+              <p className="help">
+                If more combos are found by adding a card to the deck, you can
+                access them by clicking the &quot;Add 1&quot; tab
+              </p>
+            )}
+          </div>
+          <div className="is-flex is-flex-grow-0">
+            <div className="buttons is-right">
+              <button
+                className="button is-dark is-outlined"
+                onClick={doShareUrl}
+              >
+                <span>Share</span>
+                <span className="icon">
+                  <FontAwesomeIcon icon={faShare} />
+                </span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="tabs text-base md:text-lg lg:text-2xl is-fullwidth mb-0">
         <ul>
           <li className={`${tab === Tab.COMBOS ? "is-active" : ""}`}>

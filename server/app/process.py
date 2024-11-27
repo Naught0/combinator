@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import backoff
 import requests
 from bs4 import BeautifulSoup
+from pyrchidekt.api import getDeckById
 
 from app.const import ACCEPT, USER_AGENT
 from app.logs import logger
@@ -124,19 +125,21 @@ def get_archidekt_deck(url: str) -> Deck:
     Returns:
         dict
     """
-    parsed = urlparse(url)
-    id = parsed.path.split("/")[-1]
-    url = "https://archidekt.com/api/decks/{}/small/".format(id)
-    resp = requests.get(url)
-    resp.raise_for_status()
-    data = resp.json()
 
-    author = data["owner"]["username"]
-    title = data["name"]
-    cards = set([x["card"]["oracleCard"]["name"] for x in data["cards"]])
+    parsed = urlparse(url)
+    try:
+        id = next(filter(lambda x: x.isdigit(), reversed(parsed.path.split("/"))))
+    except StopIteration:
+        raise ValueError("Could not parse numeric deck ID from URL", url)
+
+    print("FOUND ID", id)
+    data = getDeckById(id)
+    author = data.owner.username
+    title = data.name
+    cards = set([x.card.oracle_card.name for x in data.cards])
     colors = []
-    for card in data["cards"]:
-        colors.extend(card["card"]["oracleCard"]["colorIdentity"])
+    for card in data.cards:
+        colors.extend(card.card.oracle_card.color_identity)
 
     return Deck(
         meta={

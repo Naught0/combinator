@@ -12,7 +12,7 @@ export const IconText: FC<Props> = ({ icon, className, spin, children }) => {
   return (
     <span className={`icon-text ${className ? className : ""}`}>
       <span className="icon">
-        <FontAwesomeIcon icon={icon} spin={spin} />
+        <FontAwesomeIcon icon={icon} className={spin ? "animate-spin" : ""} />
       </span>
       <span>{children}</span>
     </span>

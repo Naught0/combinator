@@ -1,4 +1,8 @@
-import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faCircleNotch,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, useEffect, useMemo, useState } from "react";
 import { ComboContainer } from "../ComboContainer";
@@ -119,7 +123,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       {view === View.DECKS && (
         <div>
           <div
-            className="container is-flex is-flex-wrap-wrap"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-3 wrap"
             style={{ gap: "0.75rem" }}
           >
             {currentPage?.map((deck) => (
@@ -134,7 +138,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       )}
       {view === View.COMBO && isLoading && (
         <div className="my-6">
-          <IconText className="is-size-2" icon={faSpinner} spin>
+          <IconText className="is-size-2" icon={faCircleNotch} spin>
             <span className="ml-5">Loading</span>
           </IconText>
         </div>

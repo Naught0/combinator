@@ -23,7 +23,7 @@ interface Deck {
   isLegal: boolean;
   authorsCanEdit: boolean;
   isShared: boolean;
-  mainCardId: string;
+  mainCardId: string | null;
   mainCardIdIsCardFace: boolean;
   createdByUser: CreatedByUser;
   authors: Author[];

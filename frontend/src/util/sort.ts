@@ -15,7 +15,6 @@ export const sortAndFilterUserDecks = ({
   sortBy,
   sortDir,
   titleFilter,
-  formatFilter,
   isLegal,
 }: props): Deck[] => {
   let ret = titleFilter

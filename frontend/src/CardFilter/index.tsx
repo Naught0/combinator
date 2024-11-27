@@ -47,7 +47,7 @@ export const CardFilter = () => {
             return (
               <div key={card.id} className="min-w-72 basis-1/5">
                 {viewMode === "text" ? (
-                  <HoverableCard cardName={card.name} />
+                  <HoverableCard cardName={card.name} image={card.image} />
                 ) : (
                   <CardImage cardImage={card.image} />
                 )}

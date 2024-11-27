@@ -3,6 +3,20 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { deckDataAtom, comboDataAtom } from "../atoms";
 import { getComboData, getDeckData } from "../services";
 
+const MAX_CARDS = 512;
+export const parseCardList = (list: string) => {
+  const split = list.split("\n");
+  if (split.length > MAX_CARDS)
+    console.warn(
+      `Submitted a deck with > ${MAX_CARDS} cards. Results will be truncated`,
+    );
+
+  return split
+    .filter((c) => c)
+    .map((c) => c.replace(/^\dx?\s*/, ""))
+    .slice(0, MAX_CARDS);
+};
+
 export const useComboData = () => {
   const [deckData, setDeckData] = useRecoilState(deckDataAtom);
   const [comboData, setComboData] = useRecoilState(comboDataAtom);
@@ -10,13 +24,36 @@ export const useComboData = () => {
   const [comboIsLoading, setComboIsLoading] = useState(false);
   const [errorMessage, setError] = useState("");
 
-  const get = async (deckUrl: string) => {
-    if (!deckUrl) return;
+  const reset = () => {
+    setError("");
+    setDeckData(undefined);
+    setComboData(undefined);
+  };
+
+  const startLoadingState = () => {
     setError("");
     setDeckData(undefined);
     setComboData(undefined);
     setComboIsLoading(true);
     setDeckIsLoading(true);
+  };
+
+  const getList = async (list: string) => {
+    startLoadingState();
+    setDeckIsLoading(false);
+    const cards = parseCardList(list);
+
+    const resp = await getComboData({
+      main: cards.map((name) => ({ card: name, quantity: 1 })),
+      commanders: [],
+    });
+    setComboIsLoading(false);
+    setComboData(resp);
+  };
+
+  const getUrl = async (deckUrl: string) => {
+    if (!deckUrl) return;
+    startLoadingState();
 
     let deckResp;
     try {
@@ -47,7 +84,9 @@ export const useComboData = () => {
     errorMessage,
     deckIsLoading,
     comboIsLoading,
-    get,
+    getList,
+    getUrl,
+    reset,
   };
 };
 

@@ -2,8 +2,8 @@ import { Hyperlink } from "./Hyperlink";
 
 export const Footer = () => {
   return (
-    <footer className="footer has-background-grey">
-      <div className="content is-size-7 has-text-centered">
+    <footer className="footer has-background-grey w-full">
+      <div className="content text-xs has-text-centered">
         <p>
           <a href="https://jamese.dev" rel="noreferrer" target="_blank">
             I made dis
@@ -35,12 +35,6 @@ export const Footer = () => {
         </p>
         <p>
           <span>other stuff: </span>
-          <span>
-            <Hyperlink href="https://fontawesome.com/">font awesome</Hyperlink>,{" "}
-          </span>
-          <span>
-            <Hyperlink href="https://bulma.io/">bulma</Hyperlink>,{" "}
-          </span>
           <span>
             <Hyperlink href="https://moxfield.com/">moxfield</Hyperlink>,{" "}
           </span>

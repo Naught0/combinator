@@ -1,20 +1,19 @@
 import { createPortal } from "react-dom";
 import { usePopperTooltip } from "react-popper-tooltip";
-import { useRecoilValue } from "recoil";
-import { deckDataAtom } from "./atoms";
+import { cardNameToImageSrc } from "./services/scryfall";
 
 export const HoverableCard = ({
   cardName,
+  inDeck = true,
+  image,
   classNameOverride,
 }: {
   cardName: string;
   classNameOverride?: string;
+  image?: string;
+  inDeck?: boolean;
 }) => {
-  const deckData = useRecoilValue(deckDataAtom);
-  const deckCard = deckData?.cards.find((dc) => dc.name === cardName);
-  const cardImage =
-    deckCard?.image ??
-    `https://api.scryfall.com/cards/named?exact=${cardName}&format=image`;
+  const cardImage = image ?? cardNameToImageSrc(cardName);
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
@@ -30,9 +29,7 @@ export const HoverableCard = ({
         className={
           classNameOverride
             ? classNameOverride
-            : `tag is-clickable !text-base ${
-                deckCard ? "is-dark" : "is-danger"
-              }`
+            : `tag is-clickable !text-base ${inDeck ? "is-dark" : "is-danger"}`
         }
         ref={setTriggerRef}
       >

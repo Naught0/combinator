@@ -2,7 +2,8 @@ import { FC } from "react";
 
 export enum SearchType {
   DECK = "DECK",
-  USER = "USER",
+  PASTE = "PASTE",
+  // USER = "USER",
 }
 interface Props {
   searchType: SearchType;
@@ -14,18 +15,18 @@ export const SearchTypeSelector: FC<Props> = ({
 }) => {
   return (
     <>
-      <p>Search for a...</p>
+      <p className="text-lg mb-2">Paste a...</p>
       <div className="tabs is-toggle">
         <div className="buttons has-addons">
           <button
             className={`button ${
-              searchType === SearchType.USER
+              searchType === SearchType.PASTE
                 ? "is-primary"
                 : "is-inverted is-dark"
             }`}
-            onClick={() => setSearchType(SearchType.USER)}
+            onClick={() => setSearchType(SearchType.PASTE)}
           >
-            User
+            List
           </button>
           <button
             className={`button ${
@@ -35,7 +36,7 @@ export const SearchTypeSelector: FC<Props> = ({
             }`}
             onClick={() => setSearchType(SearchType.DECK)}
           >
-            Deck
+            URL
           </button>
         </div>
       </div>

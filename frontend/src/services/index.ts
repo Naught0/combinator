@@ -14,6 +14,7 @@ type Card = {
   card: string;
   quantity: number;
 };
+
 export const getComboData = async (json: {
   main: Card[];
   commanders: Card[];

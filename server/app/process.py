@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import backoff
 import requests
 from bs4 import BeautifulSoup
+from pyrchidekt.api import getDeckById
 
 from app.const import ACCEPT, USER_AGENT
 from app.logs import logger
@@ -12,7 +13,6 @@ from app.models.api import Deck
 
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
-CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 
 def chunk_array(lst: list, n: int):
@@ -49,7 +49,7 @@ def get_moxfield_deck(url: str) -> Deck:
         raise ValueError("Invalid or malformed URL supplied.")
 
     resp = requests.get(
-        MOXFIELD_BASE_URL.format(deck_id), headers={"User-Agent": CHROME_USER_AGENT}
+        MOXFIELD_BASE_URL.format(deck_id), headers={"User-Agent": USER_AGENT}
     )
     resp = resp.json()
     return Deck(
@@ -125,19 +125,21 @@ def get_archidekt_deck(url: str) -> Deck:
     Returns:
         dict
     """
-    parsed = urlparse(url)
-    id = parsed.path.split("/")[-1]
-    url = "https://archidekt.com/api/decks/{}/small/".format(id)
-    resp = requests.get(url)
-    resp.raise_for_status()
-    data = resp.json()
 
-    author = data["owner"]["username"]
-    title = data["name"]
-    cards = set([x["card"]["oracleCard"]["name"] for x in data["cards"]])
+    parsed = urlparse(url)
+    try:
+        id = next(filter(lambda x: x.isdigit(), reversed(parsed.path.split("/"))))
+    except StopIteration:
+        raise ValueError("Could not parse numeric deck ID from URL", url)
+
+    print("FOUND ID", id)
+    data = getDeckById(id)
+    author = data.owner.username
+    title = data.name
+    cards = set([x.card.oracle_card.name for x in data.cards])
     colors = []
-    for card in data["cards"]:
-        colors.extend(card["card"]["oracleCard"]["colorIdentity"])
+    for card in data.cards:
+        colors.extend(card.card.oracle_card.color_identity)
 
     return Deck(
         meta={

@@ -1,6 +1,9 @@
 import traceback
 
 import requests
+from fastapi import APIRouter, HTTPException
+
+from app.const import USER_AGENT
 from app.models.api import ComboSearchPayload, Deck, UserSearchRequest
 from app.models.commanders_spellbook import Results
 from app.models.moxfield import MoxfieldDeck
@@ -10,8 +13,7 @@ from app.process import (
     get_moxfield_deck,
     get_scryfall_cards,
 )
-from app.user import MoxfieldError, get_moxfield_user_decks
-from fastapi import APIRouter, HTTPException
+from app.user import MoxfieldError, NoDecksFoundError, get_moxfield_user_decks
 
 router = APIRouter(prefix="/api/search")
 
@@ -21,6 +23,7 @@ def combo_search(data: ComboSearchPayload):
     return requests.get(
         "https://backend.commanderspellbook.com/find-my-combos",
         json=data.model_dump(mode="json"),
+        headers={"User-Agent": USER_AGENT},
     ).json()["results"]
 
 
@@ -52,5 +55,7 @@ def deck_search(url: str):
 def user_search(user: UserSearchRequest):
     try:
         return get_moxfield_user_decks(user.user_name)
+    except NoDecksFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
     except MoxfieldError as e:
         raise HTTPException(status_code=400, detail=str(e))

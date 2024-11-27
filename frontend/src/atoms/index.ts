@@ -1,4 +1,5 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
+import { parseCardList } from "../hooks/useComboData";
 
 export const deckDataAtom = atom<DeckData | undefined>({
   key: "DeckData",
@@ -8,4 +9,17 @@ export const deckDataAtom = atom<DeckData | undefined>({
 export const comboDataAtom = atom<Results | undefined>({
   key: "ComboData",
   default: undefined,
+});
+
+export const pastedDeckListAtom = atom<string>({
+  key: "PastedDeckList",
+  default: "",
+});
+
+export const pastedCardNamesAtom = selector<string[]>({
+  key: "PastedCardNames",
+  get: ({ get }) => {
+    const list = get(pastedDeckListAtom);
+    return parseCardList(list);
+  },
 });

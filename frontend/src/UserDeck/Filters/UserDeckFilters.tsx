@@ -6,9 +6,14 @@ import { dumbTitalize } from "../../util";
 import { SortDirection, sortDirIconMap } from "../util/sort";
 import {
   deckFilters,
-  deckLegalityMap,
+  deckLegalities,
   uniqueDeckFormatMap,
 } from "./deckFilters";
+import { SelectItem } from "@/components/ui/select";
+import { YesNoAny } from "../UserDecksContainer";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export interface UserDeckFilterProps {
   setSortBy: (k: keyof Deck) => void;
@@ -17,15 +22,20 @@ export interface UserDeckFilterProps {
   resetFilters: () => void;
   setTitleFilter: (s: string) => void;
   setPageSize: (size: number) => void;
-  setIsLegal: (isLegal: boolean | null) => void;
+  setIsLegal: (isLegal: YesNoAny) => void;
   formats: Format[];
   formatFilter?: Format;
   titleFilter?: string;
   pageSize: number;
   sortDirection: SortDirection;
   sortBy: string;
-  isLegal: boolean | null;
+  isLegal: YesNoAny;
 }
+
+function Field({ children }: { children: React.ReactNode }) {
+  return <div className="flex flex-col gap-2">{children}</div>;
+}
+
 export const UserDeckFilters: FC<UserDeckFilterProps> = ({
   titleFilter,
   sortDirection,
@@ -42,138 +52,117 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
   setIsLegal,
 }) => {
   return (
-    <>
-      <div
-        className="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-baseline mb-3 is-justify-content-flex-start"
-        style={{ gap: "0.75rem" }}
-      >
-        <div className="field mb-0">
-          <div className="control has-icons-right">
-            <input
-              type="text"
-              className="input"
-              placeholder="Filter decks by title"
-              value={titleFilter}
-              onInput={(e) =>
-                setTitleFilter((e.target as HTMLInputElement).value)
-              }
-            />
-            {!!titleFilter && (
-              <span
-                className="icon is-small is-right is-clickable"
-                onClick={() => {
-                  setTitleFilter("");
-                }}
-              >
-                <FontAwesomeIcon icon={faXmarkCircle} />
-              </span>
-            )}
-          </div>
+    <div className="flex flex-row flex-wrap gap-2">
+      <Field>
+        <Label htmlFor="title-filter">Deck name</Label>
+        <div className="relative w-full">
+          <Input
+            type="text"
+            placeholder="Filter decks by title"
+            value={titleFilter}
+            onInput={(e) =>
+              setTitleFilter((e.target as HTMLInputElement).value)
+            }
+          />
+          {!!titleFilter && (
+            <button
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+              onClick={() => {
+                setTitleFilter("");
+              }}
+            >
+              <FontAwesomeIcon icon={faXmarkCircle} />
+            </button>
+          )}
         </div>
+      </Field>
+      <div className="flex basis-full md:hidden"></div>
+      <Field>
+        <Label>Format</Label>
         <Dropdown
-          title={`Format: ${
+          title={
             formatFilter
               ? uniqueDeckFormatMap.get(formatFilter) ||
                 dumbTitalize({ text: formatFilter })
               : "Any"
-          }`}
+          }
+          onChange={(value) => setFormatFilter(value as Format)}
         >
-          <a
-            className={`dropdown-item ${
-              formatFilter === undefined ? "is-active" : ""
-            }`}
-            onClick={() => setFormatFilter(undefined)}
-          >
-            Any
-          </a>
-          {formats.map((fmt) => (
-            <a
-              key={fmt}
-              className={`dropdown-item ${
-                formatFilter === fmt ? "is-active" : ""
-              }`}
-              onClick={() => setFormatFilter(fmt as Format)}
-            >
-              {uniqueDeckFormatMap.get(fmt) || dumbTitalize({ text: fmt })}
-            </a>
+          <SelectItem value={"any"}>Any</SelectItem>
+          {formats.map((text) => (
+            <SelectItem key={text} value={text}>
+              {uniqueDeckFormatMap.get(text) || dumbTitalize({ text })}
+            </SelectItem>
           ))}
         </Dropdown>
-        <div>
-          <Dropdown
-            title={
-              <>
-                <span>Is legal: </span>
-                <span className={deckLegalityMap.get(isLegal)?.className}>
-                  {deckLegalityMap.get(isLegal)?.display}
-                </span>
-              </>
-            }
-          >
-            {[
-              deckLegalityMap.get(null),
-              deckLegalityMap.get(true),
-              deckLegalityMap.get(false),
-            ].map(
-              (legality) =>
-                legality && (
-                  <a
-                    className={`dropdown-item ${legality.className} ${
-                      isLegal === legality.value ? "is-active" : ""
-                    }`}
-                    onClick={() => setIsLegal(legality.value)}
-                    key={legality.display}
-                  >
-                    {legality.display}
-                  </a>
-                ),
-            )}
-          </Dropdown>
-        </div>
-        <div className="is-flex" style={{ gap: "0" }}>
-          <Dropdown
-            title={`Sort by: ${deckFilters.find((f) => f.key === sortBy)
-              ?.display}`}
-          >
-            {deckFilters.map((s) => (
-              <a
-                className={`dropdown-item ${
-                  s.key === sortBy ? "is-active" : ""
-                }`}
-                key={s.key}
-                onClick={() => setSortBy(s.key)}
-              >
-                {s.display}
-              </a>
-            ))}
-          </Dropdown>
-          <div style={{ marginLeft: "-1px" }}>
-            <button
-              className="button"
-              onClick={() =>
-                setSortDir(
-                  sortDirection === SortDirection.ASC
-                    ? SortDirection.DESC
-                    : SortDirection.ASC,
-                )
+      </Field>
+      <Field>
+        <Label>Legality</Label>
+        <Dropdown
+          title={
+            <span
+              className={
+                deckLegalities.find((l) => l.value === isLegal)?.className
               }
             >
-              <span className="icon">{sortDirIconMap.get(sortDirection)}</span>
-              <span>{sortDirection.toString()}</span>
-            </button>
-          </div>
+              {deckLegalities.find((l) => l.value === isLegal)?.display}
+            </span>
+          }
+          onChange={(value) => {
+            setIsLegal(value as YesNoAny);
+          }}
+        >
+          {deckLegalities.map(
+            (legality) =>
+              legality && (
+                <SelectItem key={legality.display} value={legality.value}>
+                  {legality.display}
+                </SelectItem>
+              ),
+          )}
+        </Dropdown>
+      </Field>
+      <Field>
+        <Label>Sort by</Label>
+        <div className="inline-flex">
+          <Dropdown
+            title={`${deckFilters.find((f) => f.key === sortBy)?.display}`}
+            onChange={(value) => setSortBy(value as keyof Deck)}
+          >
+            {deckFilters.map((f) => (
+              <SelectItem key={f.key} value={f.display}>
+                {f.display}
+              </SelectItem>
+            ))}
+          </Dropdown>
+
+          <Button
+            onClick={() =>
+              setSortDir(
+                sortDirection === SortDirection.ASC
+                  ? SortDirection.DESC
+                  : SortDirection.ASC,
+              )
+            }
+          >
+            <span>{sortDirIconMap.get(sortDirection)}</span>
+            <span>{sortDirection.toString()}</span>
+          </Button>
         </div>
-        <Dropdown title={`Page size: ${pageSize}`}>
+      </Field>
+      <Field>
+        <Label>Per page</Label>
+        <Dropdown
+          title={pageSize}
+          onChange={(value) => setPageSize(parseInt(value))}
+        >
           {[5, 10, 20, 50, 100].map((num) => (
-            <a
-              className={`dropdown-item ${pageSize === num ? "is-active" : ""}`}
-              onClick={() => setPageSize(num)}
-              key={num}
-            >
+            <SelectItem key={num} value={num.toString()}>
               {num}
-            </a>
+            </SelectItem>
           ))}
         </Dropdown>
-      </div>
-    </>
+      </Field>
+    </div>
   );
 };

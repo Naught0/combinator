@@ -10,7 +10,7 @@ interface props {
 export const Paginate: FC<props> = ({ totalPages, pageIndex, setIndex }) => {
   return (
     <nav
-      className="pagination is-left my-3 is-flex is-justify-content-flex-end"
+      className="pagination is-left my-3 flex is-justify-content-flex-end"
       style={{ width: "100%" }}
     >
       <ReactPaginate

@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { SortDirection } from "../UserDeck/util/sort";
 import fuzzysort from "fuzzysort";
+import { YesNoAny } from "@/UserDeck";
 
 interface props {
   decks: Deck[];
@@ -8,13 +9,14 @@ interface props {
   sortDir: SortDirection;
   sortBy: keyof Deck;
   formatFilter?: Format;
-  isLegal: boolean | null;
+  isLegal: YesNoAny;
 }
 export const sortAndFilterUserDecks = ({
   decks,
   sortBy,
   sortDir,
   titleFilter,
+  formatFilter,
   isLegal,
 }: props): Deck[] => {
   let ret = titleFilter
@@ -22,8 +24,18 @@ export const sortAndFilterUserDecks = ({
         .go(titleFilter, decks, { key: "name", threshold: 0.5 })
         .map((res) => res.obj)
     : decks;
-  if (isLegal !== null) {
-    ret = ret.filter((deck) => deck.isLegal === isLegal);
+  switch (isLegal) {
+    case "yes":
+      ret = ret.filter((deck) => deck.isLegal);
+      break;
+    case "no":
+      ret = ret.filter((deck) => !deck.isLegal);
+      break;
+    default:
+      break;
+  }
+  if (formatFilter) {
+    ret = ret.filter((deck) => deck.format === formatFilter);
   }
 
   // Sort DESC by default

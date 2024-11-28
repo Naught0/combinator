@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { Button } from "./components/ui/button";
 
 export enum SearchType {
   DECK = "DECK",
@@ -10,12 +11,11 @@ interface Props {
   setSearchType: (type: SearchType) => void;
 }
 
-const buttonClassName = (type: SearchType, currentType: SearchType) => {
-  const base = "button";
+const buttonVariant = (type: SearchType, currentType: SearchType) => {
   if (type === currentType) {
-    return `${base} is-primary`;
+    return "primary";
   }
-  return `${base} is-dark is-inverted`;
+  return "outline";
 };
 export const SearchTypeSelector: FC<Props> = ({
   searchType,
@@ -23,28 +23,27 @@ export const SearchTypeSelector: FC<Props> = ({
 }) => {
   return (
     <>
-      <p className="text-lg mb-2">Paste a...</p>
-      <div className="tabs is-toggle">
-        <div className="flex flex-row gap-2">
-          <button
-            onClick={() => setSearchType(SearchType.MOXFIELD_USER)}
-            className={buttonClassName(searchType, SearchType.MOXFIELD_USER)}
-          >
-            Moxfield user
-          </button>
-          <button
-            className={buttonClassName(searchType, SearchType.DECK)}
-            onClick={() => setSearchType(SearchType.DECK)}
-          >
-            Deck URL
-          </button>
-          <button
-            className={buttonClassName(searchType, SearchType.PASTE)}
-            onClick={() => setSearchType(SearchType.PASTE)}
-          >
-            Card List
-          </button>
-        </div>
+      <p className="text-lg">Paste a...</p>
+      <div className="inline-flex flex-wrap gap-3">
+        <Button
+          variant={buttonVariant(searchType, SearchType.MOXFIELD_USER)}
+          className="flex items-center justify-center"
+          onClick={() => setSearchType(SearchType.MOXFIELD_USER)}
+        >
+          <span>Moxfield user</span>
+        </Button>
+        <Button
+          variant={buttonVariant(searchType, SearchType.DECK)}
+          onClick={() => setSearchType(SearchType.DECK)}
+        >
+          Deck URL
+        </Button>
+        <Button
+          variant={buttonVariant(searchType, SearchType.PASTE)}
+          onClick={() => setSearchType(SearchType.PASTE)}
+        >
+          Card list
+        </Button>
       </div>
     </>
   );

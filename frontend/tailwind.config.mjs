@@ -6,8 +6,8 @@ module.exports = {
 
   theme: {
     fontFamily: {
-      sans: ["Inter", "sans-serif"],
-      serif: ["Joesfin Slab", "serif"],
+      sans: ["Inter Variable", "sans-serif"],
+      serif: ["Josefin Sans Variable", "serif"],
     },
     extend: {
       colors: {

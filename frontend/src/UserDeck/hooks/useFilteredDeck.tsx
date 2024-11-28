@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { sortAndFilterUserDecks } from "../../util";
 import { SortDirection } from "../util/sort";
+import { YesNoAny } from "../UserDecksContainer";
 
 interface props {
   decks: Deck[];
@@ -8,7 +9,7 @@ interface props {
   sortBy: keyof Deck;
   titleFilter: string;
   formatFilter?: Format;
-  isLegal: boolean | null;
+  isLegal: YesNoAny;
 }
 export const useFilteredDeck = (props: props) => {
   const data = useMemo(() => {

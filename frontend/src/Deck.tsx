@@ -17,7 +17,7 @@ interface Props {
 export const Deck: FC<Props> = ({ deck, onClick }) => {
   return (
     <div
-      className="flex flex-col justify-between p-4 rounded hover:shadow-md hover:shadow-black transition-all cursor-pointer"
+      className="flex cursor-pointer flex-col justify-between rounded p-4 transition-all hover:shadow-md hover:shadow-black"
       style={{
         backgroundImage: deck.mainCardId
           ? `radial-gradient(transparent, rgb(0, 0, 0)),
@@ -41,33 +41,30 @@ export const Deck: FC<Props> = ({ deck, onClick }) => {
       <div className="tags my-2">
         <span className="tag is-dark">{deck.format}</span>
       </div>
-      <div
-        className="is-flex is-flex-direction-row is-flex-wrap-wrap"
-        style={{ gap: "0.50rem" }}
-      >
-        <IconText className="is-size-7" icon={faHashtag}>
+      <div className="flex flex-row flex-wrap" style={{ gap: "0.50rem" }}>
+        <IconText className="text-sm" icon={faHashtag}>
           {deck.mainboardCount}{" "}
           {deck.mainboardCount > 1 || deck.mainboardCount === 0
             ? "cards"
             : "card"}
         </IconText>
-        <IconText className="is-size-7" icon={faBalanceScale}>
+        <IconText className="text-sm" icon={faBalanceScale}>
           {deck.isLegal ? (
             "legal"
           ) : (
             <span className="has-text-danger">not legal</span>
           )}
         </IconText>
-        <IconText className="is-size-7" icon={faThumbsUp}>
+        <IconText className="text-sm" icon={faThumbsUp}>
           {deck.likeCount} likes
         </IconText>
-        <IconText className="is-size-7" icon={faEye}>
+        <IconText className="text-sm" icon={faEye}>
           {deck.viewCount} views
         </IconText>
-        <IconText className="is-size-7" icon={faSquarePlus}>
+        <IconText className="text-sm" icon={faSquarePlus}>
           created {new Date(deck.createdAtUtc).toLocaleDateString()}
         </IconText>
-        <IconText className="is-size-7" icon={faEdit}>
+        <IconText className="text-sm" icon={faEdit}>
           modified {new Date(deck.lastUpdatedAtUtc).toLocaleDateString()}
         </IconText>
       </div>

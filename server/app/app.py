@@ -23,6 +23,9 @@ app = FastAPI()
 origins = ["https://mtgcombinator.com"]
 if os.getenv("ENV", "").startswith("dev"):
     origins = ["*"]
+    import requests_cache
+
+    requests_cache.install_cache("cache")
 
 app.add_middleware(
     CORSMiddleware,

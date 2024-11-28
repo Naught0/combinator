@@ -24,4 +24,5 @@ description = ""
 [dependency-groups]
 dev = [
     "isort<6.0.0,>=5.13.2",
+    "requests-cache>=1.2.1",
 ]

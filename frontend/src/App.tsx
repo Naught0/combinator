@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Footer } from "./Footer";
-import logo from "./images/logo.svg";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +15,10 @@ import { getMoxfieldUserData } from "./services";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "./components/ui/textarea";
 import { UserDecksContainer } from "./UserDeck";
+import NiceButton from "./NiceButton";
+import Nav from "./Nav";
+import "@fontsource-variable/josefin-sans";
+import "@fontsource-variable/inter";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
@@ -81,31 +84,17 @@ export const App = () => {
   };
 
   return (
-    <main className="w-full h-full flex flex-col items-center">
+    <main className="flex h-full w-full flex-col items-center bg-zinc-800 px-3 py-6 text-zinc-100">
       <ToastContainer theme="dark" />
-      <div className="section fullheight flex flex-col items-center md:max-w-screen-lg xl:max-w-screen-lg gap-3 w-full">
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex flex-row gap-3 items-center">
-            <div>
-              <img src={logo} alt="" width={64} />
-            </div>
-            <div>
-              <span className="fancy title is-1">
-                <span className="text-orange-300">mtg</span>
-                <wbr />
-                combinator
-              </span>
-            </div>
-          </div>
-          <div className="italic">infinite combos, finite brain cells</div>
-        </div>
-        <div className="flex flex-col w-full">
+      <div className="flex min-h-screen w-full flex-col items-center gap-6 md:max-w-screen-lg md:gap-12 xl:max-w-screen-lg">
+        <Nav />
+        <div className="flex w-full flex-col gap-3">
           <SearchTypeSelector
             searchType={searchType}
             setSearchType={saveSearchType}
           />
           <form
-            className="flex flex-col gap-3"
+            className="flex max-w-96 flex-col gap-3"
             onSubmit={async (e) => {
               e.preventDefault();
               switch (searchType) {
@@ -126,7 +115,7 @@ export const App = () => {
             }}
           >
             {searchType === SearchType.PASTE && (
-              <div className="flex flex-col flex-grow">
+              <div className="flex flex-grow flex-col">
                 <Textarea
                   placeholder={
                     "Allowed formats:\n1x Lightning Bolt\n1 Lightning Bolt\nLightning Bolt"
@@ -136,7 +125,7 @@ export const App = () => {
                     persistList();
                   }}
                   value={pastedList || ""}
-                  className="rounded min-h-36 h-36 p-2 max-w-96 max-h-[512px]"
+                  className="h-36 max-h-[512px] min-h-36 max-w-96 rounded p-2"
                 ></Textarea>
               </div>
             )}
@@ -144,7 +133,7 @@ export const App = () => {
               <>
                 <Input
                   type="text"
-                  className={`bg-transparent px-3 py-2 border border-zinc-500 rounded w-full ${comboError ? "is-danger" : ""}`}
+                  className={`w-full rounded border border-zinc-500 bg-transparent px-3 py-2 ${comboError ? "is-danger" : ""}`}
                   placeholder="Moxfield, Archidekt, or MTGGoldfish deck URL"
                   onInput={(e) => {
                     setDeckUrl((e.target as HTMLInputElement).value);
@@ -163,21 +152,17 @@ export const App = () => {
                 value={moxfieldUserName}
               />
             )}
-            <div className="field">
-              <div className="buttons">
-                <button
-                  className={`button is-primary wowee-that-is-a-nice-button ${
-                    fetching && "is-loading"
-                  }`}
-                  disabled={searchDisabled}
-                  type="submit"
-                >
-                  <span>think for me</span>
-                  <span className="icon">
-                    <FontAwesomeIcon icon={faArrowRight} />
-                  </span>
-                </button>
-              </div>
+
+            <div>
+              <NiceButton
+                className={"inline-flex justify-center gap-2"}
+                disabled={searchDisabled}
+              >
+                <span>think for me</span>{" "}
+                <span>
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </span>
+              </NiceButton>
             </div>
           </form>
           {comboData && searchType !== SearchType.MOXFIELD_USER && (

@@ -55,8 +55,8 @@ export const ComboContainer: FC = () => {
     const showGroups =
       tab === Tab.ALMOST_INCLUDED && deckData && groupedByMissing;
     return (
-      <div className={"flex flex-col gap-6 flex-1"}>
-        <div className="flex gap-6 flex-col">
+      <div className={"flex flex-1 flex-col gap-6"}>
+        <div className="flex flex-col gap-6">
           <input
             className="input is-medium"
             placeholder="Filter combos by keyword or card name"
@@ -65,14 +65,14 @@ export const ComboContainer: FC = () => {
           />
         </div>
         {noCombos && (
-          <h1 className="text-2xl mt-6">
+          <h1 className="mt-6 text-2xl">
             💡 Pro Tip: Try adding some{" "}
             <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
             to your list
           </h1>
         )}
         {noCombosFound && (
-          <h1 className="text-2xl mt-6">❌ No combos matching search</h1>
+          <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
         )}
         {showGroups ? (
           <div className="flex flex-col gap-2">
@@ -120,8 +120,8 @@ export const ComboContainer: FC = () => {
   return (
     <>
       {deckData && (
-        <div className="flex mt-4">
-          <div className="is-flex is-flex-grow-1 is-flex-direction-column">
+        <div className="mt-4 flex">
+          <div className="flex flex-grow flex-col">
             <h1 className="title">
               {deckData?.meta?.url && (
                 <Hyperlink href={deckData?.meta.url}>
@@ -142,7 +142,7 @@ export const ComboContainer: FC = () => {
               </p>
             )}
           </div>
-          <div className="is-flex is-flex-grow-0">
+          <div className="flex flex-grow-0">
             <div className="buttons is-right">
               <button
                 className="button is-dark is-outlined"
@@ -157,12 +157,12 @@ export const ComboContainer: FC = () => {
           </div>
         </div>
       )}
-      <div className="tabs text-base md:text-lg lg:text-2xl is-fullwidth mb-0">
+      <div className="tabs is-fullwidth mb-0 text-base md:text-lg lg:text-2xl">
         <ul>
           <li className={`${tab === Tab.COMBOS ? "is-active" : ""}`}>
             <a role="button" onClick={() => setTab(Tab.COMBOS)}>
               Combos &ndash;&nbsp;
-              <span className="is-size-6">
+              <span className="text-sm">
                 ({allCombos?.included?.length ?? 0})
               </span>
             </a>

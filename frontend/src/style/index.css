@@ -1,8 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+a {
+  @apply underline text-orange-400 hover:text-orange-500 visited:text-purple-600 cursor-pointer;
+}
+
 @layer base {
   :root {
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
 }

@@ -19,6 +19,8 @@ interface Props {
   decks: Deck[];
 }
 
+export type YesNoAny = "yes" | "no" | "any";
+
 enum View {
   DECKS,
   COMBO,
@@ -28,7 +30,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
   const [titleFilter, setTitleFilter] = useState<string>("");
   const [formatFilter, setFormatFilter] = useState<Format>();
-  const [isLegal, setIsLegal] = useState<boolean | null>(null);
+  const [isLegal, setIsLegal] = useState<YesNoAny>("any");
   const [sortBy, setSortBy] = useState<keyof Deck>("createdAtUtc");
   const [sortDir, setSortDir] = useState<SortDirection>(SortDirection.DESC);
   const [pageSize, setPageSize] = useState(10);
@@ -123,7 +125,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       {view === View.DECKS && (
         <div>
           <div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-3 wrap"
+            className="wrap grid grid-cols-1 gap-3 md:grid-cols-2"
             style={{ gap: "0.75rem" }}
           >
             {currentPage?.map((deck) => (
@@ -138,7 +140,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       )}
       {view === View.COMBO && isLoading && (
         <div className="my-6">
-          <IconText className="is-size-2" icon={faCircleNotch} spin>
+          <IconText icon={faCircleNotch} spin>
             <span className="ml-5">Loading</span>
           </IconText>
         </div>

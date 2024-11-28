@@ -1,3 +1,5 @@
+import { YesNoAny } from "../UserDecksContainer";
+
 interface DeckFilter {
   key: keyof Deck;
   display: string;
@@ -9,24 +11,14 @@ export const deckFilters: DeckFilter[] = [
 
 interface DisplayValueItem {
   display: string;
-  value: DeckLegalityValue;
+  value: YesNoAny;
   className?: string;
 }
-type DeckLegalityValue = boolean | null;
-export const deckLegalityMap = new Map<
-  string | boolean | null,
-  DisplayValueItem
->([
-  [null, { className: "", display: "Any", value: null }],
-  [false, { className: "has-text-danger", display: "Not legal", value: false }],
-  [true, { className: "has-text-primary", display: "Legal", value: true }],
-  ["Any", { className: "", display: "Any", value: null }],
-  ["Legal", { className: "has-text-primary", display: "Legal", value: true }],
-  [
-    "Not legal",
-    { className: "has-text-danger", display: "Not legal", value: false },
-  ],
-]);
+export const deckLegalities: DisplayValueItem[] = [
+  { className: "", display: "Any", value: "any" },
+  { className: "text-rose-400", display: "Not legal", value: "no" },
+  { className: "text-green-400", display: "Legal", value: "yes" },
+];
 
 export const uniqueDeckFormatMap = new Map<string, string>([
   ["historicbrawl", "Historic Brawl"],

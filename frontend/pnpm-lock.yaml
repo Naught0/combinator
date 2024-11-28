@@ -14,9 +14,9 @@ importers:
       '@fontsource-variable/inter':
         specifier: ^5.0.16
         version: 5.0.16
-      '@fontsource-variable/josefin-slab':
-        specifier: ^5.0.19
-        version: 5.0.19
+      '@fontsource-variable/josefin-sans':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@fortawesome/fontawesome-svg-core':
         specifier: ^6.1.0
         version: 6.1.0
@@ -29,6 +29,9 @@ importers:
       '@fortawesome/react-fontawesome':
         specifier: ^0.1.18
         version: 0.1.18(@fortawesome/fontawesome-svg-core@6.1.0)(react@18.3.1)
+      '@radix-ui/react-label':
+        specifier: ^2.1.0
+        version: 2.1.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-select':
         specifier: ^2.1.2
         version: 2.1.2(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -613,8 +616,8 @@ packages:
   '@fontsource-variable/inter@5.0.16':
     resolution: {integrity: sha512-k+BUNqksTL+AN+o+OV7ILeiE9B5M5X+/jA7LWvCwjbV9ovXTqZyKRhA/x7uYv/ml8WQ0XNLBM7cRFIx4jW0/hg==}
 
-  '@fontsource-variable/josefin-slab@5.0.19':
-    resolution: {integrity: sha512-G8KQUf7JBotsndxKkPFs55t6yiAujGPtVVcLzgLpT8LohDmeDb3xKf4hlnDfa0hbSvTjSJ7QjE+6xUd3ZfXzJQ==}
+  '@fontsource-variable/josefin-sans@5.1.0':
+    resolution: {integrity: sha512-QePgC0aZAm/Xlc0/3w7BKxNqAIIlqRmatbOEPGVy4fqX16f32q154ipM7lKc48Rm4xjVWre+6ZkEIkZYRy3erQ==}
 
   '@fortawesome/fontawesome-common-types@6.1.0':
     resolution: {integrity: sha512-lFIJ5opxOKG9q88xOsuJJAdRZ+2WRldsZwUR/7MJoOMUMhF/LkHUjwWACIEPTa5Wo6uTDHvGRIX+XutdN7zYxA==}
@@ -820,6 +823,19 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
     peerDependenciesMeta:
       '@types/react':
+        optional: true
+
+  '@radix-ui/react-label@2.1.0':
+    resolution: {integrity: sha512-peLblDlFw/ngk3UWq0VnYaOLy6agTZZ+MUO/WhVfm14vJGML+xH4FAl2XQGLqdefjNb7ApRg6Yn7U42ZhmYXdw==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
         optional: true
 
   '@radix-ui/react-popper@1.2.0':
@@ -3479,7 +3495,7 @@ snapshots:
 
   '@fontsource-variable/inter@5.0.16': {}
 
-  '@fontsource-variable/josefin-slab@5.0.19': {}
+  '@fontsource-variable/josefin-sans@5.1.0': {}
 
   '@fortawesome/fontawesome-common-types@6.1.0': {}
 
@@ -3655,6 +3671,15 @@ snapshots:
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.12
+
+  '@radix-ui/react-label@2.1.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.12
+      '@types/react-dom': 18.3.1
 
   '@radix-ui/react-popper@1.2.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:

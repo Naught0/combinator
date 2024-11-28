@@ -1,51 +1,23 @@
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, ReactNode, useState } from "react";
-import useOnclickOutside from "react-cool-onclickoutside";
-import "./index.sass";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+} from "@/components/ui/select";
 
 interface Props {
-  title: ReactNode;
-  hoverable?: boolean;
+  title?: React.ReactNode;
   className?: string;
-  children: ReactNode;
+  children: React.ReactNode;
+  onChange?: (value: string) => void;
 }
-export const Dropdown: FC<Props> = ({
-  className,
-  title,
-  hoverable,
-  children,
-}) => {
-  const [isActive, setActive] = useState(false);
-  const ref = useOnclickOutside(() => {
-    setActive(false);
-  });
-
+export const Dropdown = (props: Props) => {
   return (
-    <>
-      <div
-        className={`dropdown ${hoverable ? "is-hoverable" : ""} ${
-          className ? className : ""
-        } ${isActive ? "is-active" : ""}`}
-        onClick={() => setActive(!isActive)}
-        ref={ref}
-      >
-        <div className="dropdown-trigger">
-          <button
-            className="button"
-            aria-haspopup="true"
-            aria-controls="dropdown-menu"
-          >
-            <span>{title}</span>
-            <span className="icon is-small">
-              <FontAwesomeIcon icon={faAngleDown} />
-            </span>
-          </button>
-        </div>
-        <div className="dropdown-menu" role="menu">
-          <div className="dropdown-content">{children}</div>
-        </div>
-      </div>
-    </>
+    <Select onValueChange={props.onChange}>
+      <SelectTrigger className={"w-fit max-w-48"}>
+        <SelectValue placeholder={props.title ?? "Select"} />
+      </SelectTrigger>
+      <SelectContent>{props.children}</SelectContent>
+    </Select>
   );
 };

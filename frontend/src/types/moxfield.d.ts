@@ -44,6 +44,7 @@ interface MoxfieldDecksResults {
 }
 
 type Format =
+  | "any"
   | "standard"
   | "future"
   | "historic"

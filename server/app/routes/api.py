@@ -54,8 +54,8 @@ def deck_search(url: str):
 @router.post("/user", response_model=list[MoxfieldDeck])
 def user_search(user: UserSearchRequest):
     try:
-        return get_moxfield_user_decks(user.user_name)
+        return get_moxfield_user_decks(user.user_name, user.page, page_size=user.per_page)
     except NoDecksFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except MoxfieldError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=422, detail=str(e))

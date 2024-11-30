@@ -1,11 +1,17 @@
 import { cachedClient } from "./cachedRequest";
 
-export const getMoxfieldUserData = async (
-  userName: string,
-): Promise<Deck[]> => {
+export const getMoxfieldUserData = async ({
+  userName,
+  page,
+  pageSize,
+}: {
+  userName: string;
+  page?: number;
+  pageSize?: number;
+}): Promise<Deck[]> => {
   const { data } = await cachedClient.post<Deck[]>(
     import.meta.env.VITE_API_URL + "/api/search/user",
-    { userName },
+    { userName, page, pageSize },
   );
   return data;
 };

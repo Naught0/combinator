@@ -79,21 +79,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     setPageIndex(n);
   };
 
-  const pagination = useMemo(
-    () =>
-      totalPages > 1 && !currentDeck ? (
-        <div className="container my-2">
-          <Paginate
-            pageIndex={pageIndex}
-            setIndex={safelyChangePageIndex}
-            totalPages={pages.length}
-          />
-        </div>
-      ) : null,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pageIndex, totalPages, pages, currentDeck],
-  );
-
   return (
     <>
       {view === View.DECKS && (
@@ -134,17 +119,21 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
           </div>
         </div>
       )}
-      {pagination}
       {view === View.COMBO && currentDeck && deckData && comboData && (
         <ComboContainer />
       )}
       {view === View.COMBO && isLoading && (
         <div className="my-6">
-          <IconText icon={faCircleNotch} spin>
-            <span className="ml-5">Loading</span>
+          <IconText icon={faCircleNotch} className="text-2xl md:text-3xl" spin>
+            <span className="">Loading</span>
           </IconText>
         </div>
       )}
+      <Paginate
+        pageIndex={pageIndex}
+        setIndex={safelyChangePageIndex}
+        totalPages={pages.length}
+      />
     </>
   );
 };

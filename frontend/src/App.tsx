@@ -6,7 +6,6 @@ import { Footer } from "./Footer";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import "./style/rainbow-button.sass";
 import { useComboData } from "./hooks/useComboData";
 import { useRecoilState } from "recoil";
 import { pastedDeckListAtom } from "./atoms";

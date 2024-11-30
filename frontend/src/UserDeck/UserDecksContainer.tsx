@@ -1,8 +1,4 @@
-import {
-  faArrowLeft,
-  faCircleNotch,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, useEffect, useMemo, useState } from "react";
 import { ComboContainer } from "../ComboContainer";
@@ -12,7 +8,7 @@ import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
-import { useComboData } from "../hooks/useComboData";
+import { useComboData, useMoxfieldData } from "../hooks/useComboData";
 import { SortDirection } from "./util/sort";
 
 interface Props {
@@ -29,7 +25,7 @@ enum View {
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
   const [titleFilter, setTitleFilter] = useState<string>("");
-  const [formatFilter, setFormatFilter] = useState<Format>();
+  const [formatFilter, setFormatFilter] = useState<Format>("any");
   const [isLegal, setIsLegal] = useState<YesNoAny>("any");
   const [sortBy, setSortBy] = useState<keyof Deck>("createdAtUtc");
   const [sortDir, setSortDir] = useState<SortDirection>(SortDirection.DESC);
@@ -101,9 +97,8 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       )}
       {view === View.COMBO && (
         <button className="button my-3" onClick={() => setView(View.DECKS)}>
-          <span className="icon">
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </span>
+          <FontAwesomeIcon icon={faArrowLeft} />
+
           <span>All decks</span>
         </button>
       )}

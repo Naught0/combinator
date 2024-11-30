@@ -36,8 +36,7 @@ export const App = () => {
   } = useComboData();
   const fetching = loadingCombos || loadingDecks || loadingMoxfield;
   const searchDisabled = useMemo(() => {
-    if (fetching) return true;
-
+    if (fetching) return fetching;
     switch (searchType) {
       case SearchType.DECK:
         return deckUrl.length === 0;
@@ -105,7 +104,10 @@ export const App = () => {
                   break;
                 case SearchType.MOXFIELD_USER:
                   setLoadingMoxfield(true);
-                  setMoxfieldDecks(await getMoxfieldUserData(moxfieldUserName));
+                  const data = await getMoxfieldUserData({
+                    userName: moxfieldUserName,
+                  });
+                  setMoxfieldDecks(data);
                   setLoadingMoxfield(false);
                   break;
                 default:

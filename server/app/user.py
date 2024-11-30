@@ -1,7 +1,7 @@
 import requests
 
 from app.const import USER_AGENT
-from app.models.moxfield import MoxfieldDeck, UserDecksResponse
+from app.models.moxfield import UserDecksResponse
 
 
 class MoxfieldError(Exception):
@@ -12,28 +12,23 @@ class NoDecksFoundError(MoxfieldError):
     pass
 
 
-def get_moxfield_user_decks(user_name: str) -> list[MoxfieldDeck]:
-    decks = []
+def get_moxfield_user_decks(user_name: str, page: int | None = None, page_size: int | None = None):
+    resp = requests.get(
+        f"https://api2.moxfield.com/v2/users/{user_name}/decks",
+        params={"pageNumber": page, "pageSize": page_size},
+        headers={
+            "Content-Type": "application/json",
+            "User-Agent": USER_AGENT,
+        },
+    )
+    data = UserDecksResponse(**resp.json())
+    page += 1
 
-    page = 1
-    while True:
-        resp = requests.get(
-            f"https://api2.moxfield.com/v2/users/{user_name}/decks",
-            params={"pageNumber": page, "pageSize": 50},
-            headers={
-                "Content-Type": "application/json",
-                "User-Agent": USER_AGENT,
-            },
-        )
-        data = UserDecksResponse(**resp.json())
-        page += 1
-
-        if data.total_results == 0:
+    if data.total_results == 0:
+        if page == 1:
             raise NoDecksFoundError(f"User {user_name} does not have any decks")
 
-        decks.extend(data.data)
+        raise NoDecksFoundError()
 
-        if page >= data.total_pages:
-            break
+    return data.data
 
-    return decks

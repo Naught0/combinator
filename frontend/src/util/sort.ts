@@ -8,7 +8,7 @@ interface props {
   titleFilter: string;
   sortDir: SortDirection;
   sortBy: keyof Deck;
-  formatFilter?: Format;
+  formatFilter: Format;
   isLegal: YesNoAny;
 }
 export const sortAndFilterUserDecks = ({
@@ -34,7 +34,7 @@ export const sortAndFilterUserDecks = ({
     default:
       break;
   }
-  if (formatFilter) {
+  if (formatFilter !== "any") {
     ret = ret.filter((deck) => deck.format === formatFilter);
   }
 

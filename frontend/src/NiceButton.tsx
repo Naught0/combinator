@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
 import { cn } from "./lib/utils";
-import "./style/rainbow-button.sass";
+import "./style/rainbow-button.css";
 import { Button } from "./components/ui/button";
 
 export default function NiceButton(

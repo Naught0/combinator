@@ -6,7 +6,7 @@ import "mana-font";
 import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import "@fontsource-variable/inter";
-import "@fontsource-variable/josefin-slab";
+import "@fontsource-variable/josefin-sans";
 
 const elem = document.getElementById("root");
 if (elem) {

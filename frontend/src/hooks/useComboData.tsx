@@ -1,67 +1,6 @@
 import { useMemo, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { deckDataAtom, comboDataAtom } from "../atoms";
-import { getComboData, getDeckData, getMoxfieldUserData } from "../services";
-import { useQuery } from "react-query";
-
-export const useComboData = () => {
-  const [deckData, setDeckData] = useRecoilState(deckDataAtom);
-  const [comboData, setComboData] = useRecoilState(comboDataAtom);
-  const [deckIsLoading, setDeckIsLoading] = useState(false);
-  const [comboIsLoading, setComboIsLoading] = useState(false);
-  const [errorMessage, setError] = useState("");
-
-  const reset = () => {
-    setError("");
-    setDeckData(undefined);
-    setComboData(undefined);
-  };
-
-  const startLoadingState = () => {
-    setError("");
-    setDeckData(undefined);
-    setComboData(undefined);
-    setComboIsLoading(true);
-    setDeckIsLoading(true);
-  };
-
-  const getUrl = async (deckUrl: string) => {
-    if (!deckUrl) return;
-    startLoadingState();
-
-    let deckResp;
-    try {
-      deckResp = await getDeckData(deckUrl);
-      setDeckData(deckResp);
-    } catch (e) {
-      setError(
-        "Error -- Ensure you provided a valid Moxfield, MTGGoldfish, or Archidekt URL.",
-      );
-    }
-    setDeckIsLoading(false);
-
-    if (deckResp?.cards)
-      setComboData(
-        await getComboData({
-          main: deckResp.cards.map(({ name }) => ({ card: name, quantity: 1 })),
-          commanders: [],
-        }),
-      );
-    setComboIsLoading(false);
-  };
-
-  return {
-    deckData,
-    comboData,
-    isLoading: deckIsLoading || comboIsLoading,
-    hasError: !!errorMessage,
-    errorMessage,
-    deckIsLoading,
-    comboIsLoading,
-    getUrl,
-    reset,
-  };
-};
+import { useRecoilValue } from "recoil";
+import { deckDataAtom } from "../atoms";
 
 export const useFilteredCombos = ({ combos }: { combos: AlmostIncluded[] }) => {
   const deckData = useRecoilValue(deckDataAtom);

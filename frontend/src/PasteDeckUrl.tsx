@@ -37,6 +37,7 @@ export function PasteDeckUrl() {
           setEnabled(true);
         }}
         loading={isLoading}
+        disabled={deckUrl.length < 5}
       >
         <Field error={error && "Unable to find deck"}>
           <Input

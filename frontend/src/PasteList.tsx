@@ -1,18 +1,18 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useDebouncedCallback } from "use-debounce";
-import { comboDataAtom, pastedDeckListAtom } from "./atoms";
+import { pastedCardNamesAtom, pastedDeckListAtom } from "./atoms";
 import { Textarea } from "./components/ui/textarea";
 import { TabContainer } from "./TabContainer";
 import { Form } from "./Form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { getComboData } from "./services";
-import { useEffect, useState } from "react";
 import { Field } from "./Field";
 import { AxiosError } from "axios";
+import { ComboContainer } from "./ComboContainer";
 
 export const PasteList = () => {
   const [pastedList, setPastedList] = useRecoilState(pastedDeckListAtom);
-  const setComboData = useSetRecoilState(comboDataAtom);
+  const cardNames = useRecoilValue(pastedCardNamesAtom);
   const persistList = useDebouncedCallback(() => {
     localStorage.setItem("pastedList", pastedList);
   }, 500);
@@ -26,12 +26,6 @@ export const PasteList = () => {
         })),
         commanders: [],
       }),
-  );
-  useEffect(
-    function syncDataToAtom() {
-      if (data) setComboData(data);
-    },
-    [data],
   );
 
   return (
@@ -58,10 +52,11 @@ export const PasteList = () => {
               persistList();
             }}
             value={pastedList || ""}
-            className="h-36 max-h-[512px] min-h-36 max-w-96 rounded p-2"
+            className="h-36 max-h-[512px] min-h-36 rounded p-2"
           ></Textarea>
         </Field>
       </Form>
+      {data && <ComboContainer allCombos={data} cardNames={cardNames} />}
     </TabContainer>
   );
 };

@@ -1,55 +1,35 @@
-import { useEffect, useMemo, useState } from "react";
+import { Input } from "@/components/ui/input";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/josefin-sans";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import { Footer } from "./Footer";
-import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
+import { Footer } from "./Footer";
 import { useComboData } from "./hooks/useComboData";
-import { useRecoilState } from "recoil";
-import { pastedDeckListAtom } from "./atoms";
-import { useDebouncedCallback } from "use-debounce";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "./components/ui/textarea";
-import Nav from "./Nav";
-import "@fontsource-variable/josefin-sans";
-import "@fontsource-variable/inter";
 import MoxfieldSearch from "./MoxfieldSearch";
+import Nav from "./Nav";
+import { PasteList } from "./PasteList";
+import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
-  const [pastedList, setPastedList] = useRecoilState(pastedDeckListAtom);
   const [searchType, setSearchType] = useState(SearchType.MOXFIELD_USER);
-  const {
-    comboData,
-    errorMessage: comboError,
-    getList,
-    getUrl,
-  } = useComboData();
-  const persistList = useDebouncedCallback(() => {
-    localStorage.setItem("pastedList", pastedList);
-  }, 500);
+  const { comboData, errorMessage: comboError, getUrl } = useComboData();
 
-  useEffect(
-    function consumeUrlParams() {
-      const params = new URLSearchParams(window.location.search);
-      const url = params.get("deck_url");
-      const pastedList = localStorage.getItem("pastedList");
-      const searchType = localStorage.getItem("searchType");
-      if (url) {
-        setDeckUrl(url);
-        setSearchType(SearchType.DECK);
-      }
-      if (pastedList) {
-        setPastedList(pastedList);
-        setSearchType(SearchType.PASTE);
-      }
+  useEffect(function consumeUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get("deck_url");
+    const searchType = localStorage.getItem("searchType");
+    if (url) {
+      setDeckUrl(url);
+      setSearchType(SearchType.DECK);
+    }
 
-      if (searchType) {
-        setSearchType(SearchType[searchType as SearchType]);
-      }
-    },
-    [setPastedList],
-  );
+    if (searchType) {
+      setSearchType(SearchType[searchType as SearchType]);
+    }
+  }, []);
 
   const saveSearchType = (type: SearchType) => {
     localStorage.setItem("searchType", type);
@@ -66,39 +46,8 @@ export const App = () => {
             searchType={searchType}
             setSearchType={saveSearchType}
           />
-          <form
-            className="flex max-w-96 flex-col gap-3"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              switch (searchType) {
-                case SearchType.DECK:
-                  await getUrl(deckUrl);
-                  break;
-                case SearchType.PASTE:
-                  await getList(pastedList);
-                  break;
-                case SearchType.MOXFIELD_USER:
-                  break;
-                default:
-                  break;
-              }
-            }}
-          >
-            {searchType === SearchType.PASTE && (
-              <div className="flex flex-grow flex-col">
-                <Textarea
-                  placeholder={
-                    "Allowed formats:\n1x Lightning Bolt\n1 Lightning Bolt\nLightning Bolt"
-                  }
-                  onChange={(e) => {
-                    setPastedList(e.target.value);
-                    persistList();
-                  }}
-                  value={pastedList || ""}
-                  className="h-36 max-h-[512px] min-h-36 max-w-96 rounded p-2"
-                ></Textarea>
-              </div>
-            )}
+          <div className="flex max-w-96 flex-col gap-3">
+            {searchType === SearchType.PASTE && <PasteList />}
             {searchType === SearchType.DECK && (
               <>
                 <Input
@@ -115,8 +64,8 @@ export const App = () => {
                 )}
               </>
             )}
-          </form>
-          {searchType === SearchType.MOXFIELD_USER && <MoxfieldSearch />}
+            {searchType === SearchType.MOXFIELD_USER && <MoxfieldSearch />}
+          </div>
           {comboData && searchType !== SearchType.MOXFIELD_USER && (
             <ComboContainer />
           )}

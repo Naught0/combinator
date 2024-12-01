@@ -11,7 +11,9 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: CACHE_TTL_MS } },
+  defaultOptions: {
+    queries: { staleTime: CACHE_TTL_MS, retry: false, keepPreviousData: true },
+  },
 });
 const elem = document.getElementById("root");
 if (elem) {

@@ -8,7 +8,7 @@ import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
-import { useComboData, useMoxfieldData } from "../hooks/useComboData";
+import { useComboData } from "../hooks/useComboData";
 import { SortDirection } from "./util/sort";
 
 interface Props {

@@ -1,15 +1,18 @@
-import "@fontsource-variable/inter";
-import "@fontsource-variable/josefin-sans";
-import "mana-font";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { RecoilRoot } from "recoil";
 import { App } from "./App";
-import reportWebVitals from "./reportWebVitals";
 import "./style/index.css";
+import "mana-font";
+import reportWebVitals from "./reportWebVitals";
+import { RecoilRoot } from "recoil";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/josefin-sans";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-const queryClient = new QueryClient();
+const CACHE_TTL_MS = 5 * 60 * 1000;
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: CACHE_TTL_MS } },
+});
 const elem = document.getElementById("root");
 if (elem) {
   const root = createRoot(elem);

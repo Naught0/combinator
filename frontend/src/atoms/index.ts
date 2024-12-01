@@ -1,5 +1,5 @@
+import { parseCardList } from "@/PasteList";
 import { atom, selector } from "recoil";
-import { parseCardList } from "../hooks/useComboData";
 
 export const deckDataAtom = atom<DeckData | undefined>({
   key: "DeckData",

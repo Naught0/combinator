@@ -8,7 +8,7 @@ interface props {
   sortDir: SortDirection;
   sortBy: keyof Deck;
   titleFilter: string;
-  formatFilter?: Format;
+  formatFilter: Format;
   isLegal: YesNoAny;
 }
 export const useFilteredDeck = (props: props) => {

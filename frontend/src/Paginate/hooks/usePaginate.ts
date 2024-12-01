@@ -8,7 +8,7 @@ interface props<T> {
 export const usePaginate = <T>({
   data,
   pageIndex = 0,
-  pageSize = 15,
+  pageSize = 25,
 }: props<T>) => {
   const pages = chunk(data, pageSize);
   return {

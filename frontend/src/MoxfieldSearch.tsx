@@ -19,8 +19,6 @@ export default function MoxfieldSearch() {
       onSettled() {
         setEnabled(false);
       },
-      keepPreviousData: true,
-      retry: false,
     },
   );
 

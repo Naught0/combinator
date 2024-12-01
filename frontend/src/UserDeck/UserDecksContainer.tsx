@@ -8,7 +8,6 @@ import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
-import { useComboData } from "../hooks/useComboData";
 import { SortDirection } from "./util/sort";
 
 interface Props {
@@ -38,7 +37,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
     return formats;
   }, [decks]);
-  const { getUrl, deckData, comboData, isLoading } = useComboData();
   const filteredSortedDecks = useFilteredDeck({
     decks,
     sortBy,
@@ -66,7 +64,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const setDeck = async (deck: Deck) => {
     setCurrentDeck(deck);
     setView(View.COMBO);
-    await getUrl(deck.publicUrl);
   };
 
   const safelyChangePageIndex = (n: number) => {
@@ -112,16 +109,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
               <Deck key={deck.id} deck={deck} onClick={setDeck} />
             ))}
           </div>
-        </div>
-      )}
-      {view === View.COMBO && currentDeck && deckData && comboData && (
-        <ComboContainer />
-      )}
-      {view === View.COMBO && isLoading && (
-        <div className="my-6">
-          <IconText icon={faCircleNotch} className="text-2xl md:text-3xl" spin>
-            <span className="">Loading</span>
-          </IconText>
         </div>
       )}
       <Paginate

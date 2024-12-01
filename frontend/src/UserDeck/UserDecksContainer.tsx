@@ -1,14 +1,17 @@
-import { faArrowLeft, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, useEffect, useMemo, useState } from "react";
-import { ComboContainer } from "../ComboContainer";
 import { Deck } from "../Deck";
-import { IconText } from "../IconText";
 import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
-import { CollapsibleDeckFilters } from "./Filters/CollapsibleDeckFilters";
 import { SortDirection } from "./util/sort";
+import { UserDeckFilters } from "./Filters/UserDeckFilters";
+import { ComboContainer } from "@/ComboContainer";
+import { useRecoilState } from "recoil";
+import { comboDataAtom, deckDataAtom } from "@/atoms";
+import { useQuery } from "react-query";
+import { getComboData, getDeckData } from "@/services";
 
 interface Props {
   decks: Deck[];
@@ -23,6 +26,20 @@ enum View {
 
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
+  const { data: deckData } = useQuery<DeckData>(
+    ["deck-data", currentDeck?.publicId],
+    () => getDeckData(currentDeck!.publicUrl),
+    { enabled: !!currentDeck?.publicUrl, keepPreviousData: false },
+  );
+  const { data: comboData } = useQuery(
+    ["combo-data", currentDeck?.publicId],
+    () =>
+      getComboData({
+        commanders: [],
+        main: deckData!.cards.map((c) => ({ card: c.name, quantity: 1 })),
+      }),
+    { enabled: !!deckData?.cards, keepPreviousData: false },
+  );
   const [titleFilter, setTitleFilter] = useState<string>("");
   const [formatFilter, setFormatFilter] = useState<Format>("any");
   const [isLegal, setIsLegal] = useState<YesNoAny>("any");
@@ -50,7 +67,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     pageIndex: pageIndex,
     pageSize: pageSize,
   });
-
   useEffect(() => {
     setPageIndex(0);
   }, [formatFilter, titleFilter, pageSize]);
@@ -75,7 +91,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   return (
     <>
       {view === View.DECKS && (
-        <CollapsibleDeckFilters
+        <UserDeckFilters
           titleFilter={titleFilter}
           sortDirection={sortDir}
           sortBy={sortBy}
@@ -93,11 +109,20 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         />
       )}
       {view === View.COMBO && (
-        <button className="button my-3" onClick={() => setView(View.DECKS)}>
-          <FontAwesomeIcon icon={faArrowLeft} />
+        <div>
+          <button className="button my-3" onClick={() => setView(View.DECKS)}>
+            <FontAwesomeIcon icon={faArrowLeft} />
 
-          <span>All decks</span>
-        </button>
+            <span>All decks</span>
+          </button>
+          {deckData && comboData && (
+            <ComboContainer
+              deckData={deckData}
+              allCombos={comboData}
+              cardNames={deckData?.cards.map((c) => c.name) ?? []}
+            />
+          )}
+        </div>
       )}
       {view === View.DECKS && (
         <div>

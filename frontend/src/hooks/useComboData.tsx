@@ -2,8 +2,9 @@ import { useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { deckDataAtom, comboDataAtom } from "../atoms";
 import { getComboData, getDeckData, getMoxfieldUserData } from "../services";
+import axios from "axios";
 
-const MAX_CARDS = 512;
+const MAX_CARDS = 1024;
 export const parseCardList = (list: string) => {
   const split = list.split("\n");
   if (split.length > MAX_CARDS)
@@ -17,32 +18,32 @@ export const parseCardList = (list: string) => {
     .slice(0, MAX_CARDS);
 };
 
-export const useMoxfieldData = ({
-  userName,
-  page,
-  pageSize,
-}: {
-  userName: string;
-  page: number;
-  pageSize: number;
-}) => {
+export const useMoxfieldData = ({ userName }: { userName: string }) => {
   const [data, setData] = useState<Deck[]>([]);
   const [page, setPage] = useState(1);
+  const [error, setError] = useState<string>();
   const [pageSize, setPageSize] = useState(25);
   const [loading, setLoading] = useState(false);
 
   const get = async () => {
     setLoading(true);
-    const data = await getMoxfieldUserData({
-      userName,
-      page,
-      pageSize,
-    });
-    setData(data);
+    setError(undefined);
+    try {
+      const data = await getMoxfieldUserData({
+        userName,
+        page,
+        pageSize,
+      });
+      setData(data);
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        setError(e.response?.statusText);
+      }
+    }
     setLoading(false);
   };
 
-  return { data, loading, get, page, setPage, pageSize, setPageSize };
+  return { data, error, loading, get, page, setPage, pageSize, setPageSize };
 };
 
 export const useComboData = () => {

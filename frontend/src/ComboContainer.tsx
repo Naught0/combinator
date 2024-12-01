@@ -1,8 +1,6 @@
 import { faShare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, useMemo, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { comboDataAtom, deckDataAtom, pastedCardNamesAtom } from "./atoms";
+import { useMemo, useState } from "react";
 import { CardFilter } from "./CardFilter";
 import { Combo } from "./Combo";
 import { useFilteredCombos } from "./hooks/useComboData";
@@ -16,13 +14,15 @@ enum Tab {
   CARD_SEARCH,
 }
 
-export const ComboContainer: FC = () => {
-  const allCombos = useRecoilValue(comboDataAtom);
-  const deckData = useRecoilValue(deckDataAtom);
-  const pastedCardNames = useRecoilValue(pastedCardNamesAtom);
-  const cardNames = useMemo(() => {
-    return deckData?.cards?.map((c) => c.name) ?? pastedCardNames ?? [];
-  }, [deckData, pastedCardNames]);
+export const ComboContainer = ({
+  allCombos,
+  deckData,
+  cardNames,
+}: {
+  allCombos: Results;
+  deckData?: DeckData;
+  cardNames: string[];
+}) => {
   const [tab, setTab] = useState<Tab>(Tab.COMBOS);
   const comboData = useMemo(
     () =>

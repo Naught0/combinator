@@ -1,65 +1,30 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useMemo, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Footer } from "./Footer";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { useComboData, useMoxfieldData } from "./hooks/useComboData";
+import { useComboData } from "./hooks/useComboData";
 import { useRecoilState } from "recoil";
 import { pastedDeckListAtom } from "./atoms";
 import { useDebouncedCallback } from "use-debounce";
-import { getMoxfieldUserData } from "./services";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "./components/ui/textarea";
-import { UserDecksContainer } from "./UserDeck";
-import NiceButton from "./NiceButton";
 import Nav from "./Nav";
 import "@fontsource-variable/josefin-sans";
 import "@fontsource-variable/inter";
+import MoxfieldSearch from "./MoxfieldSearch";
 
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [pastedList, setPastedList] = useRecoilState(pastedDeckListAtom);
-  const [moxfieldUserName, setMoxfieldUserName] = useState("");
-  const {
-    get: getMoxfieldDecks,
-    data: moxfieldDecks,
-    loading: loadingMoxfield,
-    error: moxfieldError,
-    page,
-    setPage,
-    pageSize,
-    setPageSize,
-  } = useMoxfieldData({
-    userName: moxfieldUserName,
-  });
   const [searchType, setSearchType] = useState(SearchType.MOXFIELD_USER);
   const {
     comboData,
-    isLoading: loadingCombos,
     errorMessage: comboError,
-    deckIsLoading: loadingDecks,
     getList,
     getUrl,
   } = useComboData();
-  const fetching = loadingCombos || loadingDecks || loadingMoxfield;
-  const searchDisabled = useMemo(() => {
-    if (fetching) return fetching;
-    switch (searchType) {
-      case SearchType.DECK:
-        return deckUrl.length === 0;
-      case SearchType.PASTE:
-        return pastedList.length === 0;
-      case SearchType.MOXFIELD_USER:
-        return moxfieldUserName.length === 0;
-      default:
-        break;
-    }
-
-    return false;
-  }, [searchType, moxfieldUserName, pastedList, deckUrl, fetching]);
   const persistList = useDebouncedCallback(() => {
     localStorage.setItem("pastedList", pastedList);
   }, 500);
@@ -113,7 +78,6 @@ export const App = () => {
                   await getList(pastedList);
                   break;
                 case SearchType.MOXFIELD_USER:
-                  await getMoxfieldDecks();
                   break;
                 default:
                   break;
@@ -151,31 +115,10 @@ export const App = () => {
                 )}
               </>
             )}
-            {searchType === SearchType.MOXFIELD_USER && (
-              <Input
-                placeholder="Moxfield username"
-                onChange={(e) => setMoxfieldUserName(e.target.value)}
-                value={moxfieldUserName}
-              />
-            )}
-
-            <div>
-              <NiceButton
-                className={"inline-flex justify-center gap-2"}
-                disabled={searchDisabled}
-              >
-                <span>think for me</span>{" "}
-                <span>
-                  <FontAwesomeIcon icon={faArrowRight} />
-                </span>
-              </NiceButton>
-            </div>
           </form>
+          {searchType === SearchType.MOXFIELD_USER && <MoxfieldSearch />}
           {comboData && searchType !== SearchType.MOXFIELD_USER && (
             <ComboContainer />
-          )}
-          {searchType === SearchType.MOXFIELD_USER && moxfieldDecks && (
-            <UserDecksContainer decks={moxfieldDecks} />
           )}
         </div>
       </div>

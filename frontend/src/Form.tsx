@@ -13,7 +13,7 @@ export function Form({
   loading?: boolean;
 }) {
   return (
-    <form className="flex max-w-96 flex-col gap-3" onSubmit={onSubmit}>
+    <form className="flex max-w-[512px] flex-col gap-3" onSubmit={onSubmit}>
       {children}
       <div>
         <NiceButton

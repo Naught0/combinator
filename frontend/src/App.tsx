@@ -6,7 +6,7 @@ import { Footer } from "./Footer";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { ComboContainer } from "./ComboContainer";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { useComboData } from "./hooks/useComboData";
+import { useComboData, useMoxfieldData } from "./hooks/useComboData";
 import { useRecoilState } from "recoil";
 import { pastedDeckListAtom } from "./atoms";
 import { useDebouncedCallback } from "use-debounce";
@@ -22,9 +22,19 @@ import "@fontsource-variable/inter";
 export const App = () => {
   const [deckUrl, setDeckUrl] = useState("");
   const [pastedList, setPastedList] = useRecoilState(pastedDeckListAtom);
-  const [moxfieldDecks, setMoxfieldDecks] = useState<Deck[]>();
   const [moxfieldUserName, setMoxfieldUserName] = useState("");
-  const [loadingMoxfield, setLoadingMoxfield] = useState(false);
+  const {
+    get: getMoxfieldDecks,
+    data: moxfieldDecks,
+    loading: loadingMoxfield,
+    error: moxfieldError,
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
+  } = useMoxfieldData({
+    userName: moxfieldUserName,
+  });
   const [searchType, setSearchType] = useState(SearchType.MOXFIELD_USER);
   const {
     comboData,
@@ -103,12 +113,7 @@ export const App = () => {
                   await getList(pastedList);
                   break;
                 case SearchType.MOXFIELD_USER:
-                  setLoadingMoxfield(true);
-                  const data = await getMoxfieldUserData({
-                    userName: moxfieldUserName,
-                  });
-                  setMoxfieldDecks(data);
-                  setLoadingMoxfield(false);
+                  await getMoxfieldDecks();
                   break;
                 default:
                   break;

@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 export interface UserDeckFilterProps {
   setSortBy: (k: keyof Deck) => void;
   setSortDir: (k: SortDirection) => void;
-  setFormatFilter: (key: Format | undefined) => void;
+  setFormatFilter: (key: Format) => void;
   resetFilters: () => void;
   setTitleFilter: (s: string) => void;
   setPageSize: (size: number) => void;

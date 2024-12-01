@@ -1,18 +1,15 @@
-import { ButtonHTMLAttributes } from "react";
 import { cn } from "./lib/utils";
 import "./style/rainbow-button.css";
-import { Button } from "./components/ui/button";
+import * as Button from "./components/ui/button";
 
-export default function NiceButton(
-  props: ButtonHTMLAttributes<HTMLButtonElement> & {},
-) {
+export default function NiceButton(props: Button.ButtonProps) {
   return (
-    <Button
+    <Button.Button
       {...props}
       className={cn("wowee-that-is-a-nice-button", props.className)}
       variant="primary"
     >
       {props.children}
-    </Button>
+    </Button.Button>
   );
 }

@@ -17,7 +17,7 @@ interface Props {
 export const Deck: FC<Props> = ({ deck, onClick }) => {
   return (
     <div
-      className="flex cursor-pointer flex-col justify-between rounded p-4 transition-all hover:shadow-md hover:shadow-black"
+      className="flex cursor-pointer flex-col justify-between rounded bg-zinc-900 p-4 transition-all hover:shadow-md hover:shadow-black"
       style={{
         backgroundImage: deck.mainCardId
           ? `radial-gradient(transparent, rgb(0, 0, 0)),
@@ -29,13 +29,7 @@ export const Deck: FC<Props> = ({ deck, onClick }) => {
       onClick={() => onClick(deck)}
       title={deck.name}
     >
-      <div
-        style={{
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-          overflow: "hidden",
-        }}
-      >
+      <div className="overflow-hidden text-ellipsis whitespace-nowrap">
         {deck.name}
       </div>
       <div className="tags my-2">

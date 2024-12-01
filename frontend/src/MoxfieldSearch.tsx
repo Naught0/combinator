@@ -1,42 +1,49 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Form } from "./Form";
 import { Input } from "./components/ui/input";
-import { useMoxfieldData } from "./hooks/useComboData";
 import { TabContainer } from "./TabContainer";
 import { UserDecksContainer } from "./UserDeck";
+import { useQuery } from "react-query";
+import { getMoxfieldUserData } from "./services";
+import { AxiosError } from "axios";
+import { Field } from "./Field";
 
 export default function MoxfieldSearch() {
   const [userName, setUserName] = useState("");
-  const {
-    get: getMoxfieldDecks,
-    data,
-    loading: loadingMoxfield,
-    error: moxfieldError,
-    page,
-    setPage,
-    pageSize,
-    setPageSize,
-  } = useMoxfieldData({
-    userName,
-  });
+  const [enabled, setEnabled] = useState(false);
+  const { data, isLoading, error } = useQuery<Deck[], AxiosError>(
+    ["moxfield-decks", userName],
+    () => getMoxfieldUserData({ userName }),
+    {
+      enabled,
+      onSettled() {
+        setEnabled(false);
+      },
+      keepPreviousData: true,
+      retry: false,
+    },
+  );
 
   return (
     <TabContainer>
       <Form
         onSubmit={async (e) => {
           e.preventDefault();
-          await getMoxfieldDecks();
+          setEnabled(true);
         }}
         disabled={userName.length < 3}
-        loading={loadingMoxfield}
+        loading={isLoading}
       >
-        <Input
-          placeholder="Moxfield username"
-          onChange={(e) => setUserName(e.target.value)}
-          value={userName}
-        />
+        <Field error={error && "Unable to find user"}>
+          <Input
+            placeholder="Moxfield username"
+            onChange={(e) => setUserName(e.target.value)}
+            value={userName}
+            variant={error ? "error" : "default"}
+          />
+        </Field>
       </Form>
-      <UserDecksContainer decks={data} />
+      {data && <UserDecksContainer decks={data} />}
     </TabContainer>
   );
 }

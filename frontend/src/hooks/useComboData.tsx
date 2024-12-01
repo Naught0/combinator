@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { deckDataAtom, comboDataAtom } from "../atoms";
 import { getComboData, getDeckData, getMoxfieldUserData } from "../services";
-import axios from "axios";
+import { useQuery } from "react-query";
 
 const MAX_CARDS = 1024;
 export const parseCardList = (list: string) => {
@@ -16,34 +16,6 @@ export const parseCardList = (list: string) => {
     .filter((c) => c)
     .map((c) => c.replace(/^\dx?\s*/, ""))
     .slice(0, MAX_CARDS);
-};
-
-export const useMoxfieldData = ({ userName }: { userName: string }) => {
-  const [data, setData] = useState<Deck[]>([]);
-  const [page, setPage] = useState(1);
-  const [error, setError] = useState<string>();
-  const [pageSize, setPageSize] = useState(25);
-  const [loading, setLoading] = useState(false);
-
-  const get = async () => {
-    setLoading(true);
-    setError(undefined);
-    try {
-      const data = await getMoxfieldUserData({
-        userName,
-        page,
-        pageSize,
-      });
-      setData(data);
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        setError(e.response?.statusText);
-      }
-    }
-    setLoading(false);
-  };
-
-  return { data, error, loading, get, page, setPage, pageSize, setPageSize };
 };
 
 export const useComboData = () => {

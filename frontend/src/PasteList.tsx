@@ -1,41 +1,31 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { useDebouncedCallback } from "use-debounce";
-import { pastedCardNamesAtom, pastedDeckListAtom } from "./atoms";
+import { pastedDeckListAtom } from "./atoms";
 import { Textarea } from "./components/ui/textarea";
-import { TabContainer } from "./TabContainer";
-import { Form } from "./Form";
-import { useQuery } from "@tanstack/react-query";
-import { getComboData } from "./services";
 import { Field } from "./Field";
-import { AxiosError } from "axios";
-import { ComboContainer } from "./ComboContainer";
-import { useEffect, useState } from "react";
+import { Form } from "./Form";
+import { TabContainer } from "./TabContainer";
+import { useNavigate, useParams } from "react-router";
+import { useEffect } from "react";
 
 export const PasteList = () => {
+  const { pastedList: urlPastedList } = useParams<{ pastedList: string }>();
   const [pastedList, setPastedList] = useRecoilState(pastedDeckListAtom);
-  const cardNames = useRecoilValue(pastedCardNamesAtom);
   const persistList = useDebouncedCallback(() => {
     localStorage.setItem("pastedList", pastedList);
   }, 500);
-  const [queryEnabled, setQueryEnabled] = useState(false);
-  const { data, error, isLoading } = useQuery<Results, AxiosError>({
-    queryKey: ["combo-data", pastedList],
-    queryFn: () =>
-      getComboData({
-        main: parseCardList(pastedList).map((name) => ({
-          card: name,
-          quantity: 1,
-        })),
-        commanders: [],
-      }),
-    enabled: queryEnabled,
-  });
+  let navigate = useNavigate();
   useEffect(
-    function disableQuery() {
-      if (!data) return;
-      setQueryEnabled(false);
+    function initState() {
+      if (urlPastedList) {
+        return setPastedList(urlPastedList);
+      }
+      const localPastedList = localStorage.getItem("pastedList");
+      if (localPastedList) {
+        return setPastedList(localPastedList);
+      }
     },
-    [data],
+    [urlPastedList],
   );
 
   return (
@@ -43,21 +33,15 @@ export const PasteList = () => {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          setQueryEnabled(true);
+          navigate(`/paste/${encodeURIComponent(pastedList)}`);
         }}
         disabled={!pastedList}
-        loading={isLoading}
       >
-        <Field
-          error={
-            error && "Unable to find combos. Make sure your format is correct!"
-          }
-        >
+        <Field>
           <Textarea
             placeholder={
               "Allowed formats:\n1x Lightning Bolt\n1 Lightning Bolt\nLightning Bolt"
             }
-            variant={error ? "error" : "default"}
             onChange={(e) => {
               setPastedList(e.target.value);
               persistList();
@@ -67,7 +51,6 @@ export const PasteList = () => {
           ></Textarea>
         </Field>
       </Form>
-      {data && <ComboContainer allCombos={data} cardNames={cardNames} />}
     </TabContainer>
   );
 };

@@ -9,9 +9,13 @@ import Nav from "./Nav";
 import { PasteList } from "./PasteList";
 import { SearchType, SearchTypeSelector } from "./SearchTypeSelector";
 import { PasteDeckUrl } from "./PasteDeckUrl";
+import { Outlet } from "react-router";
 
 export const App = () => {
-  const [searchType, setSearchType] = useState(SearchType.MOXFIELD_USER);
+  const [searchType, setSearchType] = useState(
+    (localStorage.getItem("searchType") as SearchType) ||
+      SearchType.MOXFIELD_USER,
+  );
 
   const saveSearchType = (type: SearchType) => {
     localStorage.setItem("searchType", type);
@@ -29,10 +33,11 @@ export const App = () => {
             setSearchType={saveSearchType}
           />
           <div className="flex w-full flex-col gap-3">
-            {searchType === SearchType.PASTE && <PasteList />}
-            {searchType === SearchType.DECK && <PasteDeckUrl />}
             {searchType === SearchType.MOXFIELD_USER && <MoxfieldSearch />}
+            {searchType === SearchType.DECK && <PasteDeckUrl />}
+            {searchType === SearchType.PASTE && <PasteList />}
           </div>
+          <Outlet />
         </div>
       </div>
       <Footer />

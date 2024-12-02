@@ -10,6 +10,7 @@ interface Props {
   className?: string;
   children: React.ReactNode;
   onChange?: (value: string) => void;
+  value?: string;
 }
 export const Dropdown = (props: Props) => {
   return (

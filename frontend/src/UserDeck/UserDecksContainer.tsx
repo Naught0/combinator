@@ -1,16 +1,10 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC, useEffect, useMemo, useState } from "react";
 import { Deck } from "../Deck";
-import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { Paginate } from "../Paginate/Paginate";
 import { usePaginate } from "../Paginate/hooks/usePaginate";
-import { SortDirection } from "./util/sort";
 import { UserDeckFilters } from "./Filters/UserDeckFilters";
-import { ComboContainer } from "@/ComboContainer";
-import { useQuery } from "@tanstack/react-query";
-import { getComboData, getDeckData } from "@/services";
-import { Button } from "@/components/ui/button";
+import { useFilteredDeck } from "./hooks/useFilteredDeck";
+import { SortDirection } from "./util/sort";
 
 interface Props {
   decks: Deck[];
@@ -18,27 +12,7 @@ interface Props {
 
 export type YesNoAny = "yes" | "no" | "any";
 
-enum View {
-  DECKS,
-  COMBO,
-}
-
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
-  const [currentDeck, setCurrentDeck] = useState<Deck>();
-  const { data: deckData } = useQuery<DeckData>({
-    queryKey: ["deck-data", currentDeck?.publicUrl],
-    queryFn: () => getDeckData(currentDeck!.publicUrl),
-    enabled: !!currentDeck?.publicUrl,
-  });
-  const { data: comboData } = useQuery({
-    queryKey: ["combo-data", deckData?.meta.url],
-    queryFn: () =>
-      getComboData({
-        commanders: [],
-        main: deckData!.cards.map((c) => ({ card: c.name, quantity: 1 })),
-      }),
-    enabled: !!deckData?.cards,
-  });
   const [titleFilter, setTitleFilter] = useState<string>("");
   const [formatFilter, setFormatFilter] = useState<Format>("any");
   const [isLegal, setIsLegal] = useState<YesNoAny>("any");
@@ -46,7 +20,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [sortDir, setSortDir] = useState<SortDirection>(SortDirection.DESC);
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
-  const [view, setView] = useState<View>(View.DECKS);
   const availableDeckFormats = useMemo(() => {
     const formats = [...new Set(decks.map((d) => d.format))];
     formats.sort();
@@ -76,11 +49,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
     setSortDir(SortDirection.DESC);
   };
 
-  const setDeck = async (deck: Deck) => {
-    setCurrentDeck(deck);
-    setView(View.COMBO);
-  };
-
   const safelyChangePageIndex = (n: number) => {
     if (n < 0) return setPageIndex(0);
     if (n > totalPages - 1) return setPageIndex(totalPages - 1);
@@ -89,49 +57,25 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
   return (
     <>
-      {view === View.DECKS && (
-        <UserDeckFilters
-          titleFilter={titleFilter}
-          sortDirection={sortDir}
-          sortBy={sortBy}
-          pageSize={pageSize}
-          formatFilter={formatFilter}
-          formats={availableDeckFormats}
-          setPageSize={setPageSize}
-          setTitleFilter={setTitleFilter}
-          resetFilters={resetFilter}
-          setFormatFilter={setFormatFilter}
-          setSortBy={setSortBy}
-          setSortDir={setSortDir}
-          isLegal={isLegal}
-          setIsLegal={setIsLegal}
-        />
-      )}
-      {view === View.COMBO && (
-        <div>
-          <Button className="button my-3" onClick={() => setView(View.DECKS)}>
-            <FontAwesomeIcon icon={faArrowLeft} />
-
-            <span>All decks</span>
-          </Button>
-          {deckData && comboData && (
-            <ComboContainer
-              deckData={deckData}
-              allCombos={comboData}
-              cardNames={deckData?.cards.map((c) => c.name) ?? []}
-            />
-          )}
-        </div>
-      )}
-      {view === View.DECKS && (
-        <div>
-          <div className="wrap grid grid-cols-1 gap-3 md:grid-cols-2">
-            {currentPage?.map((deck) => (
-              <Deck key={deck.id} deck={deck} onClick={setDeck} />
-            ))}
-          </div>
-        </div>
-      )}
+      <UserDeckFilters
+        titleFilter={titleFilter}
+        sortDirection={sortDir}
+        sortBy={sortBy}
+        pageSize={pageSize}
+        formatFilter={formatFilter}
+        formats={availableDeckFormats}
+        setPageSize={setPageSize}
+        setTitleFilter={setTitleFilter}
+        resetFilters={resetFilter}
+        setFormatFilter={setFormatFilter}
+        setSortBy={setSortBy}
+        setSortDir={setSortDir}
+        isLegal={isLegal}
+        setIsLegal={setIsLegal}
+      />
+      <div className="wrap grid grid-cols-1 gap-3 md:grid-cols-2">
+        {currentPage?.map((deck) => <Deck key={deck.id} deck={deck} />)}
+      </div>
       <Paginate
         pageIndex={pageIndex}
         setIndex={safelyChangePageIndex}

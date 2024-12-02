@@ -4,11 +4,12 @@ import { pastedCardNamesAtom, pastedDeckListAtom } from "./atoms";
 import { Textarea } from "./components/ui/textarea";
 import { TabContainer } from "./TabContainer";
 import { Form } from "./Form";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getComboData } from "./services";
 import { Field } from "./Field";
 import { AxiosError } from "axios";
 import { ComboContainer } from "./ComboContainer";
+import { useEffect, useState } from "react";
 
 export const PasteList = () => {
   const [pastedList, setPastedList] = useRecoilState(pastedDeckListAtom);
@@ -16,9 +17,10 @@ export const PasteList = () => {
   const persistList = useDebouncedCallback(() => {
     localStorage.setItem("pastedList", pastedList);
   }, 500);
-  const { data, error, isPending, mutate } = useMutation<Results, AxiosError>({
-    mutationKey: ["combo-data", pastedList],
-    mutationFn: () =>
+  const [queryEnabled, setQueryEnabled] = useState(false);
+  const { data, error, isLoading } = useQuery<Results, AxiosError>({
+    queryKey: ["combo-data", pastedList],
+    queryFn: () =>
       getComboData({
         main: parseCardList(pastedList).map((name) => ({
           card: name,
@@ -26,17 +28,25 @@ export const PasteList = () => {
         })),
         commanders: [],
       }),
+    enabled: queryEnabled,
   });
+  useEffect(
+    function disableQuery() {
+      if (!data) return;
+      setQueryEnabled(false);
+    },
+    [data],
+  );
 
   return (
     <TabContainer>
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          mutate();
+          setQueryEnabled(true);
         }}
         disabled={!pastedList}
-        loading={isPending}
+        loading={isLoading}
       >
         <Field
           error={

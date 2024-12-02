@@ -4,20 +4,18 @@ import { Input } from "./components/ui/input";
 import { TabContainer } from "./TabContainer";
 import { UserDecksContainer } from "./UserDeck";
 import { useQuery } from "@tanstack/react-query";
-import { getComboData, getMoxfieldUserData } from "./services";
+import { getMoxfieldUserData } from "./services";
 import { AxiosError } from "axios";
 import { Field } from "./Field";
-import { ComboContainer } from "./ComboContainer";
+import { useRecoilState } from "recoil";
+import { moxfieldUserNameAtom } from "./atoms";
 
 export default function MoxfieldSearch() {
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useRecoilState(moxfieldUserNameAtom);
   const [enabled, setEnabled] = useState(false);
   const { data, isLoading, error } = useQuery<Deck[], AxiosError>({
     queryKey: ["moxfield-decks", userName],
-    queryFn: async () => {
-      const data = await getMoxfieldUserData({ userName });
-      return data;
-    },
+    queryFn: () => getMoxfieldUserData({ userName }),
     enabled,
   });
 

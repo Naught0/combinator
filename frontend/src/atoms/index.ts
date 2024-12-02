@@ -11,6 +11,16 @@ export const comboDataAtom = atom<Results | undefined>({
   default: undefined,
 });
 
+export const moxfieldUserNameAtom = atom<string>({
+  key: "MoxfieldUserName",
+  default: "",
+});
+
+export const deckUrlAtom = atom<string>({
+  key: "DeckUrl",
+  default: "",
+});
+
 export const pastedDeckListAtom = atom<string>({
   key: "PastedDeckList",
   default: "",

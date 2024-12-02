@@ -25,7 +25,7 @@ enum View {
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
   const { data: deckData } = useQuery<DeckData>({
-    queryKey: ["deck-data", currentDeck?.publicId],
+    queryKey: ["deck-data", currentDeck?.publicUrl],
     queryFn: () => getDeckData(currentDeck!.publicUrl),
     enabled: !!currentDeck?.publicUrl,
   });

@@ -1,59 +1,65 @@
-import { useEffect, useState } from "react";
-import { Input } from "./components/ui/input";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getComboData, getDeckData } from "./services";
-import { Field } from "./Field";
+import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import { TabContainer } from "./TabContainer";
-import { Form } from "./Form";
-import { comboDataAtom, deckDataAtom } from "./atoms";
+import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ComboContainer } from "./ComboContainer";
+import { Field } from "./Field";
+import { Form } from "./Form";
+import { TabContainer } from "./TabContainer";
+import { comboDataAtom, deckDataAtom, deckUrlAtom } from "./atoms";
+import { Input } from "./components/ui/input";
+import { getComboData, getDeckData } from "./services";
 
 export function PasteDeckUrl() {
-  const [deckUrl, setDeckUrl] = useState("");
-  const [enabled, setEnabled] = useState(false);
-  const [comboData, setComboData] = useRecoilState(comboDataAtom);
-  const queryClient = useQueryClient();
+  const [deckUrl, setDeckUrl] = useRecoilState(deckUrlAtom);
+  const [enabled, setDeckQueryEnabled] = useState(false);
+  const setComboData = useSetRecoilState(comboDataAtom);
   const setDeckData = useSetRecoilState(deckDataAtom);
-  const { data, error, isLoading } = useQuery<DeckData, AxiosError>({
+  const {
+    data: deckData,
+    error,
+    isLoading: deckLoading,
+    isFetched: deckFetched,
+  } = useQuery<DeckData, AxiosError>({
     queryKey: ["deck-data", deckUrl],
-    queryFn: () => getDeckData(deckUrl),
+    queryFn: async () => {
+      const d = await getDeckData(deckUrl);
+      setDeckData(d);
+      return d;
+    },
     enabled,
   });
-  useEffect(
-    function setDeckDataAtom() {
-      if (!data) return;
-
-      (async () => {
-        setDeckData(data);
-        setEnabled(false);
-
-        const d = await queryClient.fetchQuery({
-          queryKey: ["combo-data", data.meta.url],
-          queryFn: async () =>
-            await getComboData({
-              commanders: [],
-              main: data.cards.map((c) => ({ card: c.name, quantity: 1 })),
-            }),
-        });
-        setComboData(d);
-      })();
+  const { data: comboData, isLoading: comboLoading } = useQuery({
+    queryKey: ["combo-data", deckData?.meta.url],
+    queryFn: async () => {
+      const d = await getComboData({
+        commanders: [],
+        main: deckData!.cards.map((c) => ({ card: c.name, quantity: 1 })),
+      });
+      setComboData(d);
+      return d;
     },
-    [data],
+    enabled: !!deckData?.cards,
+  });
+  useEffect(
+    function disableQuery() {
+      setDeckQueryEnabled(false);
+    },
+    [deckFetched],
   );
   return (
     <TabContainer>
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          setEnabled(true);
+          setDeckQueryEnabled(true);
         }}
-        loading={isLoading}
+        loading={deckLoading || comboLoading}
         disabled={deckUrl.length < 5}
       >
         <Field error={error && "Unable to find deck"}>
           <Input
+            name="deck-url"
             type="text"
             variant={error ? "error" : "default"}
             placeholder="Moxfield, Archidekt, or MTGGoldfish deck URL"
@@ -64,11 +70,11 @@ export function PasteDeckUrl() {
           />
         </Field>
       </Form>
-      {data && comboData && (
+      {deckData && comboData && (
         <ComboContainer
-          deckData={data}
+          deckData={deckData}
           allCombos={comboData}
-          cardNames={data.cards.map((c) => c.name)}
+          cardNames={deckData.cards.map((c) => c.name)}
         />
       )}
     </TabContainer>

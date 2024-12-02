@@ -5,3 +5,9 @@ A small site built using FastAPI and React that returns all the combos in your M
 Combo data is retrieved from the wonderful [Commander Spellbook](https://commanderspellbook.com/)
 
 You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
+
+## TODO:
+
+**Frontend**:   
+- [ ] Auto select search type by URL
+- [ ] Put moxfield pagination state in URL

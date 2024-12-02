@@ -13,7 +13,7 @@ import { moxfieldUserNameAtom } from "./atoms";
 export default function MoxfieldSearch() {
   const [userName, setUserName] = useRecoilState(moxfieldUserNameAtom);
   const [enabled, setEnabled] = useState(false);
-  const { data, isLoading, error } = useQuery<Deck[], AxiosError>({
+  const { data, isLoading, error, isFetched } = useQuery<Deck[], AxiosError>({
     queryKey: ["moxfield-decks", userName],
     queryFn: () => getMoxfieldUserData({ userName }),
     enabled,
@@ -21,10 +21,9 @@ export default function MoxfieldSearch() {
 
   useEffect(
     function disableQuery() {
-      if (!data) return;
       setEnabled(false);
     },
-    [data],
+    [isFetched],
   );
 
   return (
@@ -39,8 +38,9 @@ export default function MoxfieldSearch() {
       >
         <Field error={error && "Unable to find user"}>
           <Input
+            name="moxfield-username"
             placeholder="Moxfield username"
-            onChange={(e) => setUserName(e.target.value)}
+            onChange={(e) => setUserName(e.target.value.trim())}
             value={userName}
             variant={error ? "error" : "default"}
           />

@@ -10,6 +10,7 @@ import { UserDeckFilters } from "./Filters/UserDeckFilters";
 import { ComboContainer } from "@/ComboContainer";
 import { useQuery } from "@tanstack/react-query";
 import { getComboData, getDeckData } from "@/services";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   decks: Deck[];
@@ -108,11 +109,11 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       )}
       {view === View.COMBO && (
         <div>
-          <button className="button my-3" onClick={() => setView(View.DECKS)}>
+          <Button className="button my-3" onClick={() => setView(View.DECKS)}>
             <FontAwesomeIcon icon={faArrowLeft} />
 
             <span>All decks</span>
-          </button>
+          </Button>
           {deckData && comboData && (
             <ComboContainer
               deckData={deckData}
@@ -124,10 +125,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       )}
       {view === View.DECKS && (
         <div>
-          <div
-            className="wrap grid grid-cols-1 gap-3 md:grid-cols-2"
-            style={{ gap: "0.75rem" }}
-          >
+          <div className="wrap grid grid-cols-1 gap-3 md:grid-cols-2">
             {currentPage?.map((deck) => (
               <Deck key={deck.id} deck={deck} onClick={setDeck} />
             ))}

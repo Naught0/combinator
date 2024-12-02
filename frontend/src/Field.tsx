@@ -9,7 +9,7 @@ export function Field({
 }) {
   return (
     <div className="flex flex-col gap-1">
-      {children} {error && <small className="text-red-400">{error}</small>}
+      {children} {error && <small className="text-red-300">{error}</small>}
     </div>
   );
 }

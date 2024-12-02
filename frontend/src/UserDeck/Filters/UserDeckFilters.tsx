@@ -54,9 +54,10 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
   return (
     <div className="flex flex-row flex-wrap gap-2">
       <Field>
-        <Label htmlFor="title-filter">Deck name</Label>
+        <Label>Deck name</Label>
         <div className="relative w-full">
           <Input
+            name="deck-filter"
             type="text"
             placeholder="Filter decks by title"
             value={titleFilter}

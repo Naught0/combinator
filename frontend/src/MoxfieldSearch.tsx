@@ -1,29 +1,22 @@
 import { useEffect, useState } from "react";
-import { Form } from "./Form";
+import { useNavigate, useParams } from "react-router";
 import { Input } from "./components/ui/input";
-import { TabContainer } from "./TabContainer";
-import { UserDecksContainer } from "./UserDeck";
-import { useQuery } from "@tanstack/react-query";
-import { getMoxfieldUserData } from "./services";
-import { AxiosError } from "axios";
 import { Field } from "./Field";
+import { Form } from "./Form";
+import { TabContainer } from "./TabContainer";
 import { useRecoilState } from "recoil";
 import { moxfieldUserNameAtom } from "./atoms";
 
 export default function MoxfieldSearch() {
+  const { userName: urlUserName } = useParams();
   const [userName, setUserName] = useRecoilState(moxfieldUserNameAtom);
-  const [enabled, setEnabled] = useState(false);
-  const { data, isLoading, error, isFetched } = useQuery<Deck[], AxiosError>({
-    queryKey: ["moxfield-decks", userName],
-    queryFn: () => getMoxfieldUserData({ userName }),
-    enabled,
-  });
-
+  const [value, setValue] = useState(userName);
+  const navigate = useNavigate();
   useEffect(
-    function disableQuery() {
-      setEnabled(false);
+    function initUserName() {
+      if (urlUserName) return setValue(urlUserName);
     },
-    [isFetched],
+    [urlUserName],
   );
 
   return (
@@ -31,22 +24,20 @@ export default function MoxfieldSearch() {
       <Form
         onSubmit={async (e) => {
           e.preventDefault();
-          setEnabled(true);
+          setUserName(value);
+          navigate(`/user/moxfield/${value}`);
         }}
-        disabled={userName.length < 3}
-        loading={isLoading}
+        disabled={value.length < 3}
       >
-        <Field error={error && "Unable to find user"}>
+        <Field>
           <Input
             name="moxfield-username"
             placeholder="Moxfield username"
-            onChange={(e) => setUserName(e.target.value.trim())}
-            value={userName}
-            variant={error ? "error" : "default"}
+            onChange={(e) => setValue(e.target.value.trim())}
+            value={value}
           />
         </Field>
       </Form>
-      {data && <UserDecksContainer decks={data} />}
     </TabContainer>
   );
 }

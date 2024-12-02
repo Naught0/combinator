@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 a {
-  @apply cursor-pointer text-orange-400 underline visited:text-orange-500/90 hover:text-orange-500;
+  @apply cursor-pointer text-orange-400 underline visited:text-purple-500/90 hover:text-orange-500;
 }
 
 @layer base {

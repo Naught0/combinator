@@ -7,14 +7,38 @@ import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/josefin-sans";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+import { persistQueryClient } from "@tanstack/react-query-persist-client";
+import { BrowserRouter, Route, Routes } from "react-router";
+import { DeckCombos } from "./routes/DeckCombos";
+import { MoxfieldUser } from "./routes/MoxfieldUser";
+import { Paste } from "./routes/Paste";
 
 const CACHE_TTL_MS = 15 * 60 * 1000;
+const GC_TIME_MS = 1 * 60 * 60 * 1000;
+
+const sessionStoragePersister = createSyncStoragePersister({
+  storage: window.sessionStorage,
+});
+
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { staleTime: CACHE_TTL_MS, retry: false },
+    queries: { staleTime: CACHE_TTL_MS, retry: false, gcTime: GC_TIME_MS },
   },
+  queryCache: new QueryCache({
+    onSettled(data, error, query) {
+      console.log(query.queryKey, "Stale?", query.isStale());
+      console.log({ data, error, query });
+    },
+  }),
 });
+persistQueryClient({ queryClient, persister: sessionStoragePersister });
+
 const elem = document.getElementById("root");
 if (elem) {
   const root = createRoot(elem);
@@ -22,7 +46,18 @@ if (elem) {
     <React.StrictMode>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<App />}>
+                <Route path="/deck/:deckUrl" element={<DeckCombos />} />
+                <Route
+                  path="/user/moxfield/:userName"
+                  element={<MoxfieldUser />}
+                />
+                <Route path="/paste/:pastedList" element={<Paste />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
         </QueryClientProvider>
       </RecoilRoot>
     </React.StrictMode>,

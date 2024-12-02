@@ -23,7 +23,7 @@ export const deckUrlAtom = atom<string>({
 
 export const pastedDeckListAtom = atom<string>({
   key: "PastedDeckList",
-  default: "",
+  default: localStorage.getItem("pastedList") ?? "",
 });
 
 export const pastedCardNamesAtom = selector<string[]>({

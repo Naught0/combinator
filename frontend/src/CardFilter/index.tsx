@@ -1,15 +1,19 @@
 import { useMemo, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { deckDataAtom } from "../atoms";
 import { CardImage } from "../CardImage";
 import { HoverableCard } from "../HoverableCard";
+import { Dropdown } from "@/Dropdown";
+import { SelectItem } from "@/components/ui/select";
 
 type ViewMode = "image" | "text";
 
-export const CardFilter = () => {
-  const [filter, setFilter] = useState("");
+export const CardFilter = ({
+  filter,
+  deckData,
+}: {
+  filter: string;
+  deckData: DeckData;
+}) => {
   const [viewMode, setViewMode] = useState<ViewMode>("text");
-  const deckData = useRecoilValue(deckDataAtom);
   const filteredCards = useMemo(
     () =>
       deckData?.cards.filter((c) => {
@@ -22,26 +26,17 @@ export const CardFilter = () => {
     [deckData, filter],
   );
   return (
-    <div className="flex flex-col gap-3 flex-1">
-      <input
-        value={filter}
-        onChange={({ target }) => setFilter(target.value)}
-        className="input is-medium"
-        placeholder="Filter cards by title and text"
-      />
-
-      <div className="flex flex-0">
-        <div className="select">
-          <select
-            value={viewMode}
-            onChange={({ target }) => setViewMode(target.value as ViewMode)}
-          >
-            <option value="image">Images</option>
-            <option value="text">Text</option>
-          </select>
-        </div>
+    <div className="flex flex-1 flex-col gap-3">
+      <div className="flex-0 flex">
+        <Dropdown
+          title={viewMode}
+          onChange={(value) => setViewMode(value as ViewMode)}
+        >
+          <SelectItem value="image">Images</SelectItem>
+          <SelectItem value="text">Text</SelectItem>
+        </Dropdown>
       </div>
-      <div className="flex flex-wrap flex-row gap-6 justify-start">
+      <div className="flex flex-row flex-wrap justify-start gap-6">
         {filteredCards &&
           filteredCards.map((card) => {
             return (

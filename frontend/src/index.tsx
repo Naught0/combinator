@@ -7,12 +7,12 @@ import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/josefin-sans";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { staleTime: CACHE_TTL_MS, retry: false, keepPreviousData: true },
+    queries: { staleTime: CACHE_TTL_MS, retry: false },
   },
 });
 const elem = document.getElementById("root");

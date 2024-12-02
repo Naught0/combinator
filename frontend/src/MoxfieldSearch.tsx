@@ -1,25 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "./Form";
 import { Input } from "./components/ui/input";
 import { TabContainer } from "./TabContainer";
 import { UserDecksContainer } from "./UserDeck";
-import { useQuery } from "react-query";
-import { getMoxfieldUserData } from "./services";
+import { useQuery } from "@tanstack/react-query";
+import { getComboData, getMoxfieldUserData } from "./services";
 import { AxiosError } from "axios";
 import { Field } from "./Field";
+import { ComboContainer } from "./ComboContainer";
 
 export default function MoxfieldSearch() {
   const [userName, setUserName] = useState("");
   const [enabled, setEnabled] = useState(false);
-  const { data, isLoading, error } = useQuery<Deck[], AxiosError>(
-    ["moxfield-decks", userName],
-    () => getMoxfieldUserData({ userName }),
-    {
-      enabled,
-      onSettled() {
-        setEnabled(false);
-      },
+  const { data, isLoading, error } = useQuery<Deck[], AxiosError>({
+    queryKey: ["moxfield-decks", userName],
+    queryFn: async () => {
+      const data = await getMoxfieldUserData({ userName });
+      return data;
     },
+    enabled,
+  });
+
+  useEffect(
+    function disableQuery() {
+      if (!data) return;
+      setEnabled(false);
+    },
+    [data],
   );
 
   return (

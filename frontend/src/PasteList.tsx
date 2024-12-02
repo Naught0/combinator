@@ -4,7 +4,7 @@ import { pastedCardNamesAtom, pastedDeckListAtom } from "./atoms";
 import { Textarea } from "./components/ui/textarea";
 import { TabContainer } from "./TabContainer";
 import { Form } from "./Form";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { getComboData } from "./services";
 import { Field } from "./Field";
 import { AxiosError } from "axios";
@@ -16,9 +16,9 @@ export const PasteList = () => {
   const persistList = useDebouncedCallback(() => {
     localStorage.setItem("pastedList", pastedList);
   }, 500);
-  const { data, error, isLoading, mutate } = useMutation<Results, AxiosError>(
-    ["pasted-list"],
-    () =>
+  const { data, error, isPending, mutate } = useMutation<Results, AxiosError>({
+    mutationKey: ["combo-data", pastedList],
+    mutationFn: () =>
       getComboData({
         main: parseCardList(pastedList).map((name) => ({
           card: name,
@@ -26,7 +26,7 @@ export const PasteList = () => {
         })),
         commanders: [],
       }),
-  );
+  });
 
   return (
     <TabContainer>
@@ -36,7 +36,7 @@ export const PasteList = () => {
           mutate();
         }}
         disabled={!pastedList}
-        loading={isLoading}
+        loading={isPending}
       >
         <Field
           error={
@@ -47,6 +47,7 @@ export const PasteList = () => {
             placeholder={
               "Allowed formats:\n1x Lightning Bolt\n1 Lightning Bolt\nLightning Bolt"
             }
+            variant={error ? "error" : "default"}
             onChange={(e) => {
               setPastedList(e.target.value);
               persistList();

@@ -8,9 +8,7 @@ import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { SortDirection } from "./util/sort";
 import { UserDeckFilters } from "./Filters/UserDeckFilters";
 import { ComboContainer } from "@/ComboContainer";
-import { useRecoilState } from "recoil";
-import { comboDataAtom, deckDataAtom } from "@/atoms";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getComboData, getDeckData } from "@/services";
 
 interface Props {
@@ -26,20 +24,20 @@ enum View {
 
 export const UserDecksContainer: FC<Props> = ({ decks }) => {
   const [currentDeck, setCurrentDeck] = useState<Deck>();
-  const { data: deckData } = useQuery<DeckData>(
-    ["deck-data", currentDeck?.publicId],
-    () => getDeckData(currentDeck!.publicUrl),
-    { enabled: !!currentDeck?.publicUrl, keepPreviousData: false },
-  );
-  const { data: comboData } = useQuery(
-    ["combo-data", currentDeck?.publicId],
-    () =>
+  const { data: deckData } = useQuery<DeckData>({
+    queryKey: ["deck-data", currentDeck?.publicId],
+    queryFn: () => getDeckData(currentDeck!.publicUrl),
+    enabled: !!currentDeck?.publicUrl,
+  });
+  const { data: comboData } = useQuery({
+    queryKey: ["combo-data", deckData?.meta.url],
+    queryFn: () =>
       getComboData({
         commanders: [],
         main: deckData!.cards.map((c) => ({ card: c.name, quantity: 1 })),
       }),
-    { enabled: !!deckData?.cards, keepPreviousData: false },
-  );
+    enabled: !!deckData?.cards,
+  });
   const [titleFilter, setTitleFilter] = useState<string>("");
   const [formatFilter, setFormatFilter] = useState<Format>("any");
   const [isLegal, setIsLegal] = useState<YesNoAny>("any");

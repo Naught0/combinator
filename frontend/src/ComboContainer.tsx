@@ -37,7 +37,7 @@ export const ComboContainer = ({
   return (
     <div className="flex flex-col">
       <div className="flex flex-grow flex-col">
-        <h1 className="title">
+        <h1 className="text-3xl md:text-4xl">
           {deckData?.meta?.url && (
             <Hyperlink href={deckData?.meta.url}>
               {deckData?.meta.name}

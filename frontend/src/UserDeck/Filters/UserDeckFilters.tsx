@@ -129,6 +129,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
           <Dropdown
             title={`${deckFilters.find((f) => f.key === sortBy)?.display}`}
             onChange={(value) => setSortBy(value as keyof Deck)}
+            className="rounded-r-none border-r-0"
           >
             {deckFilters.map((f) => (
               <SelectItem key={f.key} value={f.display}>
@@ -136,8 +137,8 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
               </SelectItem>
             ))}
           </Dropdown>
-
           <Button
+            className="rounded-l-none"
             onClick={() =>
               setSortDir(
                 sortDirection === SortDirection.ASC

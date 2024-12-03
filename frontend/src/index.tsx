@@ -20,7 +20,7 @@ import { MoxfieldUser } from "./routes/MoxfieldUser";
 import { Paste } from "./routes/Paste";
 
 const CACHE_TTL_MS = 15 * 60 * 1000;
-const GC_TIME_MS = 1 * 60 * 60 * 1000;
+const GC_TIME_MS = 1000 * 60 * 60 * 24 * 7;
 
 const sessionStoragePersister = createSyncStoragePersister({
   storage: window.sessionStorage,

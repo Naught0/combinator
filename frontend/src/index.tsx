@@ -22,8 +22,8 @@ import { Paste } from "./routes/Paste";
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const GC_TIME_MS = 1000 * 60 * 60 * 24 * 7;
 
-const sessionStoragePersister = createSyncStoragePersister({
-  storage: window.sessionStorage,
+const persister = createSyncStoragePersister({
+  storage: window.localStorage,
 });
 
 const queryClient = new QueryClient({
@@ -37,7 +37,7 @@ const queryClient = new QueryClient({
     },
   }),
 });
-persistQueryClient({ queryClient, persister: sessionStoragePersister });
+persistQueryClient({ queryClient, persister });
 
 const elem = document.getElementById("root");
 if (elem) {

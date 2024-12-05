@@ -5,6 +5,7 @@ import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { UserDeckFilters } from "./Filters/UserDeckFilters";
 import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { SortDirection } from "./util/sort";
+import { BackToSearch } from "@/GoBack";
 
 interface Props {
   decks: Deck[];
@@ -57,6 +58,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
   return (
     <>
+      <BackToSearch />
       <UserDeckFilters
         titleFilter={titleFilter}
         sortDirection={sortDir}

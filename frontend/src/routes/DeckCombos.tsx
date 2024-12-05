@@ -1,28 +1,14 @@
 import { ComboContainer } from "@/ComboContainer";
-import { getComboData, getDeckData } from "@/services";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import { BackToSearch } from "@/GoBack";
 import { useParams } from "react-router";
 
 export function DeckCombos() {
-  let { deckUrl } = useParams<{ deckUrl: string }>();
-  if (!deckUrl) return null;
+  let { source, deckId } = useParams<{ source: DeckSource; deckId: string }>();
+  if (!source || !deckId) return null; // TODO: Redirect to 404
 
-  const { data: deckData } = useQuery<DeckData, AxiosError>({
-    queryKey: ["deck-data", deckUrl],
-    queryFn: () => getDeckData(decodeURIComponent(deckUrl!)),
-  });
-  const { data: comboData, isLoading: comboLoading } = useQuery({
-    queryKey: ["combo-data", deckData?.meta.url],
-    queryFn: async () => {
-      const d = await getComboData({
-        commanders: [],
-        main: deckData!.cards.map((c) => ({ card: c.name, quantity: 1 })),
-      });
-      return d;
-    },
-    enabled: !!deckData?.cards,
-  });
-
-  return <ComboContainer allCombos={comboData} deckData={deckData} />;
+  return (
+    <main className="flex flex-col gap-3">
+      <ComboContainer deckId={deckId} source={source} />
+    </main>
+  );
 }

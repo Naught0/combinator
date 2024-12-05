@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -6,9 +8,11 @@ class UserSearchRequest(BaseModel):
     page: int = 1
     per_page: int = Field(alias="perPage", default=50)
 
+
 class Card(BaseModel):
     card: str
     quantity: int
+
 
 class ComboSearchPayload(BaseModel):
     main: list[Card]
@@ -22,6 +26,11 @@ class DeckMeta(BaseModel):
     colors: list[str]
 
 
+Source = Literal["archidekt", "moxfield", "mtggoldfish"]
+
+
 class Deck(BaseModel):
+    source: Source
+    id: str
     meta: DeckMeta
     cards: list[str]

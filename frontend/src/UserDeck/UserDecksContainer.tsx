@@ -58,7 +58,9 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
 
   return (
     <>
-      <BackToSearch />
+      <div>
+        <BackToSearch />
+      </div>
       <UserDeckFilters
         titleFilter={titleFilter}
         sortDirection={sortDir}

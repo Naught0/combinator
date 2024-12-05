@@ -1,4 +1,6 @@
 import { ComboContainer } from "@/ComboContainer";
+import { ComboTabs } from "@/ComboTabs";
+import { Loading } from "@/Loading";
 import { parseCardList } from "@/PasteList";
 import { getComboData } from "@/services";
 import { useQuery } from "@tanstack/react-query";
@@ -20,5 +22,7 @@ export function Paste() {
         commanders: [],
       }),
   });
-  return <ComboContainer allCombos={data} loading={isLoading} />;
+  if (!data || isLoading) return <Loading size="lg" message="Loading combos" />;
+
+  return <ComboTabs deckData={data} />;
 }

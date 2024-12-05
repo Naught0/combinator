@@ -9,7 +9,7 @@ from pyrchidekt.api import getDeckById
 
 from app.const import ACCEPT, USER_AGENT
 from app.logs import logger
-from app.models.api import Deck
+from app.models.api import Deck, Source
 
 MOXFIELD_BASE_URL = "https://api.moxfield.com/v2/decks/all/{}"
 COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}
@@ -29,34 +29,54 @@ def chunk_array(lst: list, n: int):
         yield lst[i : i + n]
 
 
-def get_moxfield_deck(url: str) -> Deck:
-    """Retrieve a deck from moxfield
+def parse_source_from_url(url: str) -> Source | None:
+    source = None
+    url = url.lower()
+    if "moxfield" in url:
+        source = "moxfield"
+    if "mtggoldfish" in url:
+        source = "mtggoldfish"
+    if "archidekt" in url:
+        source = "archidekt"
 
-    Args:
-        url (str)
+    return source
 
-    Raises:
-        ValueError: Malformed URL
 
-    Returns:
-        dict
-    """
+def parse_id_from_url(source: Source, url: str) -> str | None:
+    id = None
+    if source == "moxfield":
+        id = parse_moxfield_deck_id(url)
+    if source == "mtggoldfish":
+        id = parse_mtggoldfish_deck_id(url)
+    if source == "archidekt":
+        id = parse_archidekt_deck_id(url)
+
+    return id
+
+
+def parse_moxfield_deck_id(url: str) -> str:
     parsed = urlparse(url)
-
     try:
         deck_id = parsed.path.split("/")[-1]
     except IndexError:
         raise ValueError("Invalid or malformed URL supplied.")
 
+    return deck_id
+
+
+def get_moxfield_deck(deck_id: str) -> Deck:
     resp = requests.get(
         MOXFIELD_BASE_URL.format(deck_id), headers={"User-Agent": USER_AGENT}
     )
+    resp.raise_for_status()
     resp = resp.json()
     return Deck(
+        id=deck_id,
+        source="moxfield",
         meta={
             "name": resp.get("name"),
             "author": resp["createdByUser"]["userName"],
-            "url": url,
+            "url": resp["publicUrl"],
             "colors": [x.lower() for x in resp["main"]["colors"]],
         },
         cards=list(
@@ -72,23 +92,17 @@ def get_moxfield_deck(url: str) -> Deck:
     )
 
 
-def get_goldfish_deck(url: str) -> Deck:
-    """Retrieve an mtggoldfish deck
+def parse_mtggoldfish_deck_id(url: str) -> str:
+    parsed = urlparse(url)
+    try:
+        url_parts = parsed.path.split("/")
+        return url_parts[url_parts.index("deck") + 1]
+    except IndexError:
+        raise ValueError("Invalid or malformed URL supplied.")
 
-    Args:
-        url (str)
 
-    Raises:
-        ValueError: On malformed URL
-
-    Returns:
-        dict
-    """
-    url_parts = url.split("/")
-    deck_id = url_parts[url_parts.index("deck") + 1]
-    if not all(substr in url for substr in ("www.", "https")):
-        url = f"https://www.mtggoldfish.com/deck/{deck_id}"
-
+def get_goldfish_deck(deck_id: str) -> Deck:
+    url = f"https://www.mtggoldfish.com/deck/{deck_id}"
     download_url = "https://www.mtggoldfish.com/deck/download/{}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36",
@@ -109,31 +123,23 @@ def get_goldfish_deck(url: str) -> Deck:
     cards = list(set([re.findall(r"\D+", x)[0].strip() for x in resp.split("\n") if x]))
 
     return Deck(
-        meta={"name": title, "author": author, "url": url, "colors": []}, cards=cards
+        id=deck_id,
+        source="mtggoldfish",
+        meta={"name": title, "author": author, "url": url, "colors": []},
+        cards=cards,
     )
 
 
-def get_archidekt_deck(url: str) -> Deck:
-    """Retrieve an archidekt deck
-
-    Args:
-        url (str)
-
-    Raises:
-        RequestException
-
-    Returns:
-        dict
-    """
-
+def parse_archidekt_deck_id(url: str) -> str:
     parsed = urlparse(url)
     try:
-        id = next(filter(lambda x: x.isdigit(), reversed(parsed.path.split("/"))))
+        return next(filter(lambda x: x.isdigit(), reversed(parsed.path.split("/"))))
     except StopIteration:
         raise ValueError("Could not parse numeric deck ID from URL", url)
 
-    print("FOUND ID", id)
-    data = getDeckById(id)
+
+def get_archidekt_deck(deck_id: str) -> Deck:
+    data = getDeckById(deck_id)
     author = data.owner.username
     title = data.name
     cards = set([x.card.oracle_card.name for x in data.cards])
@@ -142,10 +148,12 @@ def get_archidekt_deck(url: str) -> Deck:
         colors.extend(card.card.oracle_card.color_identity)
 
     return Deck(
+        id=deck_id,
+        source="archidekt",
         meta={
             "name": title,
             "author": author,
-            "url": url,
+            "url": f"https://archidekt.com/decks/{deck_id}",
             "colors": list(set(COLOR_MAP[x.lower()] for x in colors)),
         },
         cards=list(cards),
@@ -185,6 +193,8 @@ def scryfall_request(card_names: list[str]) -> list[dict]:
 
     data = resp.json()["data"]
     for card in data:
+        if "oracle_text" not in card:
+            __import__("pprint").pprint(card)
         if "image_uris" not in card:
             continue
 
@@ -193,7 +203,7 @@ def scryfall_request(card_names: list[str]) -> list[dict]:
                 "name": card["name"],
                 "image": card["image_uris"]["normal"],
                 "id": card["id"],
-                "oracle_text": card["oracle_text"],
+                "oracle_text": card["oracle_text"] if "oracle_text" in card else "",
             }
         )
 
@@ -210,3 +220,20 @@ def get_scryfall_cards(
         ret.extend(scryfall_request(chunk))
 
     return ret
+
+
+def get_deck(source: Source, deck_id: str):
+    deck = None
+    if source == "moxfield":
+        deck = get_moxfield_deck(deck_id)
+    if source == "mtggoldfish":
+        deck = get_goldfish_deck(deck_id)
+    if source == "archidekt":
+        deck = get_archidekt_deck(deck_id)
+
+    if deck is None:
+        raise ValueError(f"Unknown source: {source}")
+
+    deck.cards = get_scryfall_cards(deck.cards)
+
+    return deck

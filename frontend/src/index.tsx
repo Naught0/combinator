@@ -18,6 +18,8 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { DeckCombos } from "./routes/DeckCombos";
 import { MoxfieldUser } from "./routes/MoxfieldUser";
 import { Paste } from "./routes/Paste";
+import { Search } from "./Search";
+import { RedirectDeck } from "./RedirectDeck";
 
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const GC_TIME_MS = 1000 * 60 * 60 * 24 * 7;
@@ -30,12 +32,6 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: { staleTime: CACHE_TTL_MS, retry: false, gcTime: GC_TIME_MS },
   },
-  queryCache: new QueryCache({
-    onSettled(data, error, query) {
-      console.log(query.queryKey, "Stale?", query.isStale());
-      console.log({ data, error, query });
-    },
-  }),
 });
 persistQueryClient({ queryClient, persister });
 
@@ -48,8 +44,10 @@ if (elem) {
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<App />}>
-                <Route path="/deck/:deckUrl" element={<DeckCombos />} />
+              <Route element={<App />}>
+                <Route path="/" element={<Search />} />
+                <Route path="/deck/:source/:deckId" element={<DeckCombos />} />
+                <Route path="/deck/*" element={<RedirectDeck />} />
                 <Route
                   path="/user/moxfield/:userName"
                   element={<MoxfieldUser />}

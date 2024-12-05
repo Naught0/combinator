@@ -10,15 +10,22 @@ export const getMoxfieldUserData = async ({
   pageSize?: number;
 }): Promise<Deck[]> => {
   const { data } = await cachedClient.post<Deck[]>(
-    import.meta.env.VITE_API_URL + "/api/search/user",
+    import.meta.env.VITE_API_URL + "/api/user",
     { userName, page, pageSize },
   );
   return data;
 };
 
-export const getDeckData = async (url: string): Promise<DeckData> => {
+export const getDeckById = async (source: DeckSource, id: string) => {
   const { data } = await cachedClient.get<DeckData>(
-    import.meta.env.VITE_API_URL + "/api/search/deck",
+    `${import.meta.env.VITE_API_URL}/api/deck/${source}/${id}`,
+  );
+  return data;
+};
+
+export const parseDeckUrl = async (url: string): Promise<DeckData> => {
+  const { data } = await cachedClient.get<DeckData>(
+    import.meta.env.VITE_API_URL + "/api/deck/parse_url",
     {
       params: { url },
     },
@@ -36,7 +43,7 @@ export const getComboData = async (json: {
   commanders: Card[];
 }): Promise<Results> => {
   const { data } = await cachedClient.post<Results>(
-    import.meta.env.VITE_API_URL + "/api/search/combo",
+    import.meta.env.VITE_API_URL + "/api/combo",
     json,
     {
       headers: { "Content-Type": "application/json" },

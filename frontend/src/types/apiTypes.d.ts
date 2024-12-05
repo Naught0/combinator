@@ -13,7 +13,10 @@ interface DeckCard {
   oracle_text: string;
 }
 
+type DeckSource = "moxfield" | "archidekt" | "mtggoldfish";
 interface DeckData {
+  id: string;
+  source: DeckSource;
   meta: DeckMeta;
   cards: DeckCard[];
 }

@@ -139,6 +139,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
           </Dropdown>
           <Button
             className="rounded-l-none"
+            variant="outline"
             onClick={() =>
               setSortDir(
                 sortDirection === SortDirection.ASC

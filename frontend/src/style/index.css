@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 a {
-  @apply cursor-pointer text-orange-400 underline hover:text-orange-500;
+  @apply cursor-pointer text-zinc-300 hover:underline;
 }
 
 @layer base {

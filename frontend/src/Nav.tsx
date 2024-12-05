@@ -5,14 +5,16 @@ export default function Nav() {
   return (
     <div className="flex w-full flex-row flex-wrap items-center gap-3">
       <div className="flex flex-row items-center gap-2">
-        <img src={logo} alt="" width={32} />
         <Link
           to="/"
-          className="font-serif text-3xl font-medium text-white no-underline md:text-4xl"
+          className="inline-flex gap-3 font-serif text-3xl font-medium text-white no-underline md:text-4xl"
         >
-          <span className="text-orange-300">mtg</span>
-          <wbr />
-          combinator
+          <img src={logo} alt="" width={32} />
+          <span>
+            <span className="text-orange-300">mtg</span>
+            <wbr />
+            combinator
+          </span>
         </Link>
       </div>
       <div className="italic text-zinc-300">

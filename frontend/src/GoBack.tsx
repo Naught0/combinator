@@ -1,17 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "./components/ui/button";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { ReactNode } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 export function BackToSearch(props: { label?: ReactNode }) {
-  let navigate = useNavigate();
   return (
-    <div>
-      <Button onClick={() => navigate("/")} variant={"default"}>
-        {props.label || "New search"}
-        <FontAwesomeIcon icon={faArrowRight} />
-      </Button>
-    </div>
+    <Link to="/" className="inline-flex items-center gap-2">
+      <FontAwesomeIcon icon={faArrowLeft} />
+      {props.label || "New search"}
+    </Link>
   );
 }

@@ -34,3 +34,19 @@ class Deck(BaseModel):
     id: str
     meta: DeckMeta
     cards: list[str]
+
+
+class CardSearchPayload(BaseModel):
+    cards: list[str]
+
+
+class ScryfallCard(BaseModel):
+    id: str
+    oracle_text: str
+    name: str
+    image: str
+    type: str
+
+
+class ScryfallCardResponse(BaseModel):
+    cards: list[ScryfallCard]

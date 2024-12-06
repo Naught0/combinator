@@ -1,5 +1,6 @@
 import re
-from typing import Dict, Literal
+from collections.abc import Mapping
+from typing import Literal
 from urllib.parse import urlparse
 
 import backoff
@@ -204,6 +205,7 @@ def scryfall_request(card_names: list[str]) -> list[dict]:
                 "image": card["image_uris"]["normal"],
                 "id": card["id"],
                 "oracle_text": card["oracle_text"] if "oracle_text" in card else "",
+                "type": card.get("type_line", ""),
             }
         )
 
@@ -212,7 +214,7 @@ def scryfall_request(card_names: list[str]) -> list[dict]:
 
 def get_scryfall_cards(
     card_names: list[str],
-) -> list[Dict[Literal["id", "oracle_text", "name", "image"], str]]:
+) -> list[Mapping[Literal["id", "oracle_text", "name", "type", "image"], str]]:
     # Respect scryfall API
     card_chunks = chunk_array(card_names, 75)
     ret = []

@@ -1,11 +1,27 @@
+from collections.abc import Mapping
+from typing import Literal
+
 import requests
 from fastapi import APIRouter, HTTPException
 
 from app.const import USER_AGENT
-from app.models.api import ComboSearchPayload, Deck, Source, UserSearchRequest
+from app.models.api import (
+    CardSearchPayload,
+    ComboSearchPayload,
+    Deck,
+    ScryfallCard,
+    ScryfallCardResponse,
+    Source,
+    UserSearchRequest,
+)
 from app.models.commanders_spellbook import Results
 from app.models.moxfield import MoxfieldDeck
-from app.process import get_deck, parse_id_from_url, parse_source_from_url
+from app.process import (
+    get_deck,
+    get_scryfall_cards,
+    parse_id_from_url,
+    parse_source_from_url,
+)
 from app.user import MoxfieldError, NoDecksFoundError, get_moxfield_user_decks
 
 router = APIRouter(prefix="/api")
@@ -67,3 +83,12 @@ def user_search(user: UserSearchRequest):
         raise HTTPException(status_code=404, detail=str(e))
     except MoxfieldError as e:
         raise HTTPException(status_code=422, detail=str(e))
+
+
+@router.post("/card/search")
+def card_search(
+    cards: CardSearchPayload,
+) -> ScryfallCardResponse:
+    return ScryfallCardResponse(
+        cards=[ScryfallCard(**card) for card in get_scryfall_cards(cards.cards)]
+    )

@@ -1,25 +1,24 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import { App } from "./App";
-import "./style/index.css";
-import "mana-font";
-import reportWebVitals from "./reportWebVitals";
-import { RecoilRoot } from "recoil";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/josefin-sans";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
+import "mana-font";
+import React from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
+import { RecoilRoot } from "recoil";
+import { App } from "./App";
+import reportWebVitals from "./reportWebVitals";
 import { DeckCombos } from "./routes/DeckCombos";
 import { MoxfieldUser } from "./routes/MoxfieldUser";
-import { Paste } from "./routes/Paste";
+import { RedirectDeck } from "./routes/RedirectDeck";
 import { Search } from "./Search";
-import { RedirectDeck } from "./RedirectDeck";
+import "./style/index.css";
 
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const GC_TIME_MS = 1000 * 60 * 60 * 24 * 7;
@@ -52,7 +51,6 @@ if (elem) {
                   path="/user/moxfield/:userName"
                   element={<MoxfieldUser />}
                 />
-                <Route path="/paste/:pastedList" element={<Paste />} />
               </Route>
             </Routes>
           </BrowserRouter>

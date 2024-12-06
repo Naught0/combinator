@@ -81,7 +81,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
       <Field>
         <Label>Format</Label>
         <Dropdown
-          title={
+          placeholder={
             formatFilter
               ? uniqueDeckFormatMap.get(formatFilter) ||
                 dumbTitalize({ text: formatFilter })
@@ -100,7 +100,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
       <Field>
         <Label>Legality</Label>
         <Dropdown
-          title={
+          placeholder={
             <span
               className={
                 deckLegalities.find((l) => l.value === isLegal)?.className
@@ -127,7 +127,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
         <Label>Sort by</Label>
         <div className="inline-flex">
           <Dropdown
-            title={`${deckFilters.find((f) => f.key === sortBy)?.display}`}
+            placeholder={`${deckFilters.find((f) => f.key === sortBy)?.display}`}
             onChange={(value) => setSortBy(value as keyof Deck)}
             className="rounded-r-none border-r-0"
           >
@@ -156,7 +156,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
       <Field>
         <Label>Per page</Label>
         <Dropdown
-          title={pageSize}
+          placeholder={pageSize}
           onChange={(value) => setPageSize(parseInt(value))}
         >
           {[5, 10, 20, 50, 100].map((num) => (

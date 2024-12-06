@@ -1,9 +1,12 @@
 import { useMemo, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { deckDataAtom } from "../atoms";
 
-export const useFilteredCombos = ({ combos }: { combos: AlmostIncluded[] }) => {
-  const deckData = useRecoilValue(deckDataAtom);
+export const useFilteredCombos = ({
+  deckData,
+  combos,
+}: {
+  deckData: DeckData;
+  combos: AlmostIncluded[];
+}) => {
   const [filter, setFilter] = useState("");
   const filteredCombos = useMemo(() => {
     const f = filter.toLowerCase();

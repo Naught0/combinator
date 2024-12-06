@@ -32,7 +32,6 @@
     "react-router": "^7.0.1",
     "react-spinners": "^0.14.1",
     "react-toastify": "^9.0.3",
-    "recoil": "^0.7.7",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",

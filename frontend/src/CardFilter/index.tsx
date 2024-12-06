@@ -13,14 +13,17 @@ export const CardFilter = ({
   filter: string;
   deckData: DeckData;
 }) => {
-  const [viewMode, setViewMode] = useState<ViewMode>("text");
+  const [viewMode, setViewMode] = useState<ViewMode>(
+    (localStorage.getItem("cardViewMode") as ViewMode) ?? "text",
+  );
   const filteredCards = useMemo(
     () =>
       deckData?.cards.filter((c) => {
         const f = filter.toLowerCase();
         return (
           c.name.toLowerCase().includes(f) ||
-          c.oracle_text.toLowerCase().includes(f)
+          c.oracle_text.toLowerCase().includes(f) ||
+          c.type.toLowerCase().includes(f)
         );
       }),
     [deckData, filter],
@@ -29,11 +32,12 @@ export const CardFilter = ({
     <div className="flex flex-1 flex-col gap-3">
       <div className="flex-0 flex">
         <Dropdown
-          title={viewMode}
           onChange={(value) => setViewMode(value as ViewMode)}
+          value={viewMode}
+          defaultValue={"text" as ViewMode}
         >
-          <SelectItem value="image">Images</SelectItem>
           <SelectItem value="text">Text</SelectItem>
+          <SelectItem value="image">Images</SelectItem>
         </Dropdown>
       </div>
       <div className="flex flex-row flex-wrap justify-start gap-6">

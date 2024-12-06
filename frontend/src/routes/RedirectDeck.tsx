@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router";
-import { Loading } from "./Loading";
-import { parseDeckUrl } from "./services";
+import { Loading } from "../Loading";
+import { parseDeckUrl } from "../services";
 import { useEffect } from "react";
 
 export function RedirectDeck() {
@@ -13,9 +13,9 @@ export function RedirectDeck() {
     if (!deckUrl) return;
     (async () => {
       const data = await parseDeckUrl(deckUrl);
-      if (data) navigate(`/deck/${data.source}/${data.id}`);
+      if (data) navigate(`/deck/${data.source}/${data.id}`, { replace: true });
     })();
-  }, []);
+  }, [deckUrl]);
 
   return <Loading size="lg" message="Looking for deck" />;
 }

@@ -51,3 +51,14 @@ export const getComboData = async (json: {
   );
   return data;
 };
+
+export const getCardData = async (cards: string[]): Promise<CardResponse> => {
+  const { data } = await cachedClient.post<CardResponse>(
+    import.meta.env.VITE_API_URL + "/api/card/search",
+    { cards },
+    {
+      headers: { "Content-Type": "application/json" },
+    },
+  );
+  return data;
+};

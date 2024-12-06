@@ -18,7 +18,7 @@ export default function Nav() {
         </Link>
       </div>
       <div className="italic text-zinc-300">
-        infinite combos, finite brain cells
+        Infinite combos, finite brain cells
       </div>
     </div>
   );

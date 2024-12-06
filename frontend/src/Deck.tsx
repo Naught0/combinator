@@ -17,7 +17,7 @@ interface Props {
 export const Deck: FC<Props> = ({ deck }) => {
   return (
     <Link
-      to={`/deck/${encodeURIComponent(deck.publicUrl)}`}
+      to={`/user/moxfield/${deck.authors[0].userName}/deck/${deck.publicId}`}
       className="text-zinc-100 no-underline visited:text-zinc-200 hover:text-white hover:no-underline"
     >
       <div

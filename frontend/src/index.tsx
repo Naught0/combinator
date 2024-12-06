@@ -14,6 +14,7 @@ import { MoxfieldUser } from "./routes/MoxfieldUser";
 import { RedirectDeck } from "./routes/RedirectDeck";
 import { Search } from "./Search";
 import "./style/index.css";
+import { UserDeckCombos } from "./routes/UserDeckCombos";
 
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const GC_TIME_MS = 1000 * 60 * 60 * 24 * 7;
@@ -41,6 +42,10 @@ if (elem) {
               <Route path="/" element={<Search />} />
               <Route path="/deck/:source/:deckId" element={<DeckCombos />} />
               <Route path="/deck/*" element={<RedirectDeck />} />
+              <Route
+                path="/user/moxfield/:userId/deck/:deckId"
+                element={<UserDeckCombos source="moxfield" />}
+              />
               <Route
                 path="/user/moxfield/:userName"
                 element={<MoxfieldUser />}

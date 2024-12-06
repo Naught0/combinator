@@ -23,9 +23,8 @@ export function PasteDeckUrl() {
   useEffect(
     function redirectOnDeckData() {
       if (!data) return;
-      console.log(data);
       setEnabled(false);
-      navigate(`/deck/${data.source}/${data.id}`, { replace: true });
+      navigate(`/deck/${data.source}/${data.id}`);
     },
     [data],
   );

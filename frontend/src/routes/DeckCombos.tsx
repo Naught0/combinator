@@ -8,6 +8,7 @@ export function DeckCombos() {
 
   return (
     <main className="flex flex-col gap-3">
+      <BackToSearch />
       <ComboContainer deckId={deckId} source={source} />
     </main>
   );

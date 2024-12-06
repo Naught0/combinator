@@ -18,7 +18,7 @@ export const Deck: FC<Props> = ({ deck }) => {
   return (
     <Link
       to={`/deck/${encodeURIComponent(deck.publicUrl)}`}
-      className="text-zinc-100 no-underline visited:text-zinc-200 hover:text-white"
+      className="text-zinc-100 no-underline visited:text-zinc-200 hover:text-white hover:no-underline"
     >
       <div
         className="flex flex-col justify-between rounded bg-zinc-900 bg-no-repeat p-4"
@@ -37,7 +37,7 @@ export const Deck: FC<Props> = ({ deck }) => {
         <div className="tags my-2">
           <span className="tag is-dark">{deck.format}</span>
         </div>
-        <div className="flex flex-row flex-wrap" style={{ gap: "0.50rem" }}>
+        <div className="flex flex-row flex-wrap gap-2">
           <IconText className="text-sm" icon={faHashtag}>
             {deck.mainboardCount}{" "}
             {deck.mainboardCount > 1 || deck.mainboardCount === 0

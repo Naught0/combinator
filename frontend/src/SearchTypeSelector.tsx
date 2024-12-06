@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Button } from "./components/ui/button";
+import { Button, buttonVariants } from "./components/ui/button";
 
 export enum SearchType {
   DECK = "DECK",
@@ -13,9 +13,9 @@ interface Props {
 
 const buttonVariant = (type: SearchType, currentType: SearchType) => {
   if (type === currentType) {
-    return "primary";
+    return "activeTab";
   }
-  return "outline";
+  return "tab";
 };
 export const SearchTypeSelector: FC<Props> = ({
   searchType,

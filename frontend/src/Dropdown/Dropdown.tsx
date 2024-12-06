@@ -5,21 +5,28 @@ import {
   SelectContent,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { SelectProps } from "@radix-ui/react-select";
 
 interface Props {
-  title?: React.ReactNode;
+  placeholder?: React.ReactNode;
   className?: string;
   children: React.ReactNode;
   onChange?: (value: string) => void;
   value?: string;
 }
-export const Dropdown = (props: Props) => {
+export const Dropdown = ({
+  onChange,
+  className,
+  placeholder,
+  children,
+  ...props
+}: Props & SelectProps) => {
   return (
-    <Select onValueChange={props.onChange}>
-      <SelectTrigger className={cn("w-fit max-w-48", props.className)}>
-        <SelectValue placeholder={props.title ?? "Select"} />
+    <Select onValueChange={onChange} {...props}>
+      <SelectTrigger className={cn("w-fit max-w-48", className)}>
+        <SelectValue placeholder={placeholder ?? "Select"} />
       </SelectTrigger>
-      <SelectContent>{props.children}</SelectContent>
+      <SelectContent>{children}</SelectContent>
     </Select>
   );
 };

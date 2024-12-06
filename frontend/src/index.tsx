@@ -1,17 +1,12 @@
 import "@fontsource-variable/inter";
 import "@fontsource-variable/josefin-sans";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import "mana-font";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
-import { RecoilRoot } from "recoil";
 import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { DeckCombos } from "./routes/DeckCombos";
@@ -39,23 +34,21 @@ if (elem) {
   const root = createRoot(elem);
   root.render(
     <React.StrictMode>
-      <RecoilRoot>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <Routes>
-              <Route element={<App />}>
-                <Route path="/" element={<Search />} />
-                <Route path="/deck/:source/:deckId" element={<DeckCombos />} />
-                <Route path="/deck/*" element={<RedirectDeck />} />
-                <Route
-                  path="/user/moxfield/:userName"
-                  element={<MoxfieldUser />}
-                />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<App />}>
+              <Route path="/" element={<Search />} />
+              <Route path="/deck/:source/:deckId" element={<DeckCombos />} />
+              <Route path="/deck/*" element={<RedirectDeck />} />
+              <Route
+                path="/user/moxfield/:userName"
+                element={<MoxfieldUser />}
+              />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
     </React.StrictMode>,
   );
 }

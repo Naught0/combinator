@@ -5,7 +5,7 @@ import { usePaginate } from "../Paginate/hooks/usePaginate";
 import { UserDeckFilters } from "./Filters/UserDeckFilters";
 import { useFilteredDeck } from "./hooks/useFilteredDeck";
 import { SortDirection } from "./util/sort";
-import { BackToSearch } from "@/GoBack";
+import { BackToSearch } from "@/BackToSearch";
 
 interface Props {
   decks: Deck[];

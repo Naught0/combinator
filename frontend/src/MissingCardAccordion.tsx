@@ -1,11 +1,8 @@
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactNode, useState } from "react";
-import { CardImage } from "./CardImage";
+import { HoverableCard } from "./HoverableCard";
 
 export const MissingCardAccordion = (props: {
   cardName: string;
-  cardImage?: string;
   count: number;
   children: ReactNode;
 }) => {
@@ -18,18 +15,14 @@ export const MissingCardAccordion = (props: {
         className={`flex flex-1 cursor-pointer flex-row items-center gap-3 rounded-md p-5`}
         onClick={() => setExpanded(!expanded)}
       >
-        <div>
-          <FontAwesomeIcon
-            icon={expanded ? faMinus : faPlus}
-            className="text-base lg:text-2xl"
-          />
+        <div className="select-none text-base md:text-lg">
+          Add{" "}
+          <HoverableCard
+            cardName={props.cardName}
+            classNameOverride={"underline underline-offset-8"}
+          />{" "}
+          ({props.count})
         </div>
-
-        {props.cardImage && (
-          <div className="w-72">
-            <CardImage cardImage={props.cardImage} /> ({props.count})
-          </div>
-        )}
       </div>
       {expanded && <div className="flex flex-col gap-6">{props.children}</div>}
     </div>

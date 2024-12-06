@@ -9,7 +9,6 @@ import { MissingCardAccordion } from "./MissingCardAccordion";
 import { useQuery } from "@tanstack/react-query";
 import { getComboData } from "./services";
 import { Loading } from "./Loading";
-import { cardNameToImageSrc } from "./services/scryfall";
 
 enum Tab {
   COMBOS,
@@ -127,7 +126,7 @@ function Combos({
   filteredCombos: AlmostIncluded[];
 }) {
   return (
-    <>
+    <div className="flex flex-col">
       {noCombos && (
         <h1 className="text-2xl">
           💡 Pro Tip: Try adding some{" "}
@@ -139,7 +138,9 @@ function Combos({
         <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
       )}
       {showGroups && groupedByMissing ? (
-        <GroupedCombos cardNames={cardNames} data={groupedByMissing} />
+        <div className="flex flex-col gap-3">
+          <GroupedCombos cardNames={cardNames} data={groupedByMissing} />
+        </div>
       ) : (
         filteredCombos &&
         filteredCombos.map((c) => {
@@ -152,7 +153,7 @@ function Combos({
           );
         })
       )}
-    </>
+    </div>
   );
 }
 
@@ -164,7 +165,6 @@ function GroupedCombos(props: {
     .sort(([, combosA], [, combosB]) => combosB.length - combosA.length)
     .map(([cardName, combos]) => (
       <MissingCardAccordion
-        cardImage={cardNameToImageSrc(cardName)}
         cardName={cardName}
         key={cardName}
         count={combos.length}

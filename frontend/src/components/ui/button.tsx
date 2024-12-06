@@ -12,6 +12,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-zinc-950 text-zinc-50 hover:bg-zinc-900/90",
+        tab: "bg-zinc-950 text-zinc-50 hover:bg-zinc-950/90 border-none rounded-b-none border-solid border-b-4",
+        activeTab:
+          "bg-zinc-950 text-zinc-50 hover:bg-zinc-950/90 border-none rounded-b-none border-solid border-b-4 border-blue-600",
         primary:
           "bg-blue-600 text-zinc-50 hover:bg-blue-600/90 border-blue-500 border",
         destructive: "bg-red-500 text-zinc-50 hover:bg-red-500/90",

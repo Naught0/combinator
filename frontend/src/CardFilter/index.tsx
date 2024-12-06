@@ -3,6 +3,7 @@ import { CardImage } from "../CardImage";
 import { HoverableCard } from "../HoverableCard";
 import { Dropdown } from "@/Dropdown";
 import { SelectItem } from "@/components/ui/select";
+import { useDebounce } from "use-debounce";
 
 type ViewMode = "image" | "text";
 
@@ -16,17 +17,18 @@ export const CardFilter = ({
   const [viewMode, setViewMode] = useState<ViewMode>(
     (localStorage.getItem("cardViewMode") as ViewMode) ?? "text",
   );
+  const [debouncedFilter] = useDebounce(filter, 300);
   const filteredCards = useMemo(
     () =>
       deckData?.cards.filter((c) => {
-        const f = filter.toLowerCase();
+        const f = debouncedFilter.toLowerCase();
         return (
           c.name.toLowerCase().includes(f) ||
           c.oracle_text.toLowerCase().includes(f) ||
           c.type.toLowerCase().includes(f)
         );
       }),
-    [deckData, filter],
+    [deckData, debouncedFilter],
   );
   return (
     <div className="flex flex-1 flex-col gap-3">

@@ -9,7 +9,7 @@ import { MissingCardAccordion } from "./MissingCardAccordion";
 import { useQuery } from "@tanstack/react-query";
 import { getComboData } from "./services";
 import { Loading } from "./Loading";
-import { BackToSearch } from "./GoBack";
+import { cardNameToImageSrc } from "./services/scryfall";
 
 enum Tab {
   COMBOS,
@@ -39,6 +39,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
   );
   const { filter, setFilter, filteredCombos, groupedByMissing } =
     useFilteredCombos({
+      deckData,
       combos: comboData ?? [],
     });
   const noCombos = !comboData?.length;
@@ -53,7 +54,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
     <div className="flex flex-col gap-3">
       <div className="inline-flex gap-1 text-base md:text-lg lg:text-2xl">
         <Button
-          variant={tab === Tab.COMBOS ? "primary" : "default"}
+          variant={tab === Tab.COMBOS ? "activeTab" : "tab"}
           onClick={() => setTab(Tab.COMBOS)}
         >
           Combos &ndash;
@@ -61,7 +62,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
         </Button>
         {(allCombos?.almostIncluded?.length ?? -1) > 0 && (
           <Button
-            variant={tab === Tab.ALMOST_INCLUDED ? "primary" : "default"}
+            variant={tab === Tab.ALMOST_INCLUDED ? "activeTab" : "tab"}
             onClick={() => setTab(Tab.ALMOST_INCLUDED)}
           >
             Add 1 &ndash;&nbsp;
@@ -72,7 +73,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
         )}
         {deckData && (
           <Button
-            variant={tab === Tab.CARD_SEARCH ? "primary" : "outline"}
+            variant={tab === Tab.CARD_SEARCH ? "activeTab" : "tab"}
             onClick={() => setTab(Tab.CARD_SEARCH)}
           >
             Search Cards
@@ -82,23 +83,22 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
       <div className={"flex flex-1 flex-col gap-6"}>
         <Input
           className="max-w-96"
-          placeholder="Filter combos by keyword or card name"
+          placeholder="Filter combos by keyword, type line, or card name"
           value={filter}
           onChange={({ target }) => setFilter(target.value)}
         />
-        {tab === Tab.ALMOST_INCLUDED ||
-          (tab === Tab.COMBOS && (
-            <Combos
-              noCombos={noCombos}
-              showGroups={showGroups}
-              filter={filter}
-              noFilteredCombos={noFilteredCombos}
-              groupedByMissing={groupedByMissing}
-              cardNames={cardNames}
-              deckData={deckData}
-              filteredCombos={filteredCombos}
-            />
-          ))}
+        {(tab === Tab.ALMOST_INCLUDED || tab === Tab.COMBOS) && (
+          <Combos
+            noCombos={noCombos}
+            showGroups={showGroups}
+            filter={filter}
+            noFilteredCombos={noFilteredCombos}
+            groupedByMissing={groupedByMissing}
+            cardNames={cardNames}
+            deckData={deckData}
+            filteredCombos={filteredCombos}
+          />
+        )}
         {tab === Tab.CARD_SEARCH && deckData && (
           <CardFilter deckData={deckData} filter={filter} />
         )}
@@ -139,9 +139,7 @@ function Combos({
         <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
       )}
       {showGroups && groupedByMissing ? (
-        <div className="flex flex-col gap-2">
-          <GroupedCombos cardNames={cardNames} data={groupedByMissing} />
-        </div>
+        <GroupedCombos cardNames={cardNames} data={groupedByMissing} />
       ) : (
         filteredCombos &&
         filteredCombos.map((c) => {
@@ -166,6 +164,7 @@ function GroupedCombos(props: {
     .sort(([, combosA], [, combosB]) => combosB.length - combosA.length)
     .map(([cardName, combos]) => (
       <MissingCardAccordion
+        cardImage={cardNameToImageSrc(cardName)}
         cardName={cardName}
         key={cardName}
         count={combos.length}

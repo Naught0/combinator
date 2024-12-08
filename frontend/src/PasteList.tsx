@@ -74,6 +74,14 @@ export const PasteList = () => {
             }}
             value={pastedList || ""}
             className="h-36 max-h-[512px] min-h-36 rounded p-2"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                e.currentTarget.form?.dispatchEvent(
+                  new Event("submit", { bubbles: true, cancelable: true })
+                );
+              }
+            }}
           ></Textarea>
         </Field>
       </Form>

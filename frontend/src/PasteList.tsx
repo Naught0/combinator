@@ -24,14 +24,14 @@ export const PasteList = () => {
     },
     [debouncedList],
   );
-  const { data, isError, isSuccess } = useQuery({
+  const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ["pasted-list", deckHash],
     queryFn: async () => getCardData(parseCardList(pastedList)),
     enabled,
   });
   useEffect(
     function disableQuery() {
-      setEnabled(false);
+      if (enabled) setEnabled(false);
     },
     [isError, isSuccess],
   );
@@ -63,6 +63,7 @@ export const PasteList = () => {
           setEnabled(true);
         }}
         disabled={!pastedList}
+        loading={isLoading}
       >
         <Field>
           <Textarea
@@ -85,7 +86,7 @@ export const PasteList = () => {
           ></Textarea>
         </Field>
       </Form>
-      {deckData && (
+      {deckData?.cards.length > 0 && (
         <>
           <DeckInfo deckData={deckData} />
           <ComboTabs deckData={deckData} />

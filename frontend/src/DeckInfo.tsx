@@ -4,7 +4,7 @@ import { Hyperlink } from "./Hyperlink";
 import { copyToClipboardAndToast } from "./util";
 import { TabInstructions } from "./TabInstructions";
 
-export const DeckInfo = ({ deckData }: { deckData: DeckData }) => {
+export const DeckInfo = ({ meta }: { meta: DeckMeta }) => {
   const doShareUrl = () => {
     copyToClipboardAndToast({ text: window.location.href });
   };
@@ -13,16 +13,16 @@ export const DeckInfo = ({ deckData }: { deckData: DeckData }) => {
     <div className="flex flex-col">
       <div className="flex flex-grow flex-col">
         <h1 className="text-3xl md:text-4xl">
-          {deckData.meta.url ? (
-            <Hyperlink href={deckData.meta.url}>{deckData.meta.name}</Hyperlink>
+          {meta.url ? (
+            <Hyperlink href={meta.url}>{meta.name}</Hyperlink>
           ) : (
-            deckData.meta.name
+            meta.name
           )}
         </h1>
-        <p className="mb-2 text-lg">by {deckData.meta.author}</p>
+        <p className="mb-2 text-lg">by {meta.author}</p>
         <TabInstructions />
       </div>
-      {deckData.meta.url && (
+      {meta.url && (
         <div className="flex flex-grow-0">
           <div className="buttons is-right">
             <button className="button is-dark is-outlined" onClick={doShareUrl}>

@@ -18,7 +18,7 @@ type DeckSource = "moxfield" | "archidekt" | "mtggoldfish" | "paste";
 interface DeckData {
   id: string;
   source: DeckSource;
-  meta: DeckMeta;
+  meta?: DeckMeta;
   cards: DeckCard[];
 }
 

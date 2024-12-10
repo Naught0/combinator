@@ -5,7 +5,6 @@ import { AxiosError } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { DeckInfo } from "./DeckInfo";
 
-// TODO: Move deck data to parent component let the data flow down to combos and other components
 export const ComboContainer = ({
   deckId,
   source,
@@ -17,11 +16,12 @@ export const ComboContainer = ({
     queryKey: ["deck-data", { id: deckId, source }],
     queryFn: () => getDeckById(source, deckId),
   });
+  const { meta } = deckData || {};
 
   return (
     <div className="flex flex-col gap-3">
       {isLoading && <Loading size="lg" message="Loading deck" />}
-      {deckData && <DeckInfo deckData={deckData} />}
+      {meta && <DeckInfo meta={meta} />}
       {deckData && <ComboTabs deckData={deckData} />}
     </div>
   );

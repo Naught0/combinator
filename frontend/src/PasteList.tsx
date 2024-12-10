@@ -9,8 +9,6 @@ import { getCardData } from "./services";
 import { TabContainer } from "./TabContainer";
 import { DeckInfo } from "./DeckInfo";
 
-const DECK_META: DeckMeta = { name: "Pasted Deck", author: "You", url: "" };
-
 export const PasteList = () => {
   const [pastedList, setPastedList] = useState(
     localStorage.getItem("pastedList") ?? "",
@@ -51,7 +49,6 @@ export const PasteList = () => {
       id: deckHash,
       source: "paste" as DeckSource,
       cards: data?.cards ?? [],
-      meta: DECK_META,
     };
   }, [data?.cards, deckHash]);
 
@@ -88,7 +85,7 @@ export const PasteList = () => {
       </Form>
       {deckData?.cards.length > 0 && (
         <>
-          <DeckInfo deckData={deckData} />
+          {deckData.meta && <DeckInfo meta={deckData.meta} />}
           <ComboTabs deckData={deckData} />
         </>
       )}

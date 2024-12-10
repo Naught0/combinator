@@ -68,7 +68,7 @@ interface Card {
   oracleId: string;
 }
 
-type ExileCardState = "" | "exiled by Myr Welder";
+type ExileCardState = string;
 
 interface Template {
   id: number;

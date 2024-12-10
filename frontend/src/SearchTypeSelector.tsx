@@ -22,7 +22,7 @@ export const SearchTypeSelector: FC<Props> = ({
   setSearchType,
 }) => {
   return (
-    <>
+    <div className="flex flex-col gap-3">
       <p className="text-lg">Paste a...</p>
       <div className="inline-flex flex-wrap gap-3">
         <Button
@@ -45,6 +45,6 @@ export const SearchTypeSelector: FC<Props> = ({
           Card list
         </Button>
       </div>
-    </>
+    </div>
   );
 };

@@ -27,7 +27,6 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
       return d;
     },
   });
-  const cardNames = deckData.cards.map((c) => c.name);
   const [tab, setTab] = useState<Tab>(Tab.COMBOS);
   const comboData = useMemo(
     () =>
@@ -79,7 +78,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
           </Button>
         )}
       </div>
-      <div className={"flex flex-1 flex-col gap-6"}>
+      <div className={"flex flex-1 flex-col gap-3"}>
         <Input
           className="max-w-96"
           placeholder="Filter combos by keyword, type line, or card name"

@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { CardFilter } from "./CardFilter";
 import { Combo } from "./Combo";
@@ -5,10 +6,9 @@ import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { useFilteredCombos } from "./hooks/useComboData";
 import { Hyperlink } from "./Hyperlink";
-import { MissingCardAccordion } from "./MissingCardAccordion";
-import { useQuery } from "@tanstack/react-query";
-import { getComboData } from "./services";
 import { Loading } from "./Loading";
+import { MissingCardAccordion } from "./MissingCardAccordion";
+import { getComboData } from "./services";
 
 enum Tab {
   COMBOS,
@@ -93,7 +93,6 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
             filter={filter}
             noFilteredCombos={noFilteredCombos}
             groupedByMissing={groupedByMissing}
-            cardNames={cardNames}
             deckData={deckData}
             filteredCombos={filteredCombos}
           />
@@ -112,7 +111,6 @@ function Combos({
   filter,
   noFilteredCombos,
   groupedByMissing,
-  cardNames,
   deckData,
   filteredCombos,
 }: {
@@ -121,7 +119,6 @@ function Combos({
   filter: string;
   noFilteredCombos: boolean;
   groupedByMissing?: Record<string, AlmostIncluded[]>;
-  cardNames: string[];
   deckData: DeckData;
   filteredCombos: AlmostIncluded[];
 }) {
@@ -139,29 +136,26 @@ function Combos({
       )}
       {showGroups && groupedByMissing ? (
         <div className="flex flex-col gap-3">
-          <GroupedCombos cardNames={cardNames} data={groupedByMissing} />
+          <GroupedCombos cards={deckData.cards} data={groupedByMissing} />
         </div>
       ) : (
         filteredCombos &&
         filteredCombos.map((c) => {
-          return (
-            <Combo
-              cardNames={deckData.cards.map((c) => c.name) ?? []}
-              key={c.id}
-              combo={c}
-            />
-          );
+          return <Combo cards={deckData.cards ?? []} key={c.id} combo={c} />;
         })
       )}
     </div>
   );
 }
 
-function GroupedCombos(props: {
+function GroupedCombos({
+  data,
+  cards,
+}: {
   data: Record<string, AlmostIncluded[]>;
-  cardNames: string[];
+  cards: DeckCard[];
 }) {
-  return Object.entries(props.data)
+  return Object.entries(data)
     .sort(([, combosA], [, combosB]) => combosB.length - combosA.length)
     .map(([cardName, combos]) => (
       <MissingCardAccordion
@@ -171,7 +165,7 @@ function GroupedCombos(props: {
       >
         <div className="p-3">
           {combos.map((combo) => (
-            <Combo key={combo.id} cardNames={props.cardNames} combo={combo} />
+            <Combo key={combo.id} cards={cards} combo={combo} />
           ))}
         </div>
       </MissingCardAccordion>

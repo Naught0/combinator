@@ -15,6 +15,7 @@ import { RedirectDeck } from "./routes/RedirectDeck";
 import { Search } from "./Search";
 import "./style/index.css";
 import { UserDeckCombos } from "./routes/UserDeckCombos";
+import { NotFound } from "./404";
 
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const GC_TIME_MS = 1000 * 60 * 60 * 24 * 7;
@@ -50,6 +51,7 @@ if (elem) {
                 path="/user/moxfield/:userName"
                 element={<MoxfieldUser />}
               />
+              <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
         </BrowserRouter>

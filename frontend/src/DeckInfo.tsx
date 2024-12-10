@@ -3,15 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Hyperlink } from "./Hyperlink";
 import { copyToClipboardAndToast } from "./util";
 import { TabInstructions } from "./TabInstructions";
+import { Button } from "./components/ui/button";
 
 export const DeckInfo = ({ meta }: { meta: DeckMeta }) => {
   const doShareUrl = () => {
-    copyToClipboardAndToast({ text: window.location.href });
+    copyToClipboardAndToast({
+      message: "Copied link to this page",
+      text: window.location.href,
+    });
   };
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-grow flex-col">
+      <div className="flex flex-grow flex-col items-start">
         <h1 className="text-3xl md:text-4xl">
           {meta.url ? (
             <Hyperlink href={meta.url}>{meta.name}</Hyperlink>
@@ -20,20 +24,22 @@ export const DeckInfo = ({ meta }: { meta: DeckMeta }) => {
           )}
         </h1>
         <p className="mb-2 text-lg">by {meta.author}</p>
-        <TabInstructions />
-      </div>
-      {meta.url && (
-        <div className="flex flex-grow-0">
-          <div className="buttons is-right">
-            <button className="button is-dark is-outlined" onClick={doShareUrl}>
+        {meta.url && (
+          <div>
+            <Button
+              className="inline-flex"
+              variant={"outline"}
+              onClick={doShareUrl}
+            >
               <span>Share</span>
               <span className="icon">
                 <FontAwesomeIcon icon={faShare} />
               </span>
-            </button>
+            </Button>
           </div>
-        </div>
-      )}
+        )}
+        <TabInstructions />
+      </div>
     </div>
   );
 };

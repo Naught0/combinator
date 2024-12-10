@@ -24,6 +24,7 @@ export const copyToClipboardAndToast = ({
     .then(() =>
       toast(message || "Copied link to clipboard", {
         type: "success",
+        autoClose: 3000,
         ...toastOptions,
       }),
     )

@@ -57,7 +57,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-3 md:gap-6">
       <div>
         <BackToSearch />
       </div>
@@ -85,6 +85,6 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         setIndex={safelyChangePageIndex}
         totalPages={pages.length}
       />
-    </>
+    </div>
   );
 };

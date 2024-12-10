@@ -12,7 +12,7 @@ export const App = () => {
       <ToastContainer theme="dark" />
       <div className="flex min-h-screen w-full flex-grow flex-col items-center gap-6 px-3 py-6 md:max-w-screen-lg md:gap-12 xl:max-w-screen-lg">
         <Nav />
-        <div className="flex w-full flex-1 flex-col gap-3">
+        <div className="flex w-full flex-grow flex-col">
           <Outlet />
         </div>
       </div>

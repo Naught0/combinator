@@ -14,7 +14,7 @@ export function Search() {
     setSearchType(type);
   };
   return (
-    <>
+    <div className="flex flex-col gap-3">
       <SearchTypeSelector
         searchType={searchType}
         setSearchType={saveSearchType}
@@ -24,6 +24,6 @@ export function Search() {
         {searchType === SearchType.DECK && <PasteDeckUrl />}
         {searchType === SearchType.PASTE && <PasteList />}
       </div>
-    </>
+    </div>
   );
 }

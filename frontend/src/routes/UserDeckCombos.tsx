@@ -6,10 +6,11 @@ import { Link, useParams } from "react-router";
 
 export function UserDeckCombos({ source }: { source: DeckSource }) {
   let { userId, deckId } = useParams();
-  if (!userId || !deckId) return <NotFound />; // TODO: Redirect to 404
+  if (!userId) return <NotFound what={"User"} />;
+  if (!deckId) return <NotFound what={"Deck"} />;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-1 flex-col gap-3">
       <Link to={`/user/${source}/${userId}`}>
         <IconText icon={faArrowLeft}>Back to decks</IconText>
       </Link>

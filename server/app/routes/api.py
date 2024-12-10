@@ -1,14 +1,12 @@
-from collections.abc import Mapping
-from typing import Literal
-
 import requests
-from fastapi import APIRouter, HTTPException
+import sentry_sdk
+from fastapi import APIRouter, HTTPException, Response
 
 from app.const import USER_AGENT
 from app.models.api import (
     CardSearchPayload,
     ComboSearchPayload,
-    Deck,
+    DeckResponse,
     ScryfallCard,
     ScryfallCardResponse,
     Source,
@@ -36,38 +34,40 @@ def combo_search(data: ComboSearchPayload):
     ).json()["results"]
 
 
-@router.get("/deck/{source}/{deck_id}", response_model=Deck)
+@router.get("/deck/{source}/{deck_id}", response_model=DeckResponse)
 def read_deck(source: Source, deck_id: str):
     try:
         return get_deck(source, deck_id)
-    except ValueError:
-        return "Unknown provider", 404
+    except Exception:
+        sentry_sdk.capture_exception()
+        return Response("Deck not found", 404)
 
 
 @router.get("/deck/parse_url")
 def parse_deck_url(url: str):
     source = parse_source_from_url(url)
     if source is None:
-        return ("Unknown source", 404)
+        return Response("Unknown source", 404)
 
     id = parse_id_from_url(source, url)
     if id is None:
-        return ("Invalid or malformed URL", 404)
+        return Response("Invalid or malformed URL", 404)
 
     return {"source": source, "id": id}
 
 
-@router.get("/deck", response_model=Deck)
+@router.get("/deck", response_model=DeckResponse)
 def deck_search(url: str):
     source = parse_source_from_url(url)
     if source is None:
-        return ("Unknown source", 404)
+        return Response("Unknown source", 404)
 
     deck_id = parse_id_from_url(source, url)
 
     try:
         deck = get_deck(source, deck_id)
-    except ValueError:
+    except Exception:
+        sentry_sdk.capture_exception()
         raise HTTPException(status_code=404, detail="Deck not found")
 
     return deck

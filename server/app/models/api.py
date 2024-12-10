@@ -50,3 +50,7 @@ class ScryfallCard(BaseModel):
 
 class ScryfallCardResponse(BaseModel):
     cards: list[ScryfallCard]
+
+
+class DeckResponse(Deck):
+    cards: list[ScryfallCard]

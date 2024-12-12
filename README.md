@@ -12,3 +12,4 @@ You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
 - [ ] Create refresh cache invalidation button to let users opt out of caching
 - [ ] Fix card search
 - [ ] Slider for card image size?
+- [ ] Find more than 50 moxfield decks

@@ -9,9 +9,6 @@ You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
 ## TODO:
 
 **Frontend**:   
-- [ ] Auto select search type by URL
-- [ ] Put moxfield pagination state in URL
 - [ ] Create refresh cache invalidation button to let users opt out of caching
 - [ ] Fix card search
-- [ ] Include oracle text for card search
 - [ ] Slider for card image size?

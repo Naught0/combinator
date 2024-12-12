@@ -7,7 +7,6 @@ import {
   PaginationEllipsis,
   PaginationNext,
 } from "@/components/ui/pagination";
-import { FC } from "react";
 
 interface props {
   totalPages: number;

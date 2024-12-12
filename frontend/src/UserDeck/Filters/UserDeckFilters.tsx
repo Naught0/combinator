@@ -149,7 +149,6 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
             }
           >
             <span>{sortDirIconMap.get(sortDirection)}</span>
-            <span>{sortDirection.toString()}</span>
           </Button>
         </div>
       </Field>

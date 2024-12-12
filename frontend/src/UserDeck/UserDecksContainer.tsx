@@ -57,7 +57,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3 md:gap-6">
+    <div className="flex flex-col gap-6 md:gap-6">
       <div>
         <BackToSearch />
       </div>
@@ -80,11 +80,13 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
       <div className="wrap grid grid-cols-1 gap-3 md:grid-cols-2">
         {currentPage?.map((deck) => <Deck key={deck.id} deck={deck} />)}
       </div>
-      <Paginate
-        pageIndex={pageIndex}
-        setIndex={safelyChangePageIndex}
-        totalPages={pages.length}
-      />
+      <div className="w-fit">
+        <Paginate
+          pageIndex={pageIndex}
+          setIndex={safelyChangePageIndex}
+          totalPages={pages.length}
+        />
+      </div>
     </div>
   );
 };

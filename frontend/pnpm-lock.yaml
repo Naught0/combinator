@@ -80,9 +80,6 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
-      react-paginate:
-        specifier: ^8.1.4
-        version: 8.1.4(react@18.3.1)
       react-popper-tooltip:
         specifier: ^4.3.1
         version: 4.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -992,8 +989,8 @@ packages:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
     engines: {node: '>= 8.0.0'}
 
-  '@rollup/wasm-node@4.28.0':
-    resolution: {integrity: sha512-M686ZTwhx618GAsRN71qr9a4Z0UMd9T75rICZFV7G8ajqzYbeikt/6dgQZtEOLIp6bqtz7nYGKOS93CXEPtqoA==}
+  '@rollup/wasm-node@4.28.1':
+    resolution: {integrity: sha512-t4ckEC09V3wbe0r6T4fGjq85lEbvGcGxn7QYYgjHyKNzZaQU5kFqr4FsavXYHRiVNYq8m+dRhdGjpfcC9UzzPg==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -2533,11 +2530,6 @@ packages:
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
 
-  react-paginate@8.1.4:
-    resolution: {integrity: sha512-c3rxjcTEqeDQa6LqXifxLeFguY2qy2CHGRphVjHLFFMGfIHyaJ+v3bOvIlLYEeohwQ1q+cQpknjsqBVrkc/SNA==}
-    peerDependencies:
-      react: ^16 || ^17 || ^18
-
   react-popper-tooltip@4.3.1:
     resolution: {integrity: sha512-/Lj1vjAEFEFxKKWnxupeS9pRrXYQlJd++OAAj/Ht3uOSqjWLtYWDXKV99e+YO6b5hV3SgXbtkHFzHH4eqlMWJA==}
     peerDependencies:
@@ -3867,7 +3859,7 @@ snapshots:
       estree-walker: 2.0.2
       picomatch: 2.3.1
 
-  '@rollup/wasm-node@4.28.0':
+  '@rollup/wasm-node@4.28.1':
     dependencies:
       '@types/estree': 1.0.6
     optionalDependencies:
@@ -5628,11 +5620,6 @@ snapshots:
 
   react-is@17.0.2: {}
 
-  react-paginate@8.1.4(react@18.3.1):
-    dependencies:
-      prop-types: 15.8.1
-      react: 18.3.1
-
   react-popper-tooltip@4.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.23.7
@@ -6168,7 +6155,7 @@ snapshots:
       '@rollup/pluginutils': 4.2.1
       '@types/eslint': 8.56.1
       eslint: 9.15.0(jiti@1.21.0)
-      rollup: '@rollup/wasm-node@4.28.0'
+      rollup: '@rollup/wasm-node@4.28.1'
       vite: 6.0.1(@types/node@16.7.13)(jiti@1.21.0)(sass@1.49.9)
 
   vite-plugin-radar@0.9.2(vite@6.0.1(@types/node@16.7.13)(jiti@1.21.0)(sass@1.49.9)):
@@ -6190,7 +6177,7 @@ snapshots:
     dependencies:
       esbuild: 0.24.0
       postcss: 8.4.49
-      rollup: '@rollup/wasm-node@4.28.0'
+      rollup: '@rollup/wasm-node@4.28.1'
     optionalDependencies:
       '@types/node': 16.7.13
       fsevents: 2.3.3

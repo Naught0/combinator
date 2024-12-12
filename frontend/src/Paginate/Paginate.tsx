@@ -1,5 +1,13 @@
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationLink,
+  PaginationEllipsis,
+  PaginationNext,
+} from "@/components/ui/pagination";
 import { FC } from "react";
-import ReactPaginate from "react-paginate";
 
 interface props {
   totalPages: number;
@@ -7,43 +15,102 @@ interface props {
   setIndex: (n: number) => void;
 }
 
-export const Paginate: FC<props> = ({ totalPages, pageIndex, setIndex }) => {
+export const Paginate: React.FC<props> = ({
+  totalPages,
+  pageIndex,
+  setIndex,
+}) => {
+  // Generate page numbers to display
+  const generatePageNumbers = () => {
+    // If total pages is 7 or less, show all pages
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    const pages: (number | null)[] = [];
+
+    // Always show first and last pages
+    pages.push(1);
+
+    // Logic for middle pages
+    if (pageIndex <= 3) {
+      // Close to start
+      pages.push(2, 3, 4, null, totalPages);
+    } else if (pageIndex >= totalPages - 2) {
+      // Close to end
+      pages.push(
+        null,
+        totalPages - 3,
+        totalPages - 2,
+        totalPages - 1,
+        totalPages,
+      );
+    } else {
+      // Middle of pagination
+      pages.push(
+        null,
+        pageIndex - 1,
+        pageIndex,
+        pageIndex + 1,
+        null,
+        totalPages,
+      );
+    }
+
+    return pages;
+  };
+
+  const pageNumbers = generatePageNumbers();
+
   return (
-    <nav
-      className="pagination is-left my-3 flex is-justify-content-flex-end"
-      style={{ width: "100%" }}
-    >
-      <ReactPaginate
-        pageCount={totalPages}
-        activeLinkClassName="is-current"
-        pageLinkClassName="pagination-link"
-        breakLinkClassName="pagination-ellipsis"
-        nextLinkClassName="is-hidden"
-        previousLinkClassName="is-hidden"
-        disabledLinkClassName="is-disabled"
-        forcePage={pageIndex}
-        className="pagination-list"
-        onClick={({ nextSelectedPage }) =>
-          void (
-            typeof nextSelectedPage === "number" && setIndex(nextSelectedPage)
-          )
-        }
-      />
-      <div
-        className="mr-2"
-        style={{ height: "100%", display: "flex", gap: "0.33rem" }}
-      >
-        <div>
-          <button className="button" onClick={() => setIndex(pageIndex - 1)}>
-            prev
-          </button>
-        </div>
-        <div>
-          <button className="button" onClick={() => setIndex(pageIndex + 1)}>
-            next
-          </button>
-        </div>
-      </div>
-    </nav>
+    <Pagination>
+      <PaginationContent>
+        {/* Previous Button */}
+        <PaginationItem>
+          <PaginationPrevious
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIndex(Math.max(1, pageIndex - 1));
+            }}
+            isActive={pageIndex > 1}
+          />
+        </PaginationItem>
+
+        {/* Page Numbers */}
+        {pageNumbers.map((page, index) =>
+          page === null ? (
+            <PaginationItem key={`ellipsis-${index}`}>
+              <PaginationEllipsis />
+            </PaginationItem>
+          ) : (
+            <PaginationItem key={page}>
+              <PaginationLink
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIndex(page);
+                }}
+                isActive={page === pageIndex}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          ),
+        )}
+
+        {/* Next Button */}
+        <PaginationItem>
+          <PaginationNext
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIndex(Math.min(totalPages, pageIndex + 1));
+            }}
+            isActive={pageIndex < totalPages}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 };

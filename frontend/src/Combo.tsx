@@ -3,6 +3,7 @@ import { HoverableCard } from "./HoverableCard";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "./components/ui/button";
 
 interface props {
   combo: AlmostIncluded;
@@ -29,37 +30,34 @@ export const Combo = ({ combo, initialExpanded, cards }: props) => {
   return (
     <div className={`flex flex-col ${expanded ? "active col-span-2" : ""} m-3`}>
       <div
-        className={`combo flex cursor-pointer items-center !rounded-b-none p-3 lg:p-5 ${
+        className={`flex flex-col items-center !rounded-b-none p-3 lg:p-5 ${
           expanded ? "active" : ""
         }`}
-        onClick={() => setExpanded(!expanded)}
       >
-        <div className="w-8 flex-grow-0">
-          <FontAwesomeIcon
-            className="text-lg"
-            icon={expanded ? faMinus : faPlus}
-          />
+        <div className="relative flex basis-1/2 flex-row">
+          {combo.uses
+            .filter((used) => !!used.card)
+            .map((used, index) => {
+              const card = cards.find((c) => c.name === used.card?.name);
+              if (!card) return null;
+              return (
+                <img
+                  key={card.id}
+                  className={`max-w-fit ${index + 1 === combo.uses.length ? "" : "-mr-32"} w-full rounded-2xl transition-shadow hover:z-20 hover:shadow-lg hover:shadow-zinc-950 md:w-72`}
+                  src={card.image}
+                  alt={card.id}
+                />
+              );
+            })}
+          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-t from-zinc-950 to-transparent"></div>
         </div>
-        <div className="flex flex-1 flex-wrap items-center gap-6 px-3 lg:gap-10">
-          <div className="flex flex-1 basis-5/12 flex-col">
-            <div className="tags are-medium">
-              {combo.uses
-                .filter((used) => !!used.card)
-                .map((used) => {
-                  const card = used.card as Card;
-                  return (
-                    <HoverableCard
-                      key={card.id}
-                      cardName={card.name}
-                      image={cards.find((c) => c.name === card.name)?.image}
-                      inDeck={cardNames.includes(card.name)}
-                    />
-                  );
-                })}
-            </div>
-          </div>
-          <div className="flex flex-1 basis-5/12 flex-col lg:min-w-72">
-            <ul>
+        <div className="z-10 -mt-44 flex w-full flex-col gap-3 rounded bg-zinc-900/90 px-3 py-2 md:px-6 md:py-4 lg:min-w-72">
+          <p className="font-serif text-lg font-bold md:text-xl">
+            {combo.uses.map((u) => u.card?.name).join(" + ")}
+          </p>
+          <p className="font-bold">Result</p>
+          <div>
+            <ul className="list-inside">
               {combo.produces.map((produces) => (
                 <li key={produces.feature.id} className="list-item list-disc">
                   {produces.feature.name}
@@ -67,10 +65,13 @@ export const Combo = ({ combo, initialExpanded, cards }: props) => {
               ))}
             </ul>
           </div>
+          <div>
+            <Button onClick={() => setExpanded((prev) => !prev)}>Expand</Button>
+          </div>
         </div>
       </div>
       {expanded && (
-        <div className="tooltip flex flex-1 justify-start rounded-b-md border-t border-t-zinc-600 p-5 lg:p-6">
+        <div className="flex flex-1 justify-start rounded-b-md border-t border-t-zinc-600 p-5 lg:p-6">
           <div className="flex flex-wrap justify-between gap-6 lg:gap-10">
             {!!combo.otherPrerequisites.trim() && (
               <div className="flex basis-5/12 flex-col lg:min-w-64">

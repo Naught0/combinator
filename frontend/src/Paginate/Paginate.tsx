@@ -67,12 +67,10 @@ export const Paginate: React.FC<props> = ({
         {/* Previous Button */}
         <PaginationItem>
           <PaginationPrevious
-            href="#"
             onClick={(e) => {
               e.preventDefault();
-              setIndex(Math.max(1, pageIndex - 1));
+              setIndex(Math.max(0, pageIndex - 1));
             }}
-            isActive={pageIndex > 1}
           />
         </PaginationItem>
 
@@ -85,12 +83,11 @@ export const Paginate: React.FC<props> = ({
           ) : (
             <PaginationItem key={page}>
               <PaginationLink
-                href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  setIndex(page);
+                  setIndex(index);
                 }}
-                isActive={page === pageIndex}
+                isActive={index === pageIndex}
               >
                 {page}
               </PaginationLink>
@@ -101,12 +98,10 @@ export const Paginate: React.FC<props> = ({
         {/* Next Button */}
         <PaginationItem>
           <PaginationNext
-            href="#"
             onClick={(e) => {
               e.preventDefault();
               setIndex(Math.min(totalPages, pageIndex + 1));
             }}
-            isActive={pageIndex < totalPages}
           />
         </PaginationItem>
       </PaginationContent>

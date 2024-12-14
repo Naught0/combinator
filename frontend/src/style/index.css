@@ -6,6 +6,19 @@ a {
   @apply cursor-pointer text-orange-200 underline-offset-4 hover:underline;
 }
 
+ul,
+ol {
+  @apply pl-4;
+}
+
+ul {
+  @apply list-disc;
+}
+
+ol {
+  @apply list-decimal;
+}
+
 @layer base {
   :root {
     --radius: 0.5rem;

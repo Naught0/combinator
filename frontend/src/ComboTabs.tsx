@@ -122,7 +122,7 @@ function Combos({
   filteredCombos: AlmostIncluded[];
 }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-wrap gap-6 md:flex-row">
       {noCombos && (
         <h1 className="text-2xl">
           💡 Pro Tip: Try adding some{" "}

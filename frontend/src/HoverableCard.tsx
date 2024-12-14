@@ -37,11 +37,11 @@ export const HoverableCard = ({
       </span>
       {visible &&
         createPortal(
-          <div className="bg-transparent rounded-2xl">
+          <div className="rounded-2xl bg-transparent">
             <img
               ref={setTooltipRef}
               src={cardImage}
-              className="rounded-2xl max-w-[256px] lg:max-w-[300px] shadow-black shadow-lg"
+              className="z-30 max-w-[256px] rounded-2xl shadow-lg shadow-black lg:max-w-[300px]"
               {...getTooltipProps()}
             />
           </div>,

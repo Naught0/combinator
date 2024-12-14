@@ -1,6 +1,6 @@
 import { manaFontMap } from "./manaFontMap";
 import { HoverableCard } from "./HoverableCard";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "./components/ui/button";
@@ -9,7 +9,10 @@ interface props {
   combo: AlmostIncluded;
   initialExpanded?: boolean;
   cards: DeckCard[];
+  showImages?: boolean;
 }
+
+const BASE_MARGIN = 150;
 
 const replaceManaSymbols = (s: string) => {
   return s
@@ -24,89 +27,109 @@ const replaceManaSymbols = (s: string) => {
     });
 };
 
-export const Combo = ({ combo, initialExpanded, cards }: props) => {
+export const Combo = ({
+  combo,
+  initialExpanded,
+  cards,
+  showImages = true,
+}: props) => {
   const cardNames = cards.map((c) => c.name);
   const [expanded, setExpanded] = useState(initialExpanded);
+
   return (
-    <div className={`flex flex-col ${expanded ? "active col-span-2" : ""} m-3`}>
+    <div className={`m-3 flex flex-1 basis-full flex-col`}>
       <div
-        className={`flex flex-col items-center !rounded-b-none p-3 lg:p-5 ${
-          expanded ? "active" : ""
-        }`}
+        className={`flex w-full flex-1 flex-col items-center !rounded-b-none`}
       >
-        <div className="relative flex basis-1/2 flex-row">
-          {combo.uses
-            .filter((used) => !!used.card)
-            .map((used, index) => {
-              const card = cards.find((c) => c.name === used.card?.name);
-              if (!card) return null;
-              return (
-                <img
-                  key={card.id}
-                  className={`max-w-fit ${index + 1 === combo.uses.length ? "" : "-mr-32"} w-full rounded-2xl transition-shadow hover:z-20 hover:shadow-lg hover:shadow-zinc-950 md:w-72`}
-                  src={card.image}
-                  alt={card.id}
-                />
-              );
-            })}
-          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-t from-zinc-950 to-transparent"></div>
-        </div>
-        <div className="z-10 -mt-44 flex w-full flex-col gap-3 rounded bg-zinc-900/90 px-3 py-2 md:px-6 md:py-4 lg:min-w-72">
+        <div className="z-10 flex w-full flex-col gap-3 rounded bg-zinc-900/95 px-6 py-4 md:px-10 md:py-6">
           <p className="font-serif text-lg font-bold md:text-xl">
             {combo.uses.map((u) => u.card?.name).join(" + ")}
           </p>
-          <p className="font-bold">Result</p>
-          <div>
-            <ul className="list-inside">
-              {combo.produces.map((produces) => (
-                <li key={produces.feature.id} className="list-item list-disc">
-                  {produces.feature.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <Button onClick={() => setExpanded((prev) => !prev)}>Expand</Button>
-          </div>
-        </div>
-      </div>
-      {expanded && (
-        <div className="flex flex-1 justify-start rounded-b-md border-t border-t-zinc-600 p-5 lg:p-6">
-          <div className="flex flex-wrap justify-between gap-6 lg:gap-10">
-            {!!combo.otherPrerequisites.trim() && (
-              <div className="flex basis-5/12 flex-col lg:min-w-64">
-                <p className="subtitle mb-1 text-lg">Prequisites</p>
-                <ul>
-                  {combo.otherPrerequisites
-                    .split(".")
-                    .filter((p) => p)
-                    .map((p, idx) => (
-                      <li
-                        className={"mt-2 list-disc"}
-                        key={`combo-${combo.id}-${p}-${idx}`}
-                      >
-                        {replaceManaSymbols(p)}
-                      </li>
-                    ))}
-                </ul>
+          <div className="flex flex-col items-start justify-start gap-3 md:flex-row md:items-center md:gap-6">
+            {showImages && (
+              <div className="flex">
+                {combo.uses
+                  .filter((used) => !!used.card)
+                  .map((used, index) => {
+                    const card = cards.find((c) => c.name === used.card?.name);
+                    if (!card) return null;
+
+                    const overlapMargin = Math.min(
+                      -BASE_MARGIN, // Minimum overlap
+                      -(
+                        (BASE_MARGIN * (combo.uses.length - 1)) /
+                        (combo.uses.length / 1.9)
+                      ), // Adjust for fit
+                    );
+
+                    return (
+                      <img
+                        key={card.id}
+                        className="w-64 max-w-fit rounded-2xl transition-shadow hover:z-20 hover:shadow-lg hover:shadow-zinc-950 md:w-64 lg:w-64 xl:w-72"
+                        src={card.image}
+                        alt={card.id}
+                        style={{
+                          marginRight:
+                            index + 1 === combo.uses.length
+                              ? ""
+                              : overlapMargin,
+                        }}
+                      />
+                    );
+                  })}
               </div>
             )}
-            <div className="flex flex-1 basis-1/2 flex-col md:min-w-72">
-              <p className="subtitle is-5 mb-1">Steps</p>
-              <ol>
-                {combo.description
-                  .split(".")
-                  .filter((t) => t.trim().length > 0)
-                  .map((s, idx) => (
-                    <li className={"mt-2 list-disc"} key={`${combo.id}-${idx}`}>
-                      {replaceManaSymbols(s)}
-                    </li>
-                  ))}
-              </ol>
+            <div>
+              <p className="font-bold">Result</p>
+              <ul>
+                {combo.produces.map((produces) => (
+                  <li key={produces.feature.id}>{produces.feature.name}</li>
+                ))}
+              </ul>
+
+              <div>
+                <Button onClick={() => setExpanded((prev) => !prev)}>
+                  Expand
+                </Button>
+              </div>
             </div>
           </div>
+          {expanded && (
+            <div className="flex flex-1 flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">
+              <div className="flex flex-col justify-between gap-6 md:flex-row lg:gap-10">
+                {!!combo.otherPrerequisites.trim() && (
+                  <div className="flex min-w-72 basis-5/12 flex-col">
+                    <p className="font-bold">Prerequisites</p>
+                    <ul>
+                      {combo.otherPrerequisites
+                        .split(".")
+                        .filter((p) => p)
+                        .map((p, idx) => (
+                          <li key={`combo-${combo.id}-${p}-${idx}`}>
+                            {replaceManaSymbols(p)}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                )}
+                <div className="flex min-w-72 flex-1 basis-5/12 flex-col">
+                  <p className="font-bold">Steps</p>
+                  <ol>
+                    {combo.description
+                      .split(".")
+                      .filter((t) => t.trim().length > 0)
+                      .map((s, idx) => (
+                        <li key={`${combo.id}-${idx}`}>
+                          {replaceManaSymbols(s)}
+                        </li>
+                      ))}
+                  </ol>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

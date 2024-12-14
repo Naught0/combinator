@@ -10,7 +10,7 @@ export const App = () => {
   return (
     <main className="flex h-full min-h-screen w-full flex-col items-center bg-zinc-800 text-zinc-100">
       <ToastContainer theme="dark" />
-      <div className="flex min-h-screen w-full flex-grow flex-col items-center gap-6 px-3 py-6 md:max-w-screen-lg md:gap-12 xl:max-w-screen-lg">
+      <div className="flex min-h-screen w-full flex-grow flex-col items-center gap-6 px-3 py-6 md:max-w-screen-lg md:gap-12 xl:max-w-screen-2xl">
         <Nav />
         <div className="flex w-full flex-grow flex-col">
           <Outlet />

@@ -13,3 +13,4 @@ You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
 - [ ] Fix card search
 - [ ] Slider for card image size?
 - [ ] Find more than 50 moxfield decks
+- [ ] Combo hiding? (to show only relevant ones for a second? solved by filter?)

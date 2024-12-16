@@ -15,11 +15,11 @@ const ResourceColumn = ({
 
 export const Footer = () => {
   return (
-    <footer className="flex w-full flex-col items-center justify-start bg-zinc-900 pb-36">
+    <footer className="mt-12 flex w-full flex-col items-center justify-start bg-zinc-900 pb-36">
       <Waves />
 
       <div className="flex w-full max-w-screen-md flex-col gap-3 text-sm">
-        <div className="flex w-full flex-col gap-6 pt-36 md:pt-48">
+        <div className="flex w-full flex-col gap-6 pt-24 md:pt-36">
           <div className="flex flex-grow flex-row flex-wrap justify-evenly gap-6">
             <ResourceColumn title={"MTG Resources"}>
               <p>
@@ -69,7 +69,7 @@ export const Footer = () => {
             </ResourceColumn>
           </div>
         </div>
-        <div className="my-6 flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-1 p-6">
           <p>
             <b>mtgcombinator</b> is in no way associated with{" "}
             <a href="https://company.wizards.com">Wizards of the Coast</a>

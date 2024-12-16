@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Button, buttonVariants } from "./components/ui/button";
+import { Button } from "./components/ui/button";
 
 export enum SearchType {
   DECK = "DECK",

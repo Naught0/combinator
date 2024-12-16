@@ -1,3 +1,7 @@
+import { useState } from "react";
+import useOnclickOutside from "react-cool-onclickoutside";
+import { useDebouncedCallback } from "use-debounce";
+
 const BASE_MARGIN = 150;
 
 const getMarginRight = (index: number, totalCards: number) => {
@@ -15,7 +19,7 @@ const getMarginTop = (index: number, totalCards: number) => {
 
 function getTiltAngle(index: number, totalCards: number): number {
   // thanks ai for some math
-  if (totalCards <= 0) return 0;
+  if (totalCards <= 2) return 0;
   const centerIndex = (totalCards - 1) / 2;
   const offsetFromCenter = index - centerIndex;
   const maxTiltAngle = 3;
@@ -34,12 +38,20 @@ export default function StackableCard({
   index: number;
   totalCards: number;
 }) {
+  const [active, setActive] = useState(false);
+  const debouncedSetActive = useDebouncedCallback(setActive, 50);
+  const ref = useOnclickOutside(() => setActive(false));
+
   return (
-    <div className="contents">
+    <div
+      className="contents"
+      onTouchEnd={() => debouncedSetActive((a) => !a)}
+      ref={ref}
+    >
       <div className="hidden md:contents">
         <img
           key={card.id}
-          className={`w-64 max-w-fit rounded-2xl border border-zinc-700 transition-all delay-75 md:w-64 lg:w-64 xl:w-72`}
+          className={`w-full min-w-56 max-w-72 rounded-2xl border border-zinc-700 hover:z-30 hover:!scale-125 ${active ? "z-20" : "z-10"} transition-transform`}
           src={card.image}
           alt={card.id}
           style={{
@@ -51,7 +63,7 @@ export default function StackableCard({
       <div className="contents md:hidden">
         <img
           key={card.id}
-          className={`w-64 max-w-fit rounded-2xl border border-zinc-700 transition-all delay-75 md:w-64 lg:w-64 xl:w-72`}
+          className={`w-64 max-w-fit rounded-2xl border border-zinc-700 transition-all md:w-64 lg:w-64 xl:w-72 ${active ? "z-20 scale-125 border-orange-300" : "z-10"}`}
           src={card.image}
           alt={card.id}
           style={{

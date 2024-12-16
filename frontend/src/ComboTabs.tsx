@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CardFilter } from "./CardFilter";
 import { Combo } from "./Combo";
 import { Button } from "./components/ui/button";
@@ -9,6 +9,19 @@ import { Hyperlink } from "./Hyperlink";
 import { Loading } from "./Loading";
 import { MissingCardAccordion } from "./MissingCardAccordion";
 import { getComboData } from "./services";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCompressArrowsAlt,
+  faExpandArrowsAlt,
+  faEyeSlash,
+  faImage,
+  faImages,
+  faMinusSquare,
+  faPlusSquare,
+} from "@fortawesome/free-solid-svg-icons";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
+import { Layout, LayoutSelect } from "./LayoutSelect";
+import { usePersist } from "./UserDeck/hooks/usePersist";
 
 enum Tab {
   COMBOS,
@@ -121,28 +134,74 @@ function Combos({
   deckData: DeckData;
   filteredCombos: AlmostIncluded[];
 }) {
+  const [expandAll, setExpandAll] = useState(
+    (localStorage.getItem("expandAll") ?? "true") === "true",
+  );
+  usePersist({ key: "expandAll", val: expandAll ? "true" : "false" });
+  const [layout, setLayout] = useState<Layout>(
+    (localStorage.getItem("layout") as Layout) ?? Layout.LIST,
+  );
+  usePersist({ key: "layout", val: layout });
+  const [showImages, setShowImages] = useState(
+    (localStorage.getItem("showImages") ?? "true") === "true",
+  );
+  usePersist({ key: "showImages", val: showImages ? "true" : "false" });
+
   return (
-    <div className="flex flex-col flex-wrap gap-6 md:flex-row">
-      {noCombos && (
-        <h1 className="text-2xl">
-          💡 Pro Tip: Try adding some{" "}
-          <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
-          to your list
-        </h1>
-      )}
-      {!!filter && noFilteredCombos && (
-        <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
-      )}
-      {showGroups && groupedByMissing ? (
-        <div className="flex flex-col gap-3">
-          <GroupedCombos cards={deckData.cards} data={groupedByMissing} />
+    <div className="flex flex-col gap-3">
+      {!noCombos && !noFilteredCombos && (
+        <div className="inline-flex flex-wrap justify-center gap-3 md:justify-start">
+          <div className="hidden md:block">
+            <LayoutSelect layout={layout} setLayout={setLayout} />
+          </div>
+          <Button
+            className="inline-flex w-fit items-center"
+            onClick={() => setExpandAll((expand) => !expand)}
+          >
+            <FontAwesomeIcon icon={expandAll ? faMinusSquare : faPlusSquare} />
+            <span>{expandAll ? "Hide" : "Show"} all details</span>
+          </Button>
+          <Button
+            className="inline-flex items-center"
+            onClick={() => setShowImages((show) => !show)}
+          >
+            <FontAwesomeIcon icon={showImages ? faEyeSlash : faImages} />
+            {showImages ? "Hide" : "Show"} images
+          </Button>
         </div>
-      ) : (
-        filteredCombos &&
-        filteredCombos.map((c) => {
-          return <Combo cards={deckData.cards ?? []} key={c.id} combo={c} />;
-        })
       )}
+      <div
+        className={`flex flex-col gap-3 ${layout === Layout.GRID ? "md:grid md:grid-cols-2" : ""}`}
+      >
+        {noCombos && (
+          <h1 className="text-2xl">
+            💡 Pro Tip: Try adding some{" "}
+            <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
+            to your list
+          </h1>
+        )}
+        {!!filter && noFilteredCombos && (
+          <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
+        )}
+        {showGroups && groupedByMissing ? (
+          <div className="flex flex-col gap-3">
+            <GroupedCombos cards={deckData.cards} data={groupedByMissing} />
+          </div>
+        ) : (
+          filteredCombos &&
+          filteredCombos.map((c) => {
+            return (
+              <Combo
+                showImages={showImages}
+                initialExpanded={expandAll}
+                cards={deckData.cards ?? []}
+                key={c.id}
+                combo={c}
+              />
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }

@@ -1,7 +1,9 @@
 import { manaFontMap } from "./manaFontMap";
 import { Button } from "./components/ui/button";
 import { CardStack } from "./CardStack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { faMinusSquare, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface props {
   combo: AlmostIncluded;
@@ -29,25 +31,29 @@ export const Combo = ({
   cards,
   showImages = true,
 }: props) => {
-  const cardNames = cards.map((c) => c.name);
   const [expanded, setExpanded] = useState(initialExpanded);
   const deckCards = combo.uses
     .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
     .filter((c) => !!c);
+  useEffect(() => {
+    setExpanded(initialExpanded);
+  }, [initialExpanded]);
   return (
-    <div className={`m-3 flex flex-1 basis-full flex-col`}>
-      <div
-        className={`flex w-full flex-1 flex-col items-center !rounded-b-none`}
-      >
+    <div className={`flex basis-full flex-col`}>
+      <div className={`flex w-full flex-col items-center !rounded-b-none`}>
         <div className="z-10 flex w-full flex-col gap-3 rounded bg-zinc-900/95 p-6 md:p-8">
           <p className="text-center font-serif text-xl font-bold md:text-left">
             {combo.uses.map((u) => u.card?.name).join(" + ")}
           </p>
-          <div className="align-center flex flex-col items-center gap-3 md:flex-row md:items-start md:justify-start md:gap-6">
-            <CardStack cards={deckCards} />
-            <div className="flex flex-col gap-3">
+          <div className="align-center flex flex-col flex-wrap items-center gap-3 md:flex-row md:items-start md:justify-start md:gap-6">
+            {showImages && (
+              <div className="flex basis-1/2 select-none flex-col items-start justify-start gap-3 md:flex-row">
+                <CardStack cards={deckCards} />
+              </div>
+            )}
+            <div className="flex flex-col items-center gap-3 md:items-start">
               <div>
-                <p className="font-bold">Result</p>
+                <p className="font-bold lg:text-lg">Result</p>
                 <ul>
                   {combo.produces.map((produces) => (
                     <li key={produces.feature.id}>{produces.feature.name}</li>
@@ -58,16 +64,20 @@ export const Combo = ({
               <div>
                 <Button
                   variant={"outline"}
+                  className="inline-flex items-center"
                   onClick={() => setExpanded((prev) => !prev)}
                 >
-                  Expand
+                  <FontAwesomeIcon
+                    icon={expanded ? faMinusSquare : faPlusSquare}
+                  />
+                  {expanded ? "Collapse" : "Show details"}
                 </Button>
               </div>
             </div>
           </div>
           {expanded && (
-            <div className="flex flex-1 flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">
-              <div className="flex flex-col justify-between gap-6 md:flex-row lg:gap-10">
+            <div className="flex flex-row flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">
+              <div className="flex flex-wrap gap-3 md:flex-row">
                 {!!combo.otherPrerequisites.trim() && (
                   <div className="flex min-w-72 basis-5/12 flex-col">
                     <p className="font-bold">Prerequisites</p>

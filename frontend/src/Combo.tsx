@@ -1,9 +1,7 @@
 import { manaFontMap } from "./manaFontMap";
-import { HoverableCard } from "./HoverableCard";
-import { useEffect, useRef, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "./components/ui/button";
+import { CardStack } from "./CardStack";
+import { useState } from "react";
 
 interface props {
   combo: AlmostIncluded;
@@ -11,8 +9,6 @@ interface props {
   cards: DeckCard[];
   showImages?: boolean;
 }
-
-const BASE_MARGIN = 150;
 
 const replaceManaSymbols = (s: string) => {
   return s
@@ -35,60 +31,36 @@ export const Combo = ({
 }: props) => {
   const cardNames = cards.map((c) => c.name);
   const [expanded, setExpanded] = useState(initialExpanded);
-
+  const deckCards = combo.uses
+    .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
+    .filter((c) => !!c);
+  console.log(JSON.stringify(deckCards, undefined, 2));
   return (
     <div className={`m-3 flex flex-1 basis-full flex-col`}>
       <div
         className={`flex w-full flex-1 flex-col items-center !rounded-b-none`}
       >
-        <div className="z-10 flex w-full flex-col gap-3 rounded bg-zinc-900/95 px-6 py-4 md:px-10 md:py-6">
-          <p className="font-serif text-lg font-bold md:text-xl">
+        <div className="z-10 flex w-full flex-col gap-3 rounded bg-zinc-900/95 p-6 md:p-8">
+          <p className="text-center font-serif text-xl font-bold md:text-left">
             {combo.uses.map((u) => u.card?.name).join(" + ")}
           </p>
-          <div className="flex flex-col items-start justify-start gap-3 md:flex-row md:items-center md:gap-6">
-            {showImages && (
-              <div className="flex">
-                {combo.uses
-                  .filter((used) => !!used.card)
-                  .map((used, index) => {
-                    const card = cards.find((c) => c.name === used.card?.name);
-                    if (!card) return null;
-
-                    const overlapMargin = Math.min(
-                      -BASE_MARGIN, // Minimum overlap
-                      -(
-                        (BASE_MARGIN * (combo.uses.length - 1)) /
-                        (combo.uses.length / 1.9)
-                      ), // Adjust for fit
-                    );
-
-                    return (
-                      <img
-                        key={card.id}
-                        className="w-64 max-w-fit rounded-2xl transition-shadow hover:z-20 hover:shadow-lg hover:shadow-zinc-950 md:w-64 lg:w-64 xl:w-72"
-                        src={card.image}
-                        alt={card.id}
-                        style={{
-                          marginRight:
-                            index + 1 === combo.uses.length
-                              ? ""
-                              : overlapMargin,
-                        }}
-                      />
-                    );
-                  })}
+          <div className="align-center flex flex-col items-center gap-3 md:flex-row md:items-start md:justify-start md:gap-6">
+            <CardStack cards={deckCards} />
+            <div className="flex flex-col gap-3">
+              <div>
+                <p className="font-bold">Result</p>
+                <ul>
+                  {combo.produces.map((produces) => (
+                    <li key={produces.feature.id}>{produces.feature.name}</li>
+                  ))}
+                </ul>
               </div>
-            )}
-            <div>
-              <p className="font-bold">Result</p>
-              <ul>
-                {combo.produces.map((produces) => (
-                  <li key={produces.feature.id}>{produces.feature.name}</li>
-                ))}
-              </ul>
 
               <div>
-                <Button onClick={() => setExpanded((prev) => !prev)}>
+                <Button
+                  variant={"outline"}
+                  onClick={() => setExpanded((prev) => !prev)}
+                >
                   Expand
                 </Button>
               </div>

@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { Footer } from "./Footer";
 import Nav from "./Nav";
 import { Outlet } from "react-router";
+import { ScrollToTop } from "./ScrollToTop";
 
 export const App = () => {
   return (
@@ -16,6 +17,7 @@ export const App = () => {
           <Outlet />
         </div>
       </div>
+      <ScrollToTop />
       <Footer />
     </main>
   );

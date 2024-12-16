@@ -34,7 +34,6 @@ export const Combo = ({
   const deckCards = combo.uses
     .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
     .filter((c) => !!c);
-  console.log(JSON.stringify(deckCards, undefined, 2));
   return (
     <div className={`m-3 flex flex-1 basis-full flex-col`}>
       <div

@@ -16,7 +16,7 @@ export const DeckInfo = ({ meta }: { meta: DeckMeta }) => {
   return (
     <div className="flex flex-col">
       <div className="flex flex-grow flex-col items-start">
-        <h1 className="text-3xl md:text-4xl">
+        <h1 className="font-serif text-3xl font-black md:text-4xl">
           {meta.url ? (
             <Hyperlink href={meta.url}>{meta.name}</Hyperlink>
           ) : (

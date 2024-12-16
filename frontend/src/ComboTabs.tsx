@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { CardFilter } from "./CardFilter";
 import { Combo } from "./Combo";
 import { Button } from "./components/ui/button";
@@ -11,15 +11,11 @@ import { MissingCardAccordion } from "./MissingCardAccordion";
 import { getComboData } from "./services";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCompressArrowsAlt,
-  faExpandArrowsAlt,
   faEyeSlash,
-  faImage,
   faImages,
   faMinusSquare,
   faPlusSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import { useDebounce, useDebouncedCallback } from "use-debounce";
 import { Layout, LayoutSelect } from "./LayoutSelect";
 import { usePersist } from "./UserDeck/hooks/usePersist";
 

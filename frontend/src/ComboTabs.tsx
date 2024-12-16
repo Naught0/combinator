@@ -94,7 +94,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
           value={filter}
           onChange={({ target }) => setFilter(target.value)}
         />
-        {(tab === Tab.ALMOST_INCLUDED || tab === Tab.COMBOS) && (
+        {tab === Tab.COMBOS && (
           <Combos
             noCombos={noCombos}
             showGroups={showGroups}
@@ -104,6 +104,9 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
             deckData={deckData}
             filteredCombos={filteredCombos}
           />
+        )}
+        {tab === Tab.ALMOST_INCLUDED && groupedByMissing && (
+          <GroupedCombos data={groupedByMissing} cards={deckData.cards} />
         )}
         {tab === Tab.CARD_SEARCH && deckData && (
           <CardFilter deckData={deckData} filter={filter} />
@@ -115,10 +118,8 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
 
 function Combos({
   noCombos,
-  showGroups,
   filter,
   noFilteredCombos,
-  groupedByMissing,
   deckData,
   filteredCombos,
 }: {
@@ -179,12 +180,7 @@ function Combos({
         {!!filter && noFilteredCombos && (
           <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
         )}
-        {showGroups && groupedByMissing ? (
-          <div className="flex flex-col gap-3">
-            <GroupedCombos cards={deckData.cards} data={groupedByMissing} />
-          </div>
-        ) : (
-          filteredCombos &&
+        {filteredCombos &&
           filteredCombos.map((c) => {
             return (
               <Combo
@@ -195,8 +191,7 @@ function Combos({
                 combo={c}
               />
             );
-          })
-        )}
+          })}
       </div>
     </div>
   );
@@ -217,11 +212,9 @@ function GroupedCombos({
         key={cardName}
         count={combos.length}
       >
-        <div className="p-3">
-          {combos.map((combo) => (
-            <Combo key={combo.id} cards={cards} combo={combo} />
-          ))}
-        </div>
+        {combos.map((combo) => (
+          <Combo key={combo.id} cards={cards} combo={combo} />
+        ))}
       </MissingCardAccordion>
     ));
 }

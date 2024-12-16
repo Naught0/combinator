@@ -9,7 +9,7 @@ export enum SortDirection {
 
 export const sortDirIconMap = new Map<SortDirection, ReactNode>([
   // eslint-disable-next-line react/jsx-key
-  [SortDirection.ASC, <FontAwesomeIcon icon={faArrowDown} />],
+  [SortDirection.ASC, <FontAwesomeIcon icon={faArrowUp} />],
   // eslint-disable-next-line react/jsx-key
-  [SortDirection.DESC, <FontAwesomeIcon icon={faArrowUp} />],
+  [SortDirection.DESC, <FontAwesomeIcon icon={faArrowDown} />],
 ]);

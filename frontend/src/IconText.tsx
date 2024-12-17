@@ -11,11 +11,9 @@ interface Props {
 export const IconText: FC<Props> = ({ icon, className, spin, children }) => {
   return (
     <span
-      className={`inline-flex items-center gap-1 ${className ? className : ""}`}
+      className={`inline-flex items-center gap-1.5 ${className ? className : ""}`}
     >
-      <span className="icon">
-        <FontAwesomeIcon icon={icon} className={spin ? "animate-spin" : ""} />
-      </span>
+      <FontAwesomeIcon icon={icon} className={spin ? "animate-spin" : ""} />
       <span>{children}</span>
     </span>
   );

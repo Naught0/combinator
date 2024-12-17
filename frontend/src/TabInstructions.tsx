@@ -1,6 +1,6 @@
 export function TabInstructions() {
   return (
-    <>
+    <article>
       <p className="text-sm">
         Click a combo to see its prerequisites and steps
       </p>
@@ -8,6 +8,6 @@ export function TabInstructions() {
         If more combos are found by adding a card to the deck, you can access
         them by clicking the &quot;Add 1&quot; tab
       </p>
-    </>
+    </article>
   );
 }

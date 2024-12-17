@@ -21,7 +21,7 @@ export const HoverableCard = ({
     usePopperTooltip({
       placement: "auto-end",
       trigger: ["hover"],
-      delayShow: 200,
+      delayShow: 150,
       delayHide: 10,
     });
   return (

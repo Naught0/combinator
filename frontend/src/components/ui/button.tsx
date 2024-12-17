@@ -11,7 +11,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-zinc-950 text-zinc-50 hover:bg-zinc-800",
+        default:
+          "bg-zinc-950 text-zinc-50 hover:bg-zinc-300 hover:text-zinc-800",
         tab: "bg-zinc-950 text-zinc-50 hover:border-zinc-500 border-none rounded-b-none border-solid border-b-4",
         activeTab:
           "bg-zinc-950 text-zinc-50 hover:bg-zinc-950/90 border-none rounded-b-none border-solid border-b-4 border-blue-600",
@@ -19,7 +20,7 @@ const buttonVariants = cva(
           "bg-blue-600 text-zinc-50 hover:bg-blue-600/90 border-blue-500 border",
         destructive: "bg-red-500 text-zinc-50 hover:bg-red-500/90",
         outline:
-          "border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
+          "border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-600 dark:bg-zinc-950 dark:hover:bg-zinc-700 dark:hover:text-zinc-50",
         secondary:
           "bg-zinc-100 text-zinc-900 hover:bg-zinc-100/80 dark:bg-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-700/80",
         ghost:
@@ -35,7 +36,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "outline",
       size: "default",
     },
   },

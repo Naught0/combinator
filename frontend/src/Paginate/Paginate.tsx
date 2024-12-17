@@ -87,7 +87,7 @@ export const Paginate: React.FC<props> = ({
                   e.preventDefault();
                   setIndex(index);
                 }}
-                isActive={index === pageIndex}
+                isActive={page - 1 === pageIndex}
               >
                 {page}
               </PaginationLink>

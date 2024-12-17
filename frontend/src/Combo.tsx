@@ -63,7 +63,7 @@ export const Combo = ({
     <div className={`flex h-full w-full flex-col items-center !rounded-b-none`}>
       <div className="z-10 flex w-full flex-col gap-1 rounded bg-zinc-800 p-6">
         {deckCards.map((c, idx) => (
-          <div className="inline-flex items-center gap-2">
+          <div className="inline-flex w-fit items-center gap-2">
             {idx !== 0 && (
               <FontAwesomeIcon
                 icon={faPlus}
@@ -77,7 +77,7 @@ export const Combo = ({
           className={`flex flex-col flex-wrap items-center justify-start md:flex-row md:items-start ${showImages ? "gap-3" : ""}`}
         >
           {showImages && (
-            <div className="flex basis-1/2 select-none flex-col items-start justify-start gap-3 md:flex-row">
+            <div className="flex w-full select-none flex-col justify-center gap-3 md:flex-row">
               <CardStack cards={deckCards} />
             </div>
           )}

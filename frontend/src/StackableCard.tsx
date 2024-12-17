@@ -51,7 +51,7 @@ export default function StackableCard({
       <div className="hidden md:contents">
         <img
           key={card.id}
-          className={`w-full max-w-64 rounded-2xl border border-zinc-700 hover:z-30 hover:!scale-125 ${active ? "z-20" : "z-10"} transition-transform`}
+          className={`w-full max-w-56 rounded-2xl border border-zinc-700 hover:z-30 hover:!scale-125 ${active ? "z-20" : "z-10"} transition-transform`}
           src={card.image}
           alt={card.id}
           style={{
@@ -63,7 +63,7 @@ export default function StackableCard({
       <div className="contents md:hidden">
         <img
           key={card.id}
-          className={`w-64 max-w-fit rounded-2xl border border-zinc-700 transition-all${active ? "z-20 scale-125 border-orange-300" : "z-10"}`}
+          className={`w-64 max-w-fit rounded-2xl border border-zinc-700 transition-all${active ? "z-20 scale-125" : "z-10"}`}
           src={card.image}
           alt={card.id}
           style={{

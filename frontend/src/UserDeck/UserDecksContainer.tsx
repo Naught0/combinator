@@ -57,7 +57,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
   };
 
   return (
-    <div className="flex flex-col gap-6 md:gap-6">
+    <div className="flex max-w-screen-2xl flex-col gap-6 md:gap-6">
       <div>
         <BackToSearch />
       </div>
@@ -77,10 +77,10 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         isLegal={isLegal}
         setIsLegal={setIsLegal}
       />
-      <div className="wrap grid grid-cols-1 gap-3 md:grid-cols-2">
+      <div className="wrap grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
         {currentPage?.map((deck) => <Deck key={deck.id} deck={deck} />)}
       </div>
-      <div className="w-fit">
+      <div className="w-full">
         <Paginate
           pageIndex={pageIndex}
           setIndex={safelyChangePageIndex}

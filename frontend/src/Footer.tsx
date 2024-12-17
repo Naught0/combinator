@@ -15,7 +15,7 @@ const ResourceColumn = ({
 
 export const Footer = () => {
   return (
-    <footer className="mt-12 flex w-full flex-col items-center justify-start bg-zinc-900 pb-36">
+    <footer className="mt-12 flex w-full flex-col items-center justify-start bg-zinc-950 pb-36">
       <Waves />
 
       <div className="flex w-full max-w-screen-md flex-col gap-3 text-sm">

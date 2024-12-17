@@ -6,12 +6,12 @@ export function Waves() {
       id="svg"
       viewBox="0 0 1440 390"
       xmlns="http://www.w3.org/2000/svg"
-      className="bg-zinc-800 transition delay-150 duration-300 ease-in-out"
+      className="bg-zinc-900 transition delay-150 duration-300 ease-in-out"
     >
       <defs>
         <linearGradient id="gradient" x1="50%" y1="0%" x2="50%" y2="100%">
           <stop offset="5%" stopColor="#3f3f46"></stop>
-          <stop offset="95%" stopColor="#18181b"></stop>
+          <stop offset="95%" stopColor="09090b"></stop>
         </linearGradient>
       </defs>
       <path
@@ -25,7 +25,7 @@ export function Waves() {
       <defs>
         <linearGradient id="gradient" x1="50%" y1="0%" x2="50%" y2="100%">
           <stop offset="5%" stopColor="#3f3f46"></stop>
-          <stop offset="95%" stopColor="#18181b"></stop>
+          <stop offset="95%" stopColor="09090b"></stop>
         </linearGradient>
       </defs>
       <path

@@ -13,7 +13,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEyeSlash,
   faImages,
+  faMinus,
   faMinusSquare,
+  faPlus,
   faPlusSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { Layout, LayoutSelect } from "./LayoutSelect";
@@ -148,7 +150,7 @@ function Combos({
   return (
     <div className="flex flex-col gap-3">
       {!noCombos && !noFilteredCombos && (
-        <div className="inline-flex flex-wrap justify-center gap-3 md:justify-start">
+        <div className="sticky top-3 inline-flex flex-wrap justify-center gap-3 md:justify-start">
           <div className="hidden md:block">
             <LayoutSelect layout={layout} setLayout={setLayout} />
           </div>
@@ -156,8 +158,8 @@ function Combos({
             className="inline-flex w-fit items-center"
             onClick={() => setExpandAll((expand) => !expand)}
           >
-            <FontAwesomeIcon icon={expandAll ? faMinusSquare : faPlusSquare} />
-            <span>{expandAll ? "Hide" : "Show"} all details</span>
+            <FontAwesomeIcon icon={expandAll ? faMinus : faPlus} />
+            <span>{expandAll ? "Collapse" : "Expand"} all</span>
           </Button>
           <Button
             className="inline-flex items-center"

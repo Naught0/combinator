@@ -1,9 +1,15 @@
 import { manaFontMap } from "./manaFontMap";
 import { Button } from "./components/ui/button";
 import { CardStack } from "./CardStack";
-import { useEffect, useState } from "react";
-import { faMinusSquare, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import { PropsWithChildren, useEffect, useState } from "react";
+import {
+  faMinus,
+  faMinusSquare,
+  faPlus,
+  faPlusSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { HoverableCard } from "./HoverableCard";
 
 interface props {
   combo: AlmostIncluded;
@@ -25,6 +31,26 @@ const replaceManaSymbols = (s: string) => {
     });
 };
 
+function ComboCardHeading({
+  card,
+  isHoverable,
+}: {
+  card: DeckCard;
+  isHoverable?: boolean;
+}) {
+  const className =
+    "text-center w-full md:w-fit font-serif text-xl font-bold md:text-left";
+  return isHoverable ? (
+    <HoverableCard
+      cardName={card.name}
+      image={card.image}
+      classNameOverride={className}
+    />
+  ) : (
+    <p className={className}>{card.name}</p>
+  );
+}
+
 export const Combo = ({
   combo,
   initialExpanded,
@@ -40,19 +66,29 @@ export const Combo = ({
   }, [initialExpanded]);
   return (
     <div className={`flex h-full w-full flex-col items-center !rounded-b-none`}>
-      <div className="z-10 flex w-full flex-col gap-3 rounded bg-zinc-900/95 p-6 md:p-8">
-        <p className="text-center font-serif text-xl font-bold md:text-left">
-          {combo.uses.map((u) => u.card?.name).join(" + ")}
-        </p>
-        <div className="align-center flex flex-col flex-wrap items-center justify-center gap-3 md:flex-row md:items-start md:gap-6">
+      <div className="z-10 flex w-full flex-col gap-1 rounded bg-zinc-800 p-6">
+        {deckCards.map((c, idx) => (
+          <div className="inline-flex items-center gap-2">
+            {idx !== 0 && (
+              <FontAwesomeIcon
+                icon={faPlus}
+                onClick={() => setExpanded(!expanded)}
+              />
+            )}
+            <ComboCardHeading key={c.id} card={c} isHoverable={!showImages} />
+          </div>
+        ))}
+        <div
+          className={`flex flex-col flex-wrap items-center justify-start md:flex-row md:items-start ${showImages ? "gap-3" : ""}`}
+        >
           {showImages && (
             <div className="flex basis-1/2 select-none flex-col items-start justify-start gap-3 md:flex-row">
               <CardStack cards={deckCards} />
             </div>
           )}
-          <div className="flex w-full flex-col items-center gap-3 p-3 md:items-start">
+          <div className="flex w-full flex-col items-center gap-3 md:items-start">
             <div>
-              <p className="font-bold lg:text-lg">Result</p>
+              <p className="font-bold lg:text-lg">Effects</p>
               <ul>
                 {combo.produces.map((produces) => (
                   <li key={produces.feature.id}>{produces.feature.name}</li>
@@ -62,12 +98,12 @@ export const Combo = ({
           </div>
           <div>
             <Button
-              variant={"outline"}
+              variant={"link"}
               className="inline-flex items-center"
               onClick={() => setExpanded((prev) => !prev)}
             >
-              <FontAwesomeIcon icon={expanded ? faMinusSquare : faPlusSquare} />
-              {expanded ? "Collapse" : "Show details"}
+              <FontAwesomeIcon icon={expanded ? faMinus : faPlus} />
+              {expanded ? "Collapse" : "Expand"}
             </Button>
           </div>
         </div>

@@ -18,6 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Layout, LayoutSelect } from "./LayoutSelect";
 import { usePersist } from "./UserDeck/hooks/usePersist";
+import { MasonryLayout } from "./MasonryLayout";
 
 enum Tab {
   COMBOS,
@@ -132,7 +133,7 @@ function Combos({
   filteredCombos: AlmostIncluded[];
 }) {
   const [expandAll, setExpandAll] = useState(
-    (localStorage.getItem("expandAll") ?? "true") === "true",
+    (localStorage.getItem("expandAll") ?? "false") === "true",
   );
   usePersist({ key: "expandAll", val: expandAll ? "true" : "false" });
   const [layout, setLayout] = useState<Layout>(
@@ -167,21 +168,19 @@ function Combos({
           </Button>
         </div>
       )}
-      <div
-        className={`flex flex-col gap-3 ${layout === Layout.GRID ? "md:grid md:grid-cols-2" : ""}`}
-      >
-        {noCombos && (
-          <h1 className="text-2xl">
-            💡 Pro Tip: Try adding some{" "}
-            <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
-            to your list
-          </h1>
-        )}
-        {!!filter && noFilteredCombos && (
-          <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
-        )}
-        {filteredCombos &&
-          filteredCombos.map((c) => {
+      {noCombos && (
+        <h1 className="text-2xl">
+          💡 Pro Tip: Try adding some{" "}
+          <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
+          to your list
+        </h1>
+      )}
+      {!!filter && noFilteredCombos && (
+        <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
+      )}
+      {filteredCombos && (
+        <MasonryLayout
+          items={filteredCombos.map((c) => {
             return (
               <Combo
                 showImages={showImages}
@@ -192,7 +191,8 @@ function Combos({
               />
             );
           })}
-      </div>
+        />
+      )}
     </div>
   );
 }

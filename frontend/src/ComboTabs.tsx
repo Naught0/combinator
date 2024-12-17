@@ -148,7 +148,7 @@ function Combos({
   return (
     <div className="flex flex-col gap-3">
       {!noCombos && !noFilteredCombos && (
-        <div className="sticky top-3 inline-flex flex-wrap justify-center gap-3 md:justify-start">
+        <div className="inline-flex flex-wrap justify-center gap-3 md:justify-start">
           <div className="hidden md:block">
             <LayoutSelect layout={layout} setLayout={setLayout} />
           </div>

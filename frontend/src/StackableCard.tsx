@@ -19,7 +19,7 @@ const getMarginTop = (index: number, totalCards: number) => {
 
 function getTiltAngle(index: number, totalCards: number): number {
   // thanks ai for some math
-  if (totalCards <= 2) return 0;
+  if (totalCards < 2) return 0;
   const centerIndex = (totalCards - 1) / 2;
   const offsetFromCenter = index - centerIndex;
   const maxTiltAngle = 3;

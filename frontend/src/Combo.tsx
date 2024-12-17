@@ -91,16 +91,16 @@ export const Combo = ({
               </ul>
             </div>
           </div>
-          <div>
-            <Button
-              variant={"link"}
-              className="inline-flex items-center"
-              onClick={() => setExpanded((prev) => !prev)}
-            >
-              <FontAwesomeIcon icon={expanded ? faMinus : faPlus} />
-              {expanded ? "Collapse" : "Expand"}
-            </Button>
-          </div>
+
+          <Button
+            className="inline-flex w-full items-center"
+            onClick={() => setExpanded((prev) => !prev)}
+            size="sm"
+            variant="ghost"
+          >
+            <FontAwesomeIcon icon={expanded ? faMinus : faPlus} />
+            {expanded ? "Collapse" : "Expand"}
+          </Button>
         </div>
         {expanded && (
           <div className="flex flex-row flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">

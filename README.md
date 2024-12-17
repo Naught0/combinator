@@ -20,3 +20,5 @@ You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
 - [ ] Finish 'add 1' tab
 - [ ] Show 'no combos found' when searching "add 1" tab
 - [ ] Fix 'search cards' tab
+- [ ] Make drag drop / sortable
+    - Combine ids of cards as unique combo ID to remember sorts?

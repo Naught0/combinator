@@ -77,7 +77,7 @@ export const UserDecksContainer: FC<Props> = ({ decks }) => {
         isLegal={isLegal}
         setIsLegal={setIsLegal}
       />
-      <div className="wrap grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+      <div className="wrap grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-6 xl:grid-cols-3">
         {currentPage?.map((deck) => <Deck key={deck.id} deck={deck} />)}
       </div>
       <div className="w-full">

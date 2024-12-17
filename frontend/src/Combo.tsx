@@ -1,13 +1,8 @@
 import { manaFontMap } from "./manaFontMap";
 import { Button } from "./components/ui/button";
 import { CardStack } from "./CardStack";
-import { PropsWithChildren, useEffect, useState } from "react";
-import {
-  faMinus,
-  faMinusSquare,
-  faPlus,
-  faPlusSquare,
-} from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { HoverableCard } from "./HoverableCard";
 

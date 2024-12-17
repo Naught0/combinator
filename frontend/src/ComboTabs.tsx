@@ -14,9 +14,7 @@ import {
   faEyeSlash,
   faImages,
   faMinus,
-  faMinusSquare,
   faPlus,
-  faPlusSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { Layout, LayoutSelect } from "./LayoutSelect";
 import { usePersist } from "./UserDeck/hooks/usePersist";

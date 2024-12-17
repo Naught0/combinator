@@ -52,7 +52,7 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
   setIsLegal,
 }) => {
   return (
-    <div className="flex flex-row flex-wrap gap-2">
+    <div className="flex flex-row flex-wrap gap-3">
       <Field>
         <Label>Deck name</Label>
         <div className="relative w-full">
@@ -128,11 +128,14 @@ export const UserDeckFilters: FC<UserDeckFilterProps> = ({
         <div className="inline-flex">
           <Dropdown
             placeholder={`${deckFilters.find((f) => f.key === sortBy)?.display}`}
-            onChange={(value) => setSortBy(value as keyof Deck)}
+            onChange={(value) => {
+              console.log("using value", value);
+              setSortBy(value as keyof Deck);
+            }}
             className="rounded-r-none border-r-0"
           >
             {deckFilters.map((f) => (
-              <SelectItem key={f.key} value={f.display}>
+              <SelectItem key={f.key} value={f.key}>
                 {f.display}
               </SelectItem>
             ))}

@@ -44,13 +44,13 @@ export const Combo = ({
         <p className="text-center font-serif text-xl font-bold md:text-left">
           {combo.uses.map((u) => u.card?.name).join(" + ")}
         </p>
-        <div className="align-center flex flex-col flex-wrap items-center gap-3 md:flex-row md:items-start md:justify-start md:gap-6">
+        <div className="align-center flex flex-col flex-wrap items-center justify-center gap-3 md:flex-row md:items-start md:gap-6">
           {showImages && (
             <div className="flex basis-1/2 select-none flex-col items-start justify-start gap-3 md:flex-row">
               <CardStack cards={deckCards} />
             </div>
           )}
-          <div className="flex flex-col items-center gap-3 md:items-start">
+          <div className="flex w-full flex-col items-center gap-3 p-3 md:items-start">
             <div>
               <p className="font-bold lg:text-lg">Result</p>
               <ul>
@@ -59,19 +59,16 @@ export const Combo = ({
                 ))}
               </ul>
             </div>
-
-            <div>
-              <Button
-                variant={"outline"}
-                className="inline-flex items-center"
-                onClick={() => setExpanded((prev) => !prev)}
-              >
-                <FontAwesomeIcon
-                  icon={expanded ? faMinusSquare : faPlusSquare}
-                />
-                {expanded ? "Collapse" : "Show details"}
-              </Button>
-            </div>
+          </div>
+          <div>
+            <Button
+              variant={"outline"}
+              className="inline-flex items-center"
+              onClick={() => setExpanded((prev) => !prev)}
+            >
+              <FontAwesomeIcon icon={expanded ? faMinusSquare : faPlusSquare} />
+              {expanded ? "Collapse" : "Show details"}
+            </Button>
           </div>
         </div>
         {expanded && (

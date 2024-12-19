@@ -14,12 +14,9 @@ from app.models.api import (
 )
 from app.models.commanders_spellbook import Results
 from app.models.moxfield import MoxfieldDeck
-from app.process import (
-    get_deck,
-    get_scryfall_cards,
-    parse_id_from_url,
-    parse_source_from_url,
-)
+from app.parse import parse_id_from_url, parse_source_from_url
+from app.process import get_deck
+from app.sources.scryfall.api import get_scryfall_cards
 from app.user import MoxfieldError, NoDecksFoundError, get_moxfield_user_decks
 
 router = APIRouter(prefix="/api")
@@ -74,11 +71,9 @@ def deck_search(url: str):
 
 
 @router.post("/user", response_model=list[MoxfieldDeck])
-def user_search(user: UserSearchRequest):
+def user_search(req: UserSearchRequest):
     try:
-        return get_moxfield_user_decks(
-            user.user_name, user.page, page_size=user.per_page
-        )
+        return get_moxfield_user_decks(req.user_name, req.page, page_size=req.per_page)
     except NoDecksFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except MoxfieldError as e:

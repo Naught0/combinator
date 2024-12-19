@@ -11,7 +11,7 @@ export function Waves() {
       <defs>
         <linearGradient id="gradient" x1="50%" y1="0%" x2="50%" y2="100%">
           <stop offset="5%" stopColor="#3f3f46"></stop>
-          <stop offset="95%" stopColor="09090b"></stop>
+          <stop offset="95%" stopColor="#09090b"></stop>
         </linearGradient>
       </defs>
       <path
@@ -25,7 +25,7 @@ export function Waves() {
       <defs>
         <linearGradient id="gradient" x1="50%" y1="0%" x2="50%" y2="100%">
           <stop offset="5%" stopColor="#3f3f46"></stop>
-          <stop offset="95%" stopColor="09090b"></stop>
+          <stop offset="95%" stopColor="#09090b"></stop>
         </linearGradient>
       </defs>
       <path

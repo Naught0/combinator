@@ -7,3 +7,4 @@ if os.getenv("ENV", "").startswith("dev"):
 
 USER_AGENT = os.environ["MOXFIELD_USER_AGENT"]
 ACCEPT = "application/json"
+COLOR_MAP = {"white": "w", "blue": "u", "black": "b", "red": "r", "green": "g"}

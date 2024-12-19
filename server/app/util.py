@@ -1,5 +1,22 @@
-from typing import Any, Hashable
 from functools import reduce
+from typing import Any, Hashable
+
+from app.models.api import Source
+
+
+def chunk_array(lst: list, n: int):
+    """https://www.geeksforgeeks.org/break-list-chunks-size-n-python/
+
+    Args:
+        l (list): The list to chunk
+        n (int): the max chunk size
+
+    Yields:
+        List[any]
+    """
+    for i in range(0, len(lst), n):
+        yield lst[i : i + n]
+
 
 def dig(d: dict, *keys: list[Hashable], default=None):
     """Dig for a value in a dict. Behaves similarly to ruby's `Hash.dig` method
@@ -16,6 +33,7 @@ def dig(d: dict, *keys: list[Hashable], default=None):
     except:
         return default
 
+
 def digs(d: dict, keys_to_split: str, default: Any = None, delim: str = "."):
     """Like `dig` but takes a string which is split on a delimiter (`.` by default)
 
@@ -29,6 +47,7 @@ def digs(d: dict, keys_to_split: str, default: Any = None, delim: str = "."):
         Any
     """
     return dig(d, *keys_to_split.split(delim), default=default)
+
 
 def extract(d: dict, *keys) -> dict:
     """Return a subset of key-value pairs akin to ruby's Hash#slice method

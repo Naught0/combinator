@@ -12,9 +12,7 @@ class NoDecksFoundError(MoxfieldError):
     pass
 
 
-def get_moxfield_user_decks(
-    user_name: str, page: int | None = None, page_size: int | None = None
-):
+def get_moxfield_user_decks(user_name: str, page: int = 1, page_size: int = 25):
     # FIXME: Retrieve more than one page
     resp = requests.get(
         f"https://api2.moxfield.com/v2/users/{user_name}/decks",

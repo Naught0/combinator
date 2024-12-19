@@ -65,45 +65,54 @@ export const Paginate: React.FC<props> = ({
     <Pagination>
       <PaginationContent>
         {/* Previous Button */}
-        <PaginationItem>
-          <PaginationPrevious
-            onClick={(e) => {
-              e.preventDefault();
-              setIndex(Math.max(0, pageIndex - 1));
-            }}
-          />
-        </PaginationItem>
-
-        {/* Page Numbers */}
-        {pageNumbers.map((page, index) =>
-          page === null ? (
-            <PaginationItem key={`ellipsis-${index}`}>
-              <PaginationEllipsis />
-            </PaginationItem>
-          ) : (
-            <PaginationItem key={page}>
-              <PaginationLink
+        <div className="flex flex-col items-center justify-center md:contents">
+          <div className="flex flex-row gap-3">
+            <PaginationItem>
+              <PaginationPrevious
                 onClick={(e) => {
                   e.preventDefault();
-                  setIndex(index);
+                  setIndex(Math.max(0, pageIndex - 1));
                 }}
-                isActive={page - 1 === pageIndex}
-              >
-                {page}
-              </PaginationLink>
+              />
             </PaginationItem>
-          ),
-        )}
 
-        {/* Next Button */}
-        <PaginationItem>
-          <PaginationNext
-            onClick={(e) => {
-              e.preventDefault();
-              setIndex(Math.min(totalPages, pageIndex + 1));
-            }}
-          />
-        </PaginationItem>
+            {/* Page Numbers */}
+            <div className="hidden md:contents">
+              {pageNumbers.map((page, index) =>
+                page === null ? (
+                  <PaginationItem key={`ellipsis-${index}`}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                ) : (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIndex(index);
+                      }}
+                      isActive={page - 1 === pageIndex}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ),
+              )}
+            </div>
+
+            {/* Next Button */}
+            <PaginationItem>
+              <PaginationNext
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIndex(Math.min(totalPages, pageIndex + 1));
+                }}
+              />
+            </PaginationItem>
+          </div>
+          <span className="contents text-sm md:hidden">
+            Page {pageIndex + 1} / {totalPages}
+          </span>
+        </div>
       </PaginationContent>
     </Pagination>
   );

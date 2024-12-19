@@ -3,12 +3,6 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
-class UserSearchRequest(BaseModel):
-    user_name: str = Field(..., alias="userName")
-    page: int = 1
-    per_page: int = Field(alias="perPage", default=50)
-
-
 class Card(BaseModel):
     card: str
     quantity: int

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
 
 
 class User(BaseModel):
@@ -67,3 +67,19 @@ class UserDecksResponse(BaseModel):
     total_results: int = Field(..., alias="totalResults")
     total_pages: int = Field(..., alias="totalPages")
     data: List[MoxfieldDeck]
+
+
+class MoxfieldUserSearchParams(BaseModel):
+    show_illegal: bool = Field(..., alias="showIllegal")
+    author_user_names: List[str] = Field(..., alias="authorUserNames")
+    page_number: int = Field(..., alias="pageNumber")
+    page_size: int = Field(..., alias="pageSize")
+    sort_type: str = Field(..., alias="sortType")
+    sort_direction: str = Field(..., alias="sortDirection")
+    board: str = Field(..., alias="board")
+    filter: str = Field(..., alias="filter")
+    fmt: str = Field(..., alias="fmt")
+
+    @field_serializer("author_user_names")
+    def _user_names(self, value: list[str], *_, **__):
+        return ",".join(value)

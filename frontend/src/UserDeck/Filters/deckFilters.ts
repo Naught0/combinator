@@ -1,12 +1,13 @@
 import { YesNoAny } from "../UserDecksContainer";
 
 interface DeckFilter {
-  key: keyof Deck;
+  key: "created" | "updated" | "name";
   display: string;
 }
 export const deckFilters: DeckFilter[] = [
-  { key: "createdAtUtc", display: "Created at" },
-  { key: "lastUpdatedAtUtc", display: "Updated at" },
+  { key: "created", display: "Created at" },
+  { key: "updated", display: "Updated at" },
+  { key: "name", display: "Deck name" },
 ];
 
 interface DisplayValueItem {
@@ -19,8 +20,3 @@ export const deckLegalities: DisplayValueItem[] = [
   { className: "text-rose-400", display: "Not legal", value: "no" },
   { className: "text-green-400", display: "Legal", value: "yes" },
 ];
-
-export const uniqueDeckFormatMap = new Map<string, string>([
-  ["historicbrawl", "Historic Brawl"],
-  ["pauperEdh", "Pauper Commander"],
-]);

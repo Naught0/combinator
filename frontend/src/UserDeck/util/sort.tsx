@@ -2,14 +2,9 @@ import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactNode } from "react";
 
-export enum SortDirection {
-  ASC = "asc",
-  DESC = "desc",
-}
-
-export const sortDirIconMap = new Map<SortDirection, ReactNode>([
+export const sortDirIconMap = new Map<"ascending" | "descending", ReactNode>([
   // eslint-disable-next-line react/jsx-key
-  [SortDirection.ASC, <FontAwesomeIcon icon={faArrowUp} />],
+  ["ascending", <FontAwesomeIcon icon={faArrowUp} />],
   // eslint-disable-next-line react/jsx-key
-  [SortDirection.DESC, <FontAwesomeIcon icon={faArrowDown} />],
+  ["descending", <FontAwesomeIcon icon={faArrowDown} />],
 ]);

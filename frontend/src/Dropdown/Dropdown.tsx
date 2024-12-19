@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Select,
   SelectTrigger,
@@ -5,7 +6,6 @@ import {
   SelectContent,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { SelectProps } from "@radix-ui/react-select";
 
 interface Props {
   placeholder?: React.ReactNode;
@@ -14,19 +14,16 @@ interface Props {
   onChange?: (value: string) => void;
   value?: string;
 }
-export const Dropdown = ({
-  onChange,
-  className,
-  placeholder,
-  children,
-  ...props
-}: Props & SelectProps) => {
-  return (
-    <Select onValueChange={onChange} {...props}>
-      <SelectTrigger className={cn("w-fit max-w-48", className)}>
-        <SelectValue placeholder={placeholder ?? "Select"} />
-      </SelectTrigger>
-      <SelectContent>{children}</SelectContent>
-    </Select>
-  );
-};
+
+export const Dropdown = React.forwardRef<typeof Select, Props>(
+  ({ className, children, onChange, placeholder, ...props }, ref) => {
+    return (
+      <Select onValueChange={onChange} {...props}>
+        <SelectTrigger className={cn("w-fit max-w-48", className)}>
+          <SelectValue placeholder={placeholder ?? "Select"} />
+        </SelectTrigger>
+        <SelectContent>{children}</SelectContent>
+      </Select>
+    );
+  },
+);

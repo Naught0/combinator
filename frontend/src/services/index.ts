@@ -1,17 +1,10 @@
+import { type DeckFilterParams } from "@/routes/MoxfieldUser";
 import { cachedClient } from "./cachedRequest";
 
-export const getMoxfieldUserData = async ({
-  userName,
-  page,
-  pageSize,
-}: {
-  userName: string;
-  page?: number;
-  pageSize?: number;
-}): Promise<Deck[]> => {
-  const { data } = await cachedClient.post<Deck[]>(
+export const getMoxfieldUserData = async (body: Partial<DeckFilterParams>) => {
+  const { data } = await cachedClient.post<MoxfieldDecksResults>(
     import.meta.env.VITE_API_URL + "/api/user",
-    { userName, page, pageSize },
+    body,
   );
   return data;
 };

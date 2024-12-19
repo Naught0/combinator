@@ -22,3 +22,6 @@ You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
 - [ ] Fix 'search cards' tab
 - [ ] Make drag drop / sortable
     - Combine ids of cards as unique combo ID to remember sorts?
+- [ ] Improve metadata & seo stuff (keywords, etc)
+- [ ] Sync user search params to url
+- [ ] Explore loading skeletons? (nice2have)

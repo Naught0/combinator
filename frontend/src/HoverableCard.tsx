@@ -8,10 +8,10 @@ export const HoverableCard = ({
   cardName,
   inDeck = true,
   image,
-  classNameOverride,
+  className,
 }: {
   cardName: string;
-  classNameOverride?: string;
+  className?: string;
   image?: string;
   inDeck?: boolean;
 }) => {
@@ -27,10 +27,7 @@ export const HoverableCard = ({
   return (
     <>
       <span
-        className={cn(
-          `text-base ${inDeck ? "" : "text-rose-400"}`,
-          classNameOverride,
-        )}
+        className={cn(`${inDeck ? "" : "text-rose-400"}`, className)}
         ref={setTriggerRef}
       >
         {cardName}

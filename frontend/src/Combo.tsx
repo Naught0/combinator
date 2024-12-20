@@ -39,7 +39,7 @@ function ComboCardHeading({
     <HoverableCard
       cardName={card.name}
       image={card.image}
-      classNameOverride={className}
+      className={className}
     />
   ) : (
     <p className={className}>{card.name}</p>

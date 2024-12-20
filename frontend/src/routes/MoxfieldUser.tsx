@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Paginate } from "@/Paginate/Paginate";
 import { useDebounce } from "use-debounce";
-import { useEffect } from "react";
 import { formats } from "@/util/moxfield";
 
 // https://api2.moxfield.com/v2/decks/search?
@@ -36,7 +35,7 @@ const formSchema = z.object({
   sortDirection: z.enum(["ascending", "descending"]).default("descending"),
   board: z.enum(["mainboard", "sideboard"]).default("mainboard"),
   filter: z.string().default(""),
-  fmt: z.string(),
+  fmt: z.enum(["any", ...formats.map((f) => f.value)]).default("any"),
 });
 export type DeckFilterParams = z.infer<typeof formSchema>;
 
@@ -54,7 +53,7 @@ export function MoxfieldUser() {
     defaultValues: {
       board: "mainboard",
       filter: "",
-      fmt: "",
+      fmt: "any",
       pageNumber: 1,
       pageSize: 12,
       sortType: "updated",
@@ -64,7 +63,7 @@ export function MoxfieldUser() {
     },
   });
   const { pageNumber, ...formValues } = useWatch({ control: form.control });
-  const [debouncedParams] = useDebounce(formValues, 500);
+  const [debouncedParams] = useDebounce(formValues, 350);
   const [debouncedPageNumber] = useDebounce(pageNumber, 50);
 
   const { data, isLoading } = useQuery<MoxfieldDecksResults, AxiosError>({

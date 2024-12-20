@@ -51,8 +51,8 @@ importers:
         specifier: ^5.62.2
         version: 5.62.2(@tanstack/react-query@5.62.2(react@18.3.1))(react@18.3.1)
       axios:
-        specifier: ^1.6.0
-        version: 1.6.0
+        specifier: ^1.7.9
+        version: 1.7.9
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1006,8 +1006,8 @@ packages:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
     engines: {node: '>= 8.0.0'}
 
-  '@rollup/wasm-node@4.28.1':
-    resolution: {integrity: sha512-t4ckEC09V3wbe0r6T4fGjq85lEbvGcGxn7QYYgjHyKNzZaQU5kFqr4FsavXYHRiVNYq8m+dRhdGjpfcC9UzzPg==}
+  '@rollup/wasm-node@4.29.0':
+    resolution: {integrity: sha512-mYQImWcTvfemUz6c/+c3NLdzmWF0lyqt3Oj3I3dRUvfKSY43Oylzt0mVcPfhm3RKFKFlRQDMNy09WwEg1DyEuQ==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -1344,8 +1344,8 @@ packages:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
 
-  axios@1.6.0:
-    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
+  axios@1.7.9:
+    resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
 
   axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
@@ -1770,8 +1770,8 @@ packages:
   flatted@3.2.9:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
 
-  follow-redirects@1.15.4:
-    resolution: {integrity: sha512-Cr4D/5wlrb0z9dgERpUL3LrmPKVDsETIJhaCMeDfuFYcqa5bldGV6wBsAN6X/vxlXQtFBMrXdXxdL8CbDTGniw==}
+  follow-redirects@1.15.9:
+    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -3891,7 +3891,7 @@ snapshots:
       estree-walker: 2.0.2
       picomatch: 2.3.1
 
-  '@rollup/wasm-node@4.28.1':
+  '@rollup/wasm-node@4.29.0':
     dependencies:
       '@types/estree': 1.0.6
     optionalDependencies:
@@ -4327,9 +4327,9 @@ snapshots:
 
   axe-core@4.7.0: {}
 
-  axios@1.6.0:
+  axios@1.7.9:
     dependencies:
-      follow-redirects: 1.15.4
+      follow-redirects: 1.15.9
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -4979,7 +4979,7 @@ snapshots:
 
   flatted@3.2.9: {}
 
-  follow-redirects@1.15.4: {}
+  follow-redirects@1.15.9: {}
 
   for-each@0.3.3:
     dependencies:
@@ -6195,7 +6195,7 @@ snapshots:
       '@rollup/pluginutils': 4.2.1
       '@types/eslint': 8.56.1
       eslint: 9.15.0(jiti@1.21.0)
-      rollup: '@rollup/wasm-node@4.28.1'
+      rollup: '@rollup/wasm-node@4.29.0'
       vite: 6.0.1(@types/node@16.7.13)(jiti@1.21.0)(sass@1.49.9)
 
   vite-plugin-radar@0.9.2(vite@6.0.1(@types/node@16.7.13)(jiti@1.21.0)(sass@1.49.9)):
@@ -6217,7 +6217,7 @@ snapshots:
     dependencies:
       esbuild: 0.24.0
       postcss: 8.4.49
-      rollup: '@rollup/wasm-node@4.28.1'
+      rollup: '@rollup/wasm-node@4.29.0'
     optionalDependencies:
       '@types/node': 16.7.13
       fsevents: 2.3.3

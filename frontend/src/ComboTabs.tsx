@@ -147,27 +147,25 @@ function Combos({
 
   return (
     <div className="flex flex-col gap-3">
-      {!noCombos && !noFilteredCombos && (
-        <div className="inline-flex flex-wrap justify-center gap-3 md:justify-start">
-          <div className="hidden md:block">
-            <LayoutSelect layout={layout} setLayout={setLayout} />
-          </div>
-          <Button
-            className="inline-flex w-fit items-center"
-            onClick={() => setExpandAll((expand) => !expand)}
-          >
-            <FontAwesomeIcon icon={expandAll ? faMinus : faPlus} />
-            <span>{expandAll ? "Collapse" : "Expand"} all</span>
-          </Button>
-          <Button
-            className="inline-flex items-center"
-            onClick={() => setShowImages((show) => !show)}
-          >
-            <FontAwesomeIcon icon={showImages ? faEyeSlash : faImages} />
-            {showImages ? "Hide" : "Show"} images
-          </Button>
+      <div className="inline-flex flex-wrap justify-center gap-3 md:justify-start">
+        <div className="hidden md:block">
+          <LayoutSelect layout={layout} setLayout={setLayout} />
         </div>
-      )}
+        <Button
+          className="inline-flex w-fit items-center"
+          onClick={() => setExpandAll((expand) => !expand)}
+        >
+          <FontAwesomeIcon icon={expandAll ? faMinus : faPlus} />
+          <span>{expandAll ? "Collapse" : "Expand"} all</span>
+        </Button>
+        <Button
+          className="inline-flex items-center"
+          onClick={() => setShowImages((show) => !show)}
+        >
+          <FontAwesomeIcon icon={showImages ? faEyeSlash : faImages} />
+          {showImages ? "Hide" : "Show"} images
+        </Button>
+      </div>
       {noCombos && (
         <h1 className="text-2xl">
           💡 Pro Tip: Try adding some{" "}
@@ -204,17 +202,31 @@ function GroupedCombos({
   data: Record<string, AlmostIncluded[]>;
   cards: DeckCard[];
 }) {
-  return Object.entries(data)
-    .sort(([, combosA], [, combosB]) => combosB.length - combosA.length)
-    .map(([cardName, combos]) => (
-      <MissingCardAccordion
-        cardName={cardName}
-        key={cardName}
-        count={combos.length}
-      >
-        {combos.map((combo) => (
-          <Combo key={combo.id} cards={cards} combo={combo} />
+  return (
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+      {Object.entries(data)
+        .sort(([, combosA], [, combosB]) => combosB.length - combosA.length)
+        .map(([cardName, combos]) => (
+          <MissingCardAccordion
+            cardName={cardName}
+            key={cardName}
+            count={combos.length}
+          >
+            <MasonryLayout
+              items={combos.map((c) => {
+                return (
+                  <Combo
+                    showImages={false}
+                    initialExpanded={false}
+                    cards={cards}
+                    key={c.id}
+                    combo={c}
+                  />
+                );
+              })}
+            />
+          </MissingCardAccordion>
         ))}
-      </MissingCardAccordion>
-    ));
+    </div>
+  );
 }

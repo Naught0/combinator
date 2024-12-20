@@ -15,7 +15,7 @@ export const Deck: FC<Props> = ({ deck }) => {
   return (
     <Link
       to={`/user/moxfield/${deck.authors[0].userName}/deck/${deck.publicId}`}
-      className="text-zinc-100 visited:text-zinc-200 hover:text-white hover:no-underline"
+      className="border border-zinc-800 text-zinc-100 visited:text-zinc-200 hover:text-white hover:no-underline"
     >
       <div
         className="flex flex-col justify-between gap-2 rounded bg-zinc-950 bg-no-repeat p-4"

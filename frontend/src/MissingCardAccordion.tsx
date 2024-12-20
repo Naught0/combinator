@@ -15,11 +15,11 @@ export const MissingCardAccordion = (props: {
         className={`flex border-collapse cursor-pointer flex-row items-center gap-3 rounded-md border border-zinc-700 bg-zinc-800 p-3 px-5`}
         onClick={() => setExpanded(!expanded)}
       >
-        <span className="flex items-center justify-center gap-1 font-serif text-base md:text-xl">
+        <span className="flex items-center justify-center gap-1 align-middle font-serif text-base md:text-xl">
           Add{" "}
           <HoverableCard
             cardName={props.cardName}
-            classNameOverride={"text-orange-200 font-black md:text-xl"}
+            className={"font-black text-orange-200 md:text-xl"}
           />{" "}
           ({props.count})
         </span>

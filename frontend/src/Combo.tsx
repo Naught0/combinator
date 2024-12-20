@@ -74,10 +74,10 @@ export const Combo = ({
           </div>
         ))}
         <div
-          className={`flex flex-col flex-wrap items-center justify-start md:flex-row md:items-start ${showImages ? "gap-3" : ""}`}
+          className={`flex flex-col flex-wrap items-center justify-start gap-3 md:flex-row md:items-start`}
         >
           {showImages && (
-            <div className="flex w-full select-none flex-col items-center justify-center gap-3 md:flex-row">
+            <div className="flex w-full select-none flex-col items-center justify-center gap-3 md:flex-row md:gap-5">
               <CardStack cards={deckCards} />
             </div>
           )}

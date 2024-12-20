@@ -121,8 +121,9 @@ export const UserDeckFilters = ({
               {...field}
               value={value.toString()}
               onChange={(value) => onChange(parseInt(value))}
+              defaultValue="12"
             >
-              {[5, 10, 20, 50, 100].map((num) => (
+              {["6", "12", "24", "46"].map((num) => (
                 <SelectItem key={num} value={num.toString()}>
                   {num}
                 </SelectItem>

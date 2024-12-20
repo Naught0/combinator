@@ -10,9 +10,6 @@ You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
 
 **Frontend**:   
 - [ ] Create refresh cache invalidation button to let users opt out of caching
-- [ ] Fix card search
-- [ ] Slider for card image size?
-- [ ] Find more than 50 moxfield decks
 - [ ] Combo hiding? (to show only relevant ones for a second? solved by filter?)
 - [ ] Add a 'next combo' button to jump from combo to combo
 - [ ] Make 'add 1' and maybe 'combos' URL routes

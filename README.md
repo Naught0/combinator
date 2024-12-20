@@ -15,10 +15,12 @@ You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
 - [ ] Make 'add 1' and maybe 'combos' URL routes
 - [ ] Add per-combo "toggle images" for quick referencing while scrolling in non-image mode
 - [ ] Finish 'add 1' tab
+   - Needs to be a route
+   - Add expand-all etc options to each combo/entire section
 - [ ] Show 'no combos found' when searching "add 1" tab
 - [ ] Fix 'search cards' tab
 - [ ] Make drag drop / sortable
-    - Combine ids of cards as unique combo ID to remember sorts?
+   - Combine ids of cards as unique combo ID to remember sorts?
 - [ ] Improve metadata & seo stuff (keywords, etc)
 - [ ] Sync user search params to url
 - [ ] Explore loading skeletons? (nice2have)

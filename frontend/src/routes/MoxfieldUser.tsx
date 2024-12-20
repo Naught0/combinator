@@ -12,16 +12,6 @@ import { Paginate } from "@/Paginate/Paginate";
 import { useDebounce } from "use-debounce";
 import { formats } from "@/util/moxfield";
 
-// https://api2.moxfield.com/v2/decks/search?
-//showIllegal=true
-//authorUserNames=Dionysus
-//pageNumber=3
-//pageSize=12
-//sortType=updated
-//sortDirection=descending
-//board=mainboard
-//filter=test
-
 const formSchema = z.object({
   showIllegal: z.boolean().default(true),
   authorUserNames: z.array(z.string()),
@@ -88,8 +78,7 @@ export function MoxfieldUser() {
       <FormProvider {...form}>
         <UserDeckFilters formats={formats} />
       </FormProvider>
-      {isLoading && <Loading message="Loading decks" />}
-      {data && <UserDecksContainer decks={data.data} />}
+      <UserDecksContainer decks={data?.data} loading={isLoading} />
       {data && (
         <div className="w-full">
           <Paginate

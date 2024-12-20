@@ -11,7 +11,7 @@ import { z } from "zod";
 import { Paginate } from "@/Paginate/Paginate";
 import { useDebounce } from "use-debounce";
 import { formats } from "@/util/moxfield";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const formSchema = z.object({
   showIllegal: z.boolean().default(true),
@@ -76,6 +76,12 @@ export function MoxfieldUser() {
         pageNumber: debouncedPageNumber ?? 1,
       }),
   });
+  const [totalPages, setTotalPages] = useState(data?.totalPages ?? 1);
+  useEffect(() => {
+    if (data) {
+      setTotalPages(data.totalPages);
+    }
+  }, [data]);
 
   return (
     <div className="flex max-w-screen-2xl flex-col gap-6 md:gap-6">
@@ -90,15 +96,13 @@ export function MoxfieldUser() {
         decks={data?.data}
         loading={isLoading}
       />
-      {data && (
-        <div className="w-full">
-          <Paginate
-            pageIndex={(pageNumber ?? 1) - 1}
-            setIndex={(i) => form.setValue("pageNumber", i + 1)}
-            totalPages={data.totalPages}
-          />
-        </div>
-      )}
+      <div className="w-full">
+        <Paginate
+          pageIndex={(pageNumber ?? 1) - 1}
+          setIndex={(i) => form.setValue("pageNumber", i + 1)}
+          totalPages={totalPages}
+        />
+      </div>
     </div>
   );
 }

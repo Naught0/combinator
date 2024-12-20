@@ -12,16 +12,16 @@ export const MissingCardAccordion = (props: {
       className={`flex flex-col gap-2 rounded-md bg-zinc-950 ${expanded ? "pb-3 md:col-span-2 xl:col-span-3" : ""}`}
     >
       <button
-        className={`flex border-collapse cursor-pointer flex-row items-center gap-3 rounded-md border border-zinc-700 bg-zinc-800 p-3 px-5`}
+        className={`flex h-full border-collapse cursor-pointer flex-row items-center gap-3 rounded-md border border-zinc-700 bg-zinc-800 p-3 px-5`}
         onClick={() => setExpanded(!expanded)}
       >
-        <span className="flex items-center justify-center gap-1 align-middle font-serif text-base md:text-xl">
+        <span className="align-middle font-serif text-lg md:text-xl">
           Add{" "}
           <HoverableCard
             cardName={props.cardName}
             className={"font-black text-orange-200 md:text-xl"}
           />{" "}
-          ({props.count})
+          <span>({props.count})</span>
         </span>
       </button>
       {expanded && (

@@ -11,6 +11,7 @@ import { z } from "zod";
 import { Paginate } from "@/Paginate/Paginate";
 import { useDebounce } from "use-debounce";
 import { formats } from "@/util/moxfield";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   showIllegal: z.boolean().default(true),
@@ -55,6 +56,12 @@ export function MoxfieldUser() {
   const { pageNumber, ...formValues } = useWatch({ control: form.control });
   const [debouncedParams] = useDebounce(formValues, 350);
   const [debouncedPageNumber] = useDebounce(pageNumber, 50);
+  useEffect(
+    function goBackToFirstPage() {
+      form.setValue("pageNumber", 1);
+    },
+    [JSON.stringify(formValues)],
+  );
 
   const { data, isLoading } = useQuery<MoxfieldDecksResults, AxiosError>({
     queryKey: [
@@ -78,7 +85,11 @@ export function MoxfieldUser() {
       <FormProvider {...form}>
         <UserDeckFilters formats={formats} />
       </FormProvider>
-      <UserDecksContainer decks={data?.data} loading={isLoading} />
+      <UserDecksContainer
+        pageSize={formValues.pageSize ?? 12}
+        decks={data?.data}
+        loading={isLoading}
+      />
       {data && (
         <div className="w-full">
           <Paginate

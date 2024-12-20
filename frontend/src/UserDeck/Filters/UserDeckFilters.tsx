@@ -68,8 +68,12 @@ export const UserDeckFilters = ({
           control={control}
           name={"showIllegal"}
           render={({ field: { onChange, value, ...field } }) => (
-            <Dropdown {...field} onChange={(v) => onChange(v === "true")}>
-              {["true", "false"].map((v) => (
+            <Dropdown
+              {...field}
+              onChange={(v) => onChange(v === "Yes")}
+              defaultValue="Yes"
+            >
+              {["Yes", "No"].map((v) => (
                 <SelectItem key={v} value={v}>
                   {v}
                 </SelectItem>

@@ -60,7 +60,9 @@ export const Combo = ({
     setExpanded(initialExpanded);
   }, [initialExpanded]);
   return (
-    <div className={`flex h-full w-full flex-col items-center !rounded-b-none`}>
+    <div
+      className={`flex h-full w-full flex-col items-center rounded border border-zinc-700`}
+    >
       <div className="z-10 flex w-full flex-col gap-1 rounded bg-zinc-800 p-6">
         {deckCards.map((c, idx) => (
           <div className="inline-flex w-fit items-center gap-2">
@@ -76,11 +78,7 @@ export const Combo = ({
         <div
           className={`flex flex-col flex-wrap items-center justify-start gap-3 md:flex-row md:items-start`}
         >
-          {showImages && (
-            <div className="flex w-full select-none flex-col items-center justify-center gap-3 md:flex-row md:gap-5">
-              <CardStack cards={deckCards} />
-            </div>
-          )}
+          {showImages && <CardStack cards={deckCards} />}
           <div className="flex w-full flex-col items-start gap-3">
             <div>
               <p className="font-bold lg:text-lg">Effects</p>

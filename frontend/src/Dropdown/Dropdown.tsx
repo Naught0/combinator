@@ -6,6 +6,7 @@ import {
   SelectContent,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { SelectProps } from "@radix-ui/react-select";
 
 interface Props {
   placeholder?: React.ReactNode;
@@ -15,7 +16,7 @@ interface Props {
   value?: string;
 }
 
-export const Dropdown = React.forwardRef<typeof Select, Props>(
+export const Dropdown = React.forwardRef<typeof Select, Props & SelectProps>(
   ({ className, children, onChange, placeholder, ...props }, ref) => {
     return (
       <Select onValueChange={onChange} {...props}>

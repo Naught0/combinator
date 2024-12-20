@@ -63,25 +63,23 @@ export function MoxfieldUser() {
       authorUserNames: [userName],
     },
   });
-  const formValues = useWatch({ control: form.control });
+  const { pageNumber, ...formValues } = useWatch({ control: form.control });
   const [debouncedParams] = useDebounce(formValues, 500);
+  const [debouncedPageNumber] = useDebounce(pageNumber, 50);
 
   const { data, isLoading } = useQuery<MoxfieldDecksResults, AxiosError>({
-    queryKey: ["moxfield-decks", userName, JSON.stringify(debouncedParams)], // TODO: Make this less icky
-    queryFn: () => getMoxfieldUserData(debouncedParams),
+    queryKey: [
+      "moxfield-decks",
+      userName,
+      debouncedPageNumber,
+      JSON.stringify(debouncedParams),
+    ], // TODO: Make this less icky
+    queryFn: () =>
+      getMoxfieldUserData({
+        ...debouncedParams,
+        pageNumber: debouncedPageNumber ?? 1,
+      }),
   });
-  useEffect(
-    function log() {
-      console.log(debouncedParams);
-    },
-    [debouncedParams],
-  );
-  useEffect(
-    function log() {
-      console.log(data);
-    },
-    [data],
-  );
 
   return (
     <div className="flex max-w-screen-2xl flex-col gap-6 md:gap-6">
@@ -96,7 +94,7 @@ export function MoxfieldUser() {
       {data && (
         <div className="w-full">
           <Paginate
-            pageIndex={form.getValues("pageNumber") - 1}
+            pageIndex={(pageNumber ?? 1) - 1}
             setIndex={(i) => form.setValue("pageNumber", i + 1)}
             totalPages={data.totalPages}
           />

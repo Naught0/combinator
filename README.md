@@ -22,3 +22,4 @@ You can find the site at [mtgcombinator.com](https://mtgcombinator.com/)
 - [ ] Improve metadata & seo stuff (keywords, etc)
 - [ ] Sync user search params to url
 - [ ] Explore loading skeletons? (nice2have)
+- [ ] Create list-only view of moxfield user decks

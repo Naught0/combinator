@@ -1,7 +1,5 @@
 import { toast, ToastOptions } from "react-toastify";
 
-export * from "./sort";
-
 export const dumbTitalize = ({ text }: { text: string }) => {
   const strings = text.split(" ");
 

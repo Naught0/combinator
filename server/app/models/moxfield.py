@@ -83,3 +83,9 @@ class MoxfieldUserSearchParams(BaseModel):
     @field_serializer("author_user_names")
     def _user_names(self, value: list[str], *_, **__):
         return ",".join(value)
+
+    @field_serializer("fmt")
+    def _remove_any_format(self, value: str, *_, **__):
+        if value == "any":
+            return None
+        return value

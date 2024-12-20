@@ -1,4 +1,5 @@
 export const formats: { value: Format; display: string }[] = [
+  { value: "any", display: "Any" },
   {
     value: "alchemy",
     display: "Alchemy",

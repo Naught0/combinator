@@ -44,6 +44,7 @@ interface MoxfieldDecksResults {
 }
 
 type Format =
+  | "any"
   | "alchemy"
   | "archon"
   | "highlanderAustralian"

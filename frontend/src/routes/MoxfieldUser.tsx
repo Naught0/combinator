@@ -59,9 +59,7 @@ export function MoxfieldUser() {
   >({
     queryKey: [
       "moxfield-decks",
-      userName,
-      debouncedPageNumber,
-      JSON.stringify(debouncedParams),
+      { userName, debouncedPageNumber, debouncedParams },
     ], // TODO: Make this less icky
     queryFn: () =>
       getMoxfieldUserData({

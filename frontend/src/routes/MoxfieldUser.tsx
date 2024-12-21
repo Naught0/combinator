@@ -11,6 +11,7 @@ import { Paginate } from "@/Paginate/Paginate";
 import { useDebounce } from "use-debounce";
 import { formats } from "@/util/moxfield";
 import { useEffect, useState } from "react";
+import { Error } from "@/Error";
 
 const formSchema = z.object({
   showIllegal: z.boolean().default(true),
@@ -62,7 +63,10 @@ export function MoxfieldUser() {
     [JSON.stringify(formValues)],
   );
 
-  const { data, isLoading } = useQuery<MoxfieldDecksResults, AxiosError>({
+  const { data, isLoading, isError, error } = useQuery<
+    MoxfieldDecksResults,
+    AxiosError
+  >({
     queryKey: [
       "moxfield-decks",
       userName,
@@ -81,6 +85,10 @@ export function MoxfieldUser() {
       setTotalPages(data.totalPages);
     }
   }, [data]);
+
+  if (isError) {
+    return <Error message={error.message} />;
+  }
 
   return (
     <div className="flex max-w-screen-2xl flex-col gap-6 md:gap-6">

@@ -65,7 +65,7 @@ export const Combo = ({
     >
       <div className="z-10 flex w-full flex-col gap-1 rounded bg-zinc-800 p-6">
         {deckCards.map((c, idx) => (
-          <div className="inline-flex w-fit items-center gap-2">
+          <div className="inline-flex w-fit items-center gap-2" key={c.id}>
             {idx !== 0 && (
               <FontAwesomeIcon
                 icon={faPlus}

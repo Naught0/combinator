@@ -19,6 +19,7 @@ from app.sources.moxfield.api import (
     MoxfieldError,
     NoDecksFoundError,
     get_moxfield_user_decks,
+    moxfield_user_exists,
 )
 from app.sources.scryfall.api import get_scryfall_cards
 
@@ -75,6 +76,9 @@ def deck_search(url: str):
 
 @router.post("/user")
 def user_search(req: MoxfieldUserSearchParams):
+    if not moxfield_user_exists(req.author_user_names[0]):
+        raise HTTPException(status_code=404, detail="User not found")
+
     try:
         return get_moxfield_user_decks(req)
     except NoDecksFoundError as e:

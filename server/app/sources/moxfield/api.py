@@ -43,6 +43,14 @@ class NoDecksFoundError(MoxfieldError):
     pass
 
 
+def moxfield_user_exists(user_name: str) -> bool:
+    resp = requests.head(
+        f"https://api2.moxfield.com/v1/users/{user_name}",
+        headers={"User-Agent": USER_AGENT},
+    )
+    return resp.status_code == 200
+
+
 def get_moxfield_user_decks(params: MoxfieldUserSearchParams):
     resp = requests.get(
         "https://api2.moxfield.com/v2/decks/search",
@@ -56,7 +64,9 @@ def get_moxfield_user_decks(params: MoxfieldUserSearchParams):
 
     if data.total_results == 0:
         if params.page_number == 1:
-            raise NoDecksFoundError(f"User {params.author_user_names} does not have any decks")
+            raise NoDecksFoundError(
+                f"User {params.author_user_names} does not have any decks"
+            )
 
         raise NoDecksFoundError()
 

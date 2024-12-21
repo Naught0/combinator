@@ -1,5 +1,4 @@
 import { BackToSearch } from "@/BackToSearch";
-import { Loading } from "@/Loading";
 import { getMoxfieldUserData } from "@/services";
 import { UserDeckFilters, UserDecksContainer } from "@/UserDeck";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +10,7 @@ import { z } from "zod";
 import { Paginate } from "@/Paginate/Paginate";
 import { useDebounce } from "use-debounce";
 import { formats } from "@/util/moxfield";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   showIllegal: z.boolean().default(true),

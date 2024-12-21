@@ -21,7 +21,7 @@ export const UserDecksContainer: FC<Props> = ({ decks, loading, pageSize }) => {
 };
 
 function Loading({ pageSize }: { pageSize: number }) {
-  return [...Array(pageSize).keys()].map(() => (
-    <Skeleton className="flex min-h-32 w-full flex-1" />
+  return [...Array(pageSize).keys()].map((k) => (
+    <Skeleton key={k} className="flex min-h-32 w-full flex-1" />
   ));
 }

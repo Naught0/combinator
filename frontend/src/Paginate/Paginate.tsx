@@ -86,6 +86,11 @@ export const Paginate: React.FC<props> = ({
                 ) : (
                   <PaginationItem key={page}>
                     <PaginationLink
+                      aria-label={
+                        page - 1 === pageIndex
+                          ? "Current page"
+                          : `Go to page ${page}`
+                      }
                       onClick={(e) => {
                         e.preventDefault();
                         setIndex(index);

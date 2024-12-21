@@ -70,15 +70,15 @@ class UserDecksResponse(BaseModel):
 
 
 class MoxfieldUserSearchParams(BaseModel):
-    show_illegal: bool = Field(..., alias="showIllegal")
+    show_illegal: Optional[bool] = Field(..., alias="showIllegal")
     author_user_names: List[str] = Field(..., alias="authorUserNames")
-    page_number: int = Field(..., alias="pageNumber")
-    page_size: int = Field(..., alias="pageSize")
-    sort_type: str = Field(..., alias="sortType")
-    sort_direction: str = Field(..., alias="sortDirection")
-    board: str = Field(..., alias="board")
-    filter: str = Field(..., alias="filter")
-    fmt: str = Field(..., alias="fmt")
+    page_number: Optional[int] = Field(..., alias="pageNumber")
+    page_size: Optional[int] = Field(..., alias="pageSize")
+    sort_type: Optional[str] = Field(..., alias="sortType")
+    sort_direction: Optional[str] = Field(..., alias="sortDirection")
+    board: Optional[str] = Field(..., alias="board")
+    filter: Optional[str] = Field(..., alias="filter")
+    fmt: Optional[str] = Field(..., alias="fmt")
 
     @field_serializer("author_user_names")
     def _user_names(self, value: list[str], *_, **__):

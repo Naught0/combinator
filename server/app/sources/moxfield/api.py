@@ -54,7 +54,7 @@ def moxfield_user_exists(user_name: str) -> bool:
 def get_moxfield_user_decks(params: MoxfieldUserSearchParams):
     resp = requests.get(
         "https://api2.moxfield.com/v2/decks/search",
-        params=params.model_dump(by_alias=True),
+        params=params.model_dump(by_alias=True, exclude_none=True),
         headers={
             "Content-Type": "application/json",
             "User-Agent": USER_AGENT,

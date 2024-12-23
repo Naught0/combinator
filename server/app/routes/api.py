@@ -1,26 +1,20 @@
+from traceback import print_exc
+
 import requests
 import sentry_sdk
 from fastapi import APIRouter, HTTPException, Response
 
 from app.const import USER_AGENT
-from app.models.api import (
-    CardSearchPayload,
-    ComboSearchPayload,
-    DeckResponse,
-    ScryfallCard,
-    ScryfallCardResponse,
-    Source,
-)
+from app.models.api import (CardSearchPayload, ComboSearchPayload,
+                            DeckResponse, ScryfallCard, ScryfallCardResponse,
+                            Source)
 from app.models.commanders_spellbook import Results
 from app.models.moxfield import MoxfieldUserSearchParams
 from app.parse import parse_id_from_url, parse_source_from_url
 from app.process import get_deck
-from app.sources.moxfield.api import (
-    MoxfieldError,
-    NoDecksFoundError,
-    get_moxfield_user_decks,
-    moxfield_user_exists,
-)
+from app.sources.moxfield.api import (MoxfieldError, NoDecksFoundError,
+                                      get_moxfield_user_decks,
+                                      moxfield_user_exists)
 from app.sources.scryfall.api import get_scryfall_cards
 
 router = APIRouter(prefix="/api")
@@ -73,17 +67,22 @@ def deck_search(url: str):
 
     return deck
 
+@router.head("/user/moxfield/{user_name}/exists")
+def user_exists(user_name: str):
+    if moxfield_user_exists(user_name):
+        return Response(status_code=204)
+
+    raise HTTPException(status_code=404, detail="User not found")
 
 @router.post("/user")
 def user_search(req: MoxfieldUserSearchParams):
-    if not moxfield_user_exists(req.author_user_names[0]):
-        raise HTTPException(status_code=404, detail="User not found")
-
     try:
         return get_moxfield_user_decks(req)
     except NoDecksFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except MoxfieldError as e:
+        
+        print_exc()
         raise HTTPException(status_code=422, detail=str(e))
 
 

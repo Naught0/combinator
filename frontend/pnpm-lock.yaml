@@ -107,6 +107,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.1)
+      type-fest:
+        specifier: ^4.30.2
+        version: 4.30.2
       use-debounce:
         specifier: ^10.0.4
         version: 10.0.4(react@18.3.1)
@@ -1006,8 +1009,8 @@ packages:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
     engines: {node: '>= 8.0.0'}
 
-  '@rollup/wasm-node@4.29.0':
-    resolution: {integrity: sha512-mYQImWcTvfemUz6c/+c3NLdzmWF0lyqt3Oj3I3dRUvfKSY43Oylzt0mVcPfhm3RKFKFlRQDMNy09WwEg1DyEuQ==}
+  '@rollup/wasm-node@4.29.1':
+    resolution: {integrity: sha512-AOtO2Y+XzElJfmJgAECOgbutmKAK5XcKH7CipGDQDBMfLY04ezEoCHWEpmoX5L7/WH3k17rXMCClNiwDbWW+mw==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -2911,6 +2914,10 @@ packages:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
 
+  type-fest@4.30.2:
+    resolution: {integrity: sha512-UJShLPYi1aWqCdq9HycOL/gwsuqda1OISdBO3t8RlXQC4QvtuIz4b5FCfe2dQIWEpmlRExKmcTBfP1r9bhY7ig==}
+    engines: {node: '>=16'}
+
   typed-array-buffer@1.0.0:
     resolution: {integrity: sha512-Y8KTSIglk9OZEr8zywiIHG/kmQ7KWyjseXs1CbSo8vC42w7hg2HgYTxSWwP0+is7bWDc1H+Fo026CpHFwm8tkw==}
     engines: {node: '>= 0.4'}
@@ -3891,7 +3898,7 @@ snapshots:
       estree-walker: 2.0.2
       picomatch: 2.3.1
 
-  '@rollup/wasm-node@4.29.0':
+  '@rollup/wasm-node@4.29.1':
     dependencies:
       '@types/estree': 1.0.6
     optionalDependencies:
@@ -6084,6 +6091,8 @@ snapshots:
     dependencies:
       prelude-ls: 1.2.1
 
+  type-fest@4.30.2: {}
+
   typed-array-buffer@1.0.0:
     dependencies:
       call-bind: 1.0.5
@@ -6195,7 +6204,7 @@ snapshots:
       '@rollup/pluginutils': 4.2.1
       '@types/eslint': 8.56.1
       eslint: 9.15.0(jiti@1.21.0)
-      rollup: '@rollup/wasm-node@4.29.0'
+      rollup: '@rollup/wasm-node@4.29.1'
       vite: 6.0.1(@types/node@16.7.13)(jiti@1.21.0)(sass@1.49.9)
 
   vite-plugin-radar@0.9.2(vite@6.0.1(@types/node@16.7.13)(jiti@1.21.0)(sass@1.49.9)):
@@ -6217,7 +6226,7 @@ snapshots:
     dependencies:
       esbuild: 0.24.0
       postcss: 8.4.49
-      rollup: '@rollup/wasm-node@4.29.0'
+      rollup: '@rollup/wasm-node@4.29.1'
     optionalDependencies:
       '@types/node': 16.7.13
       fsevents: 2.3.3

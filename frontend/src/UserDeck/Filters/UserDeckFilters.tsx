@@ -4,11 +4,13 @@ import { Dropdown } from "../../Dropdown/Dropdown";
 import { sortDirIconMap } from "../util/sort";
 import { deckFilters } from "./deckFilters";
 import { SelectItem } from "@/components/ui/select";
-import { HookInput } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { DeckFilterParams } from "@/routes/MoxfieldUser";
+import { DeckFilterParams } from "@/UserDeckFilterForm";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
+import { useEffect, useState } from "react";
 
 function Field({ children }: { children: React.ReactNode }) {
   return <div className="flex flex-col gap-2">{children}</div>;
@@ -20,23 +22,34 @@ export const UserDeckFilters = ({
   formats: { value: Format; display: string }[];
 }) => {
   const { setValue, control } = useFormContext<DeckFilterParams>();
-  const { filter, sortDirection } = useWatch({ control });
+  const { sortDirection } = useWatch({ control });
+  const [filter, setFilter] = useState("");
+  const [debouncedFilter] = useDebounce(filter, 400);
+  useEffect(
+    function setFormFilter() {
+      setValue("filter", debouncedFilter);
+    },
+    [debouncedFilter],
+  );
+
   return (
     <div className="flex flex-row flex-wrap gap-3">
       <Field>
         <Label>Deck name</Label>
         <div className="relative w-full">
-          <HookInput
+          <Input
             name="filter"
             type="text"
             placeholder="Filter decks by title"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
           />
 
           {!!filter && (
             <button
               className="absolute right-2 top-1/2 -translate-y-1/2"
               onClick={() => {
-                setValue("filter", "");
+                setFilter("");
               }}
             >
               <FontAwesomeIcon icon={faXmarkCircle} />
@@ -125,7 +138,7 @@ export const UserDeckFilters = ({
               {...field}
               value={value.toString()}
               onChange={(value) => onChange(parseInt(value))}
-              defaultValue="12"
+              defaultValue="24"
             >
               {["6", "12", "24", "46"].map((num) => (
                 <SelectItem key={num} value={num.toString()}>

@@ -48,8 +48,8 @@ const HookInput = ({
     <input
       type={type}
       className={cn(inputVariants({ variant }), className)}
-      {...register(name)}
       {...props}
+      {...register(name)}
     />
   );
 };

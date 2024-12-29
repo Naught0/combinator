@@ -7,6 +7,7 @@ import {
   PaginationEllipsis,
   PaginationNext,
 } from "@/components/ui/pagination";
+import { useSearchParams } from "react-router";
 
 interface props {
   totalPages: number;
@@ -19,6 +20,7 @@ export const Paginate: React.FC<props> = ({
   pageIndex,
   setIndex,
 }) => {
+  const [searchparams, setSearchParams] = useSearchParams();
   // Generate page numbers to display
   const generatePageNumbers = () => {
     // If total pages is 7 or less, show all pages
@@ -58,13 +60,11 @@ export const Paginate: React.FC<props> = ({
 
     return pages;
   };
-
   const pageNumbers = generatePageNumbers();
 
   return (
     <Pagination>
       <PaginationContent>
-        {/* Previous Button */}
         <div className="flex flex-col items-center justify-center md:contents">
           <div className="flex flex-row gap-3">
             <PaginationItem>
@@ -75,8 +75,6 @@ export const Paginate: React.FC<props> = ({
                 }}
               />
             </PaginationItem>
-
-            {/* Page Numbers */}
             <div className="hidden md:contents">
               {pageNumbers.map((page, index) =>
                 page === null ? (
@@ -98,14 +96,14 @@ export const Paginate: React.FC<props> = ({
                 ),
               )}
             </div>
-
-            {/* Next Button */}
             <PaginationItem>
               <PaginationNext
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIndex(Math.min(totalPages, pageIndex + 1));
-                }}
+                onClick={() =>
+                  setSearchParams((prev) => ({
+                    ...prev,
+                    pageNumber: (pageIndex + 2).toString(),
+                  }))
+                }
               />
             </PaginationItem>
           </div>

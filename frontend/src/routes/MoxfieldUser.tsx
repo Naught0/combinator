@@ -10,7 +10,6 @@ import { Error } from "@/Error";
 import { Loading } from "@/Loading";
 import {
   combineWithDefaultParams,
-  defaultFormValues,
   UserDeckFilterForm,
 } from "@/UserDeckFilterForm";
 
@@ -61,7 +60,6 @@ export function MoxfieldUser() {
     return <Error message={"User not found"} />;
   }
 
-  console.log("RENDER");
   return (
     <div className="flex max-w-screen-2xl flex-col gap-6 md:gap-6">
       <div>

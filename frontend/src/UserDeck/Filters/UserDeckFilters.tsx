@@ -1,16 +1,12 @@
-import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dropdown } from "../../Dropdown/Dropdown";
 import { sortDirIconMap } from "../util/sort";
 import { deckFilters } from "./deckFilters";
 import { SelectItem } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { DeckFilterParams } from "@/UserDeckFilterForm";
-import { useDebounce, useDebouncedCallback } from "use-debounce";
-import { useEffect, useState } from "react";
+import { defaultFormValues } from "@/UserDeckFilterForm";
+import { SyncInput } from "@/sync-to-url/SyncInput";
+import { SyncSelect } from "@/sync-to-url/SyncSelect";
+import { useSearchParams } from "react-router";
 
 function Field({ children }: { children: React.ReactNode }) {
   return <div className="flex flex-col gap-2">{children}</div>;
@@ -21,133 +17,91 @@ export const UserDeckFilters = ({
 }: {
   formats: { value: Format; display: string }[];
 }) => {
-  const { setValue, control } = useFormContext<DeckFilterParams>();
-  const { sortDirection } = useWatch({ control });
-  const [filter, setFilter] = useState("");
-  const [debouncedFilter] = useDebounce(filter, 400);
-  useEffect(
-    function setFormFilter() {
-      setValue("filter", debouncedFilter);
-    },
-    [debouncedFilter],
-  );
-
+  const [params, setParams] = useSearchParams();
+  const sortDirection =
+    params.get("sortDirection") ?? defaultFormValues.sortDirection;
   return (
     <div className="flex flex-row flex-wrap gap-3">
       <Field>
         <Label>Deck name</Label>
         <div className="relative w-full">
-          <Input
+          <SyncInput
             name="filter"
-            type="text"
             placeholder="Filter decks by title"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            debounceMs={500}
           />
-
-          {!!filter && (
-            <button
-              className="absolute right-2 top-1/2 -translate-y-1/2"
-              onClick={() => {
-                setFilter("");
-              }}
-            >
-              <FontAwesomeIcon icon={faXmarkCircle} />
-            </button>
-          )}
         </div>
       </Field>
       <div className="flex basis-full md:hidden"></div>
       <Field>
         <Label>Format</Label>
-        <Controller
-          control={control}
-          name="fmt"
-          render={({ field }) => (
-            <Dropdown {...field}>
-              {formats.map(({ value, display }) => (
-                <SelectItem key={value} value={value}>
-                  {display}
-                </SelectItem>
-              ))}
-            </Dropdown>
-          )}
-        />
+        <SyncSelect name="format" defaultValue={defaultFormValues.fmt}>
+          {formats.map(({ value, display }) => (
+            <SelectItem key={value} value={value}>
+              {display}
+            </SelectItem>
+          ))}
+        </SyncSelect>
       </Field>
       <Field>
         <Label>Show illegal</Label>
-
-        <Controller
-          control={control}
+        <SyncSelect
           name={"showIllegal"}
-          render={({ field: { onChange, value, ...field } }) => (
-            <Dropdown
-              {...field}
-              onChange={(v) => onChange(v === "Yes")}
-              defaultValue="Yes"
-            >
-              {["Yes", "No"].map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </Dropdown>
-          )}
-        />
+          defaultValue={defaultFormValues.showIllegal ? "Yes" : "No"}
+        >
+          {["Yes", "No"].map((v) => (
+            <SelectItem key={v} value={v}>
+              {v}
+            </SelectItem>
+          ))}
+        </SyncSelect>
       </Field>
       <Field>
         <Label>Sort by</Label>
         <div className="inline-flex">
-          <Controller
-            control={control}
+          <SyncSelect
+            className="rounded-r-none border-r-0"
             name="sortType"
-            render={({ field }) => (
-              <Dropdown className="rounded-r-none border-r-0" {...field}>
-                {deckFilters.map((f) => (
-                  <SelectItem key={f.key} value={f.key}>
-                    {f.display}
-                  </SelectItem>
-                ))}
-              </Dropdown>
-            )}
-          />
+            defaultValue={defaultFormValues.sortType}
+          >
+            {deckFilters.map((f) => (
+              <SelectItem key={f.key} value={f.key}>
+                {f.display}
+              </SelectItem>
+            ))}
+          </SyncSelect>
 
           <Button
             className="rounded-l-none"
             variant="outline"
             size="icon"
-            onClick={() =>
-              setValue(
-                "sortDirection",
-                sortDirection === "ascending" ? "descending" : "ascending",
-              )
-            }
+            onClick={(e) => {
+              e.preventDefault();
+              setParams((prev) => {
+                prev.set(
+                  "sortDirection",
+                  sortDirection === "ascending" ? "descending" : "ascending",
+                );
+                return prev;
+              });
+            }}
           >
-            <span>{sortDirIconMap.get(sortDirection ?? "descending")}</span>
+            <span>{sortDirIconMap.get(sortDirection)}</span>
           </Button>
         </div>
       </Field>
       <Field>
         <Label>Per page</Label>
-
-        <Controller
-          control={control}
+        <SyncSelect
           name="pageSize"
-          render={({ field: { onChange, value, ...field } }) => (
-            <Dropdown
-              {...field}
-              value={value.toString()}
-              onChange={(value) => onChange(parseInt(value))}
-              defaultValue="24"
-            >
-              {["6", "12", "24", "46"].map((num) => (
-                <SelectItem key={num} value={num.toString()}>
-                  {num}
-                </SelectItem>
-              ))}
-            </Dropdown>
-          )}
-        />
+          defaultValue={defaultFormValues.pageSize.toString()}
+        >
+          {["6", "12", "24", "46"].map((num) => (
+            <SelectItem key={num} value={num}>
+              {num}
+            </SelectItem>
+          ))}
+        </SyncSelect>
       </Field>
     </div>
   );

@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { CardImage } from "../CardImage";
 import { HoverableCard } from "../HoverableCard";
-import { Dropdown } from "@/Dropdown";
 import { SelectItem } from "@/components/ui/select";
 import { useDebounce } from "use-debounce";
+import { Dropdown } from "@/Dropdown";
 
 type ViewMode = "image" | "text";
 

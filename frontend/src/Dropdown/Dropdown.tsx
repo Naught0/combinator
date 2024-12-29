@@ -8,18 +8,18 @@ import {
 import { cn } from "@/lib/utils";
 import { SelectProps } from "@radix-ui/react-select";
 
-interface Props {
+export type DropdownProps = {
   placeholder?: React.ReactNode;
   className?: string;
   children: React.ReactNode;
   onChange?: (value: string) => void;
   value?: string;
-}
+} & SelectProps;
 
-export const Dropdown = React.forwardRef<typeof Select, Props & SelectProps>(
+export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
   ({ className, children, onChange, placeholder, ...props }, ref) => {
     return (
-      <Select onValueChange={onChange} {...props}>
+      <Select ref={ref} onValueChange={onChange} {...props}>
         <SelectTrigger className={cn("w-fit max-w-48", className)}>
           <SelectValue placeholder={placeholder ?? "Select"} />
         </SelectTrigger>

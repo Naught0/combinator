@@ -12,8 +12,8 @@ const formSchema = z.object({
   pageNumber: z.coerce.number().min(1, "Page must be >= 1").default(1),
   pageSize: z.coerce
     .number()
-    .min(6, "Page size must be >= 12")
-    .max(46, "Page size must be <= 50")
+    .min(6, "Page size must be >= 6")
+    .max(46, "Page size must be <= 46")
     .default(12),
   sortType: z.coerce.string().default("updated"),
   sortDirection: z.coerce.string().default("descending"),
@@ -24,12 +24,22 @@ const formSchema = z.object({
 
 export type DeckFilterParams = z.infer<typeof formSchema>;
 
-export const defaultFormValues = {
+export const defaultFormValues: Pick<
+  DeckFilterParams,
+  | "board"
+  | "filter"
+  | "fmt"
+  | "pageNumber"
+  | "pageSize"
+  | "sortType"
+  | "sortDirection"
+  | "showIllegal"
+> = {
   board: "mainboard",
   filter: "",
   fmt: "any",
   pageNumber: 1,
-  pageSize: 24,
+  pageSize: 12,
   sortType: "updated",
   sortDirection: "descending",
   showIllegal: true,
@@ -42,6 +52,8 @@ export function UserDeckFilterForm({ userName }: { userName: string }) {
     authorUserNames: [userName],
   };
   const form = useForm<DeckFilterParams>({
+    mode: "onChange",
+    reValidateMode: "onChange",
     resolver: zodResolver(formSchema),
     defaultValues,
   });
@@ -52,30 +64,27 @@ export function UserDeckFilterForm({ userName }: { userName: string }) {
   }, []);
 
   function handleSubmit(data: DeckFilterParams) {
-    const nonDefaultParams = Object.fromEntries(
-      Object.entries(data)
-        .map(([k, v]) => {
-          if (v === defaultFormValues[k as keyof typeof defaultFormValues])
-            return [k, null];
-          return [k, v];
-        })
-        .filter(([k, v]) => !shouldRemoveFromParams(k, v)),
-    ) as DeckFilterParams;
+    console.log("Got data", data);
+    const nonDefaultParams = Object.entries(data)
+      .map(([k, v]) => {
+        if (v === defaultFormValues[k as keyof typeof defaultFormValues])
+          return [k, null];
+        return [k, v];
+      })
+      .filter(([k, v]) => !shouldRemoveFromParams(k, v));
     const params = Object.fromEntries(
-      Object.entries(nonDefaultParams).map(([k, v]) => {
+      nonDefaultParams.map(([k, v]) => {
         if (Array.isArray(v)) return [k, v.join(",")];
         return [k, String(v)];
       }),
     );
+    console.log("Setting params", params);
     setSearchParams(params);
   }
 
   return (
     <FormProvider {...form}>
-      <form
-        onChange={form.handleSubmit(handleSubmit, console.error)}
-        onSubmit={form.handleSubmit(handleSubmit, console.error)}
-      >
+      <form>
         <UserDeckFilters formats={formats} />
       </form>
     </FormProvider>

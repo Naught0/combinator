@@ -19,19 +19,21 @@ const inputVariants = cva(
   },
 );
 
-const Input = React.forwardRef<
-  HTMLInputElement,
-  React.ComponentProps<"input"> & VariantProps<typeof inputVariants>
->(({ className, type, name, variant, ...props }, ref) => {
-  return (
-    <input
-      type={type}
-      className={cn(inputVariants({ variant }), className)}
-      {...props}
-      ref={ref}
-    />
-  );
-});
+export type InputProps = React.ComponentProps<"input"> &
+  VariantProps<typeof inputVariants>;
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, name, variant, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(inputVariants({ variant }), className)}
+        {...props}
+        ref={ref}
+      />
+    );
+  },
+);
 Input.displayName = "Input";
 
 const HookInput = ({
@@ -40,9 +42,7 @@ const HookInput = ({
   name,
   variant,
   ...props
-}: React.ComponentProps<"input"> & { name: string } & VariantProps<
-    typeof inputVariants
-  >) => {
+}: InputProps & { name: string }) => {
   const { register } = useFormContext();
   return (
     <input

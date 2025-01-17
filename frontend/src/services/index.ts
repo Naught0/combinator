@@ -1,4 +1,4 @@
-import { type DeckFilterParams } from "@/routes/MoxfieldUser";
+import { type DeckFilterParams } from "@/UserDeckFilterForm";
 import { cachedClient } from "./cachedRequest";
 
 export const getMoxfieldUserExists = async (userName: string) => {

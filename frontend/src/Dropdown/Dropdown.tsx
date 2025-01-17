@@ -16,15 +16,19 @@ export type DropdownProps = {
   value?: string;
 } & SelectProps;
 
-export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
-  ({ className, children, onChange, placeholder, ...props }, ref) => {
-    return (
-      <Select ref={ref} onValueChange={onChange} {...props}>
-        <SelectTrigger className={cn("w-fit max-w-48", className)}>
-          <SelectValue placeholder={placeholder ?? "Select"} />
-        </SelectTrigger>
-        <SelectContent>{children}</SelectContent>
-      </Select>
-    );
-  },
-);
+export const Dropdown = ({
+  className,
+  children,
+  onChange,
+  placeholder,
+  ...props
+}: DropdownProps) => {
+  return (
+    <Select onValueChange={onChange} {...props}>
+      <SelectTrigger className={cn("w-fit max-w-48", className)}>
+        <SelectValue placeholder={placeholder ?? "Select"} />
+      </SelectTrigger>
+      <SelectContent>{children}</SelectContent>
+    </Select>
+  );
+};

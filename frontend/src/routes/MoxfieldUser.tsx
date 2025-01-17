@@ -1,6 +1,6 @@
 import { BackToSearch } from "@/BackToSearch";
 import { getMoxfieldUserData, getMoxfieldUserExists } from "@/services";
-import { UserDecksContainer } from "@/UserDeck";
+import { UserDeckFilters, UserDecksContainer } from "@/UserDeck";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useParams, useSearchParams } from "react-router";
@@ -8,10 +8,8 @@ import { Paginate } from "@/Paginate/Paginate";
 import { useEffect, useState } from "react";
 import { Error } from "@/Error";
 import { Loading } from "@/Loading";
-import {
-  combineWithDefaultParams,
-  UserDeckFilterForm,
-} from "@/UserDeckFilterForm";
+import { removeDefaultParams } from "@/UserDeck/hooks/useRemoveDefaultParams";
+import { formats } from "@/util/moxfield";
 
 export function MoxfieldUser() {
   const { userName } = useParams<{ userName: string }>();
@@ -34,9 +32,9 @@ export function MoxfieldUser() {
       "moxfield-decks",
       {
         userName,
-        searchParams: combineWithDefaultParams(
-          Object.fromEntries(searchParams),
-        ),
+        searchParams: removeDefaultParams(
+          new URLSearchParams(Object.fromEntries(searchParams)),
+        ).toString(),
       },
     ], // TODO: Make this less icky
     queryFn: () =>
@@ -65,7 +63,7 @@ export function MoxfieldUser() {
       <div>
         <BackToSearch />
       </div>
-      {userName && <UserDeckFilterForm userName={userName} />}
+      {userName && <UserDeckFilters formats={formats} />}
       <UserDecksContainer
         pageSize={parseInt(searchParams.get("pageSize") ?? "12")}
         decks={data?.data}
@@ -78,13 +76,11 @@ export function MoxfieldUser() {
         <Paginate
           pageIndex={(data?.pageNumber ?? 1) - 1}
           setIndex={(i) =>
-            setSearchParams(
-              (prev) =>
-                new URLSearchParams({
-                  ...Object.fromEntries(prev),
-                  pageNumber: (i + 1).toString(),
-                }),
-            )
+            setSearchParams((prev) => {
+              const pageNumber = i + 1;
+              prev.set("pageNumber", String(pageNumber));
+              return prev;
+            })
           }
           totalPages={totalPages}
         />

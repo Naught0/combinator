@@ -15,7 +15,7 @@ export default function MoxfieldSearch() {
       <Form
         onSubmit={async (e) => {
           e.preventDefault();
-          navigate(`/user/moxfield/${value}`);
+          await navigate(`/user/moxfield/${value}`);
         }}
         disabled={value.length < 3}
       >

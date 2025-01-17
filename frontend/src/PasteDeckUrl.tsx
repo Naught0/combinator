@@ -24,7 +24,7 @@ export function PasteDeckUrl() {
     function redirectOnDeckData() {
       if (!data) return;
       setEnabled(false);
-      navigate(`/deck/${data.source}/${data.id}`);
+      navigate(`/deck/${data.source}/${data.id}`, { replace: true });
     },
     [data],
   );

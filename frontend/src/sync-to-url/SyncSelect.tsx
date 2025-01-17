@@ -22,7 +22,6 @@ export const SyncSelect = ({
     name,
     value,
     debounceMs,
-    defaultValue: props.defaultValue,
   });
   return (
     <Dropdown {...props} onChange={setValue} value={value}>

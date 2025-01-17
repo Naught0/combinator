@@ -37,7 +37,7 @@ export const UserDeckFilters = ({
       <div className="flex basis-full md:hidden"></div>
       <Field>
         <Label>Format</Label>
-        <SyncSelect name="format" defaultValue={defaultFormValues.fmt}>
+        <SyncSelect name="fmt" defaultValue={defaultFormValues.fmt}>
           {formats.map(({ value, display }) => (
             <SelectItem key={value} value={value}>
               {display}

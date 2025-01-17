@@ -7,6 +7,7 @@ import { defaultFormValues } from "@/UserDeckFilterForm";
 import { SyncInput } from "@/sync-to-url/SyncInput";
 import { SyncSelect } from "@/sync-to-url/SyncSelect";
 import { useSearchParams } from "react-router";
+import { useRemoveDefaultParams } from "../hooks/useRemoveDefaultParams";
 
 function Field({ children }: { children: React.ReactNode }) {
   return <div className="flex flex-col gap-2">{children}</div>;
@@ -18,8 +19,10 @@ export const UserDeckFilters = ({
   formats: { value: Format; display: string }[];
 }) => {
   const [params, setParams] = useSearchParams();
+  useRemoveDefaultParams(defaultFormValues);
   const sortDirection =
     params.get("sortDirection") ?? defaultFormValues.sortDirection;
+
   return (
     <div className="flex flex-row flex-wrap gap-3">
       <Field>

@@ -72,7 +72,7 @@ class UserDecksResponse(BaseModel):
 class MoxfieldUserSearchParams(BaseModel):
     show_illegal: Optional[bool] = Field(alias="showIllegal", default=True)
     author_user_names: List[str] = Field(alias="authorUserNames", default=None)
-    page_number: Optional[int] = Field(alias="pageNumber", default=None)
+    page_number: Optional[int] = Field(alias="pageNumber", default=1)
     page_size: Optional[int] = Field(alias="pageSize", default=12)
     sort_type: Optional[str] = Field(alias="sortType", default=None)
     sort_direction: Optional[str] = Field(alias="sortDirection", default=None)

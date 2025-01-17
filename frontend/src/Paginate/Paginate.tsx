@@ -20,7 +20,7 @@ export const Paginate: React.FC<props> = ({
   pageIndex,
   setIndex,
 }) => {
-  const [searchparams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   // Generate page numbers to display
   const generatePageNumbers = () => {
     // If total pages is 7 or less, show all pages
@@ -99,10 +99,7 @@ export const Paginate: React.FC<props> = ({
             <PaginationItem>
               <PaginationNext
                 onClick={() =>
-                  setSearchParams((prev) => ({
-                    ...prev,
-                    pageNumber: (pageIndex + 2).toString(),
-                  }))
+                  setIndex(Math.min(totalPages - 1, pageIndex + 1))
                 }
               />
             </PaginationItem>

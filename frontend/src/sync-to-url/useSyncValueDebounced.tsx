@@ -17,31 +17,15 @@ export function useSyncValueDebounced({
 
   useEffect(
     function sync() {
-      setParams((prev) => {
-        prev.set(name, value);
-        return removeDefaultParams(convertObjectToParams(prev));
-      });
+      setParams(
+        (prev) => {
+          prev.set(name, value);
+          return removeDefaultParams(prev);
+        },
+        { replace: true },
+      );
     },
     [debouncedValue],
   );
   return debouncedValue;
-}
-
-function convertValueToUrl(value: string | number): string {
-  if (typeof value === "number") {
-    return value.toString();
-  }
-  if (value === "Yes") {
-    return "true";
-  }
-  if (value === "No") {
-    return "false";
-  }
-  return value;
-}
-
-function convertObjectToParams(params: URLSearchParams) {
-  return new URLSearchParams(
-    [...params.entries()].map(([k, v]) => [k, convertValueToUrl(v)]),
-  );
 }

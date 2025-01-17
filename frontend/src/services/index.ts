@@ -1,4 +1,3 @@
-import { type DeckFilterParams } from "@/UserDeckFilterForm";
 import { cachedClient } from "./cachedRequest";
 
 export const getMoxfieldUserExists = async (userName: string) => {
@@ -8,7 +7,9 @@ export const getMoxfieldUserExists = async (userName: string) => {
   return true;
 };
 
-export const getMoxfieldUserData = async (body: Partial<DeckFilterParams>) => {
+export const getMoxfieldUserData = async (
+  body: Record<string, string | string[]>,
+) => {
   const { data } = await cachedClient.post<MoxfieldDecksResults>(
     import.meta.env.VITE_API_URL + "/api/user",
     body,

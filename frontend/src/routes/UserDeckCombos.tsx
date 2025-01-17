@@ -15,10 +15,7 @@ export function UserDeckCombos({ source }: { source: DeckSource }) {
   return (
     <Container>
       <Button variant={"link"} className="w-fit" onClick={() => navigate(-1)}>
-        <IconText
-          className="text-lg text-orange-100 md:text-xl"
-          icon={faArrowLeft}
-        >
+        <IconText className="text-base text-orange-100" icon={faArrowLeft}>
           Back to decks
         </IconText>
       </Button>

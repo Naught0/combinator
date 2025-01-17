@@ -18,23 +18,13 @@ const formSchema = z.object({
 
 export type DeckFilterParams = z.infer<typeof formSchema>;
 
-export const defaultFormValues: Pick<
-  DeckFilterParams,
-  | "board"
-  | "filter"
-  | "fmt"
-  | "pageNumber"
-  | "pageSize"
-  | "sortType"
-  | "sortDirection"
-  | "showIllegal"
-> = {
+export const defaultFormValues = {
   board: "mainboard",
   filter: "",
   fmt: "any",
-  pageNumber: 1,
-  pageSize: 12,
+  pageNumber: "1",
+  pageSize: "12",
   sortType: "updated",
   sortDirection: "descending",
-  showIllegal: true,
+  showIllegal: "Yes",
 } as const;

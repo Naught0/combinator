@@ -2,7 +2,6 @@ import { Input, InputProps } from "@/components/ui/input";
 import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useSearchParams } from "react-router";
 import { useSyncValueDebounced } from "./useSyncValueDebounced";
 import { cn } from "@/lib/utils";
 
@@ -10,8 +9,12 @@ export function SyncInput({
   debounceMs = 100,
   ...props
 }: InputProps & { name: string; debounceMs?: number }) {
-  const [searchParams] = useSearchParams();
-  const [value, setValue] = useState(searchParams.get(props.name) ?? "");
+  const [value, setValue] = useState(
+    (new URLSearchParams(window.location.search).get(props.name) ??
+      props.defaultValue)
+      ? String(props.defaultValue)
+      : "",
+  );
   useSyncValueDebounced({ name: props.name, debounceMs, value });
 
   return (

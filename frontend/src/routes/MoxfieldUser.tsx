@@ -65,7 +65,7 @@ export function MoxfieldUser() {
       </div>
       {userName && <UserDeckFilters formats={formats} />}
       <UserDecksContainer
-        pageSize={parseInt(searchParams.get("pageSize") ?? "12")}
+        pageSize={parseInt(searchParams.get("pageSize") || "12")}
         decks={data?.data}
         loading={isLoading}
       />

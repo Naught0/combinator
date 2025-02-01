@@ -104,7 +104,7 @@ export const Combo = ({
           <div className="flex flex-row flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">
             <div className="flex flex-wrap gap-3 md:flex-row">
               {!!combo.otherPrerequisites.trim() && (
-                <div className="flex min-w-72 basis-5/12 flex-col">
+                <div className="flex min-w-72 flex-1 basis-5/12 flex-col">
                   <p className="font-bold">Prerequisites</p>
                   <ul>
                     {combo.otherPrerequisites

@@ -24,6 +24,7 @@
     "lodash.chunk": "^4.2.0",
     "lucide-react": "^0.462.0",
     "mana-font": "^1.14.0",
+    "object.groupby": "^1.0.3",
     "react": "^18.3.1",
     "react-cool-onclickoutside": "^1.7.0",
     "react-dom": "^18.3.1",

@@ -17,7 +17,7 @@ idna==3.10
 lxml==5.3.0
 pydantic==2.10.1
 pydantic-core==2.27.1
-pyrchidekt==2.0.0
+pyrchidekt @ git+https://github.com/Naught0/pyrchidekt@9428abef2005302bb8545fae5cad15c0411bee86
 python-dotenv==1.0.1
 pyyaml==6.0.2
 requests==2.32.3

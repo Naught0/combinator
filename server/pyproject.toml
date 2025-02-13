@@ -14,8 +14,8 @@ dependencies = [
     "uvicorn-worker<1.0.0,>=0.2.0",
     "sentry-sdk[fastapi]>=2.19.0",
     "lxml>=5.3.0",
-    "pyrchidekt>=2.0.0",
     "python-dotenv>=1.0.1",
+    "pyrchidekt",
 ]
 name = "combinator"
 version = "0.1.6"
@@ -27,3 +27,6 @@ dev = [
     "isort<6.0.0,>=5.13.2",
     "requests-cache>=1.2.1",
 ]
+
+[tool.uv.sources]
+pyrchidekt = { git = "https://github.com/Naught0/pyrchidekt", branch = "format-errors" }

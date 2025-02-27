@@ -206,27 +206,39 @@ function GroupedCombos({
     <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
       {Object.entries(data)
         .sort(([, combosA], [, combosB]) => combosB.length - combosA.length)
-        .map(([cardName, combos]) => (
-          <MissingCardAccordion
-            cardName={cardName}
-            key={cardName}
-            count={combos.length}
-          >
-            <MasonryLayout
-              items={combos.map((c) => {
-                return (
-                  <Combo
-                    showImages={false}
-                    initialExpanded={false}
-                    cards={cards}
-                    key={c.id}
-                    combo={c}
-                  />
-                );
-              })}
-            />
-          </MissingCardAccordion>
-        ))}
+        .map(([cardName, combos]) => {
+          const items = combos.map((c) => {
+            return (
+              <Combo
+                showImages={false}
+                initialExpanded={false}
+                cards={cards}
+                key={c.id}
+                combo={c}
+              />
+            );
+          });
+
+          return (
+            <MissingCardAccordion
+              cardName={cardName}
+              key={cardName}
+              count={combos.length}
+            >
+              {combos.length > 3 ? (
+                <MasonryLayout items={items} />
+              ) : (
+                <div className="flex w-full flex-wrap gap-3">
+                  {items.map((i) => (
+                    <div className="w-5/12 min-w-80 flex-1" key={i.key}>
+                      {i}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </MissingCardAccordion>
+          );
+        })}
     </div>
   );
 }

@@ -137,7 +137,7 @@ function Combos({
   );
   usePersist({ key: "expandAll", val: expandAll ? "true" : "false" });
   const [layout, setLayout] = useState<Layout>(
-    (localStorage.getItem("layout") as Layout) ?? Layout.LIST,
+    (localStorage.getItem("layout") as Layout) ?? Layout.GRID,
   );
   usePersist({ key: "layout", val: layout });
   const [showImages, setShowImages] = useState(

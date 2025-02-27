@@ -72,7 +72,8 @@ export const Footer = () => {
         <div className="flex flex-col items-center gap-1 p-6">
           <p>
             <b>mtgcombinator</b> is in no way associated with{" "}
-            <a href="https://company.wizards.com">Wizards of the Coast</a>
+            <a href="https://company.wizards.com">Wizards of the Coast</a> nor
+            any of the linked MTG Resources
           </p>
         </div>
       </div>

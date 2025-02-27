@@ -1,6 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "./components/ui/button";
 import { faBorderAll, faList } from "@fortawesome/free-solid-svg-icons";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "./components/ui/tooltip";
 
 export enum Layout {
   GRID = "grid",
@@ -24,14 +30,26 @@ export function LayoutSelect({
       >
         <FontAwesomeIcon icon={faBorderAll} />
       </Button>
-      <Button
-        variant={layout === Layout.LIST ? "primary" : "outline"}
-        onClick={() => setLayout(Layout.LIST)}
-        size="icon"
-        className="rounded-l-none"
-      >
-        <FontAwesomeIcon icon={faList} />
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div>
+              <Button
+                variant={layout === Layout.LIST ? "primary" : "outline"}
+                onClick={() => setLayout(Layout.LIST)}
+                size="icon"
+                className="rounded-l-none"
+                disabled
+              >
+                <FontAwesomeIcon icon={faList} />
+              </Button>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Coming soon&trade;</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 }

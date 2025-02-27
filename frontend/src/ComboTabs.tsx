@@ -60,7 +60,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="inline-flex flex-wrap gap-1 text-base md:text-lg lg:text-2xl">
+      <div className="inline-flex flex-wrap gap-2 text-base md:text-lg lg:text-2xl">
         <Button
           variant={tab === Tab.COMBOS ? "activeTab" : "tab"}
           onClick={() => setTab(Tab.COMBOS)}
@@ -147,7 +147,7 @@ function Combos({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="inline-flex flex-wrap justify-center gap-3 md:justify-start">
+      <div className="inline-flex flex-wrap gap-3 md:justify-start">
         <div className="hidden md:block">
           <LayoutSelect layout={layout} setLayout={setLayout} />
         </div>

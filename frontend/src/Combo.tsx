@@ -61,7 +61,7 @@ export const Combo = ({
   }, [initialExpanded]);
   return (
     <div
-      className={`flex h-full w-full flex-col items-center rounded border border-zinc-700`}
+      className={`flex h-fit w-full flex-col items-center rounded border border-zinc-700`}
     >
       <div className="z-10 flex w-full flex-col gap-1 rounded bg-zinc-800 p-6">
         {deckCards.map((c, idx) => (
@@ -104,7 +104,7 @@ export const Combo = ({
           <div className="flex flex-row flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">
             <div className="flex flex-wrap gap-3 md:flex-row">
               {!!combo.otherPrerequisites.trim() && (
-                <div className="flex min-w-72 basis-5/12 flex-col">
+                <div className="flex min-w-72 flex-1 basis-5/12 flex-col">
                   <p className="font-bold">Prerequisites</p>
                   <ul>
                     {combo.otherPrerequisites

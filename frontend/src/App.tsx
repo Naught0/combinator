@@ -13,6 +13,10 @@ export const App = () => {
       <ToastContainer theme="dark" />
       <div className="flex min-h-screen w-full flex-grow flex-col items-center gap-6 px-3 py-6 md:max-w-screen-lg md:gap-12 xl:max-w-screen-2xl">
         <Nav />
+        <p className="max-w-screen-sm bg-red-400/30 px-4 py-3 text-center">
+          Combo search is currently broken due to a change in the Commander
+          Spellbook API. Functionality will be restored soon.
+        </p>
         <div className="flex w-full flex-grow flex-col">
           <Outlet />
         </div>

@@ -14,7 +14,7 @@ export function UserDeckCombos({ source }: { source: DeckSource }) {
   return (
     <Container>
       {source === "moxfield" && (
-        <Hyperlink href={`/user/moxfield/${userId}`}>
+        <Hyperlink href={`/user/moxfield/${userId}`} target="">
           <IconText className="text-base text-orange-100" icon={faArrowLeft}>
             {userId}'s decks
           </IconText>

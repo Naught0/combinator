@@ -1,13 +1,20 @@
-import { FC, ReactNode } from "react";
+import { FC, HTMLProps, ReactNode } from "react";
 
 interface Props {
   className?: string;
   children: ReactNode;
   href: string;
 }
-export const Hyperlink: FC<Props> = ({ className, children, href }) => {
+export const Hyperlink: FC<Props & HTMLProps<HTMLAnchorElement>> = ({
+  className,
+  children,
+  href,
+  target = "_blank",
+  rel = "noreferrer",
+  ...props
+}) => {
   return (
-    <a href={href} rel="noreferrer" target="_blank" className={className}>
+    <a href={href} rel={rel} target={target} className={className} {...props}>
       {children}
     </a>
   );

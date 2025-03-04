@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from pydantic import BaseModel
-from typing import List, Any
+from typing import Any, List
 from uuid import UUID
+
+from pydantic import BaseModel, Field, computed_field, model_serializer
 
 
 class IncludeOrOf(BaseModel):
@@ -95,7 +96,13 @@ class IncludedOrAlmostIncludedOrAlmostIncludedByAddingColor(BaseModel):
     manaNeeded: str | None
     variantCount: int | None
     manaValueNeeded: int | None
-    otherPrerequisites: str | None
+    notablePrerequisites: str = Field(exclude=True)
+    easyPrerequisites: str = Field(exclude=True)
+
+    @computed_field
+    @property
+    def otherPrerequisites(self) -> str:
+        return f"{self.notablePrerequisites}\n{self.easyPrerequisites}"
 
 
 class Results(BaseModel):

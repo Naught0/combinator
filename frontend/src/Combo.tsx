@@ -109,7 +109,7 @@ export const Combo = ({
                   <ul>
                     {combo.otherPrerequisites
                       .split(".")
-                      .filter((p) => p)
+                      .filter((p) => p.trim())
                       .map((p, idx) => (
                         <li key={`combo-${combo.id}-${p}-${idx}`}>
                           {replaceManaSymbols(p)}

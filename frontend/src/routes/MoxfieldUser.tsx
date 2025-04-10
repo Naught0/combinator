@@ -70,7 +70,12 @@ export function MoxfieldUser() {
         loading={isLoading}
       />
       {isError && (
-        <p className="text-xl font-bold md:text-2xl">No decks found</p>
+        <div>
+          <p className="text-xl font-bold md:text-2xl">No decks found</p>
+          <p className="text-sm italic text-gray-300 md:text-base">
+            Make sure your decks are public on Moxfield
+          </p>
+        </div>
       )}
       <div className="w-full">
         <Paginate

@@ -59,7 +59,7 @@ export function MoxfieldUser() {
   }
 
   return (
-    <div className="flex max-w-screen-2xl flex-col gap-6 md:gap-6">
+    <div className="flex max-w-screen-2xl flex-col gap-3 md:gap-6">
       <div>
         <BackToSearch />
       </div>

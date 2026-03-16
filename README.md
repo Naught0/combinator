@@ -11,7 +11,7 @@ MTG Combinator would not be possible without these great resources
 ### User Deck Data
 - [Archidekt](https://archidekt.com)
 - [Moxfield](https://moxfield.com)
-- [MTGGoldfish](https://mtggoldfish.com)
+- [MTGGoldfish](https://www.mtggoldfish.com)
 
 ### Card Data
 - [Scryfall](https://scryfall.com)

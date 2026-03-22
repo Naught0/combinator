@@ -330,10 +330,11 @@ function ComboListView({
       <table className="w-full min-w-[800px] table-fixed">
         <thead>
           <tr className="border-b border-zinc-700 text-left text-sm font-bold text-zinc-400">
-            <th className="w-1/4 px-2 py-2">Cards</th>
-            <th className="w-1/4 px-2 py-2">Prerequisites</th>
-            <th className="w-1/4 px-2 py-2">Results</th>
-            <th className="w-1/4 px-2 py-2">Steps</th>
+            {["Cards", "Prerequisites", "Results", "Steps"].map((h) => (
+              <th key={h} className="px-2 py-3">
+                {h}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>

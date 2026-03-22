@@ -15,10 +15,13 @@ import {
   faImages,
   faMinus,
   faPlus,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { Layout, LayoutSelect } from "./LayoutSelect";
 import { usePersist } from "./UserDeck/hooks/usePersist";
 import { MasonryLayout } from "./MasonryLayout";
+import { HoverableCard } from "./HoverableCard";
+import { replaceManaSymbols } from "./Combo";
 
 enum Tab {
   COMBOS,
@@ -89,12 +92,22 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
         )}
       </div>
       <div className={"flex flex-1 flex-col gap-3"}>
-        <Input
-          className="max-w-96"
-          placeholder="Filter combos by keyword, type line, or card name"
-          value={filter}
-          onChange={({ target }) => setFilter(target.value)}
-        />
+        <div className="relative max-w-96">
+          <Input
+            className="pr-8"
+            placeholder="Filter combos by keyword, type line, or card name"
+            value={filter}
+            onChange={({ target }) => setFilter(target.value)}
+          />
+          {filter && (
+            <button
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200"
+              onClick={() => setFilter("")}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </button>
+          )}
+        </div>
         {tab === Tab.COMBOS && (
           <Combos
             noCombos={noCombos}
@@ -176,7 +189,7 @@ function Combos({
       {!!filter && noFilteredCombos && (
         <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
       )}
-      {filteredCombos && (
+      {filteredCombos && layout === Layout.GRID && (
         <MasonryLayout
           items={filteredCombos.map((c) => {
             return (
@@ -190,6 +203,9 @@ function Combos({
             );
           })}
         />
+      )}
+      {filteredCombos && layout === Layout.LIST && (
+        <ComboListView filteredCombos={filteredCombos} deckData={deckData} />
       )}
     </div>
   );
@@ -239,6 +255,97 @@ function GroupedCombos({
             </MissingCardAccordion>
           );
         })}
+    </div>
+  );
+}
+
+function ComboListItem({
+  combo,
+  cards,
+}: {
+  combo: AlmostIncluded;
+  cards: DeckCard[];
+}) {
+  const deckCards = combo.uses
+    .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
+    .filter((c) => !!c);
+
+  const prerequisites = combo.otherPrerequisites
+    .split(".")
+    .filter((p) => p.trim());
+
+  const steps = combo.description.split(".").filter((t) => t.trim().length > 0);
+
+  return (
+    <tr className="border-b border-zinc-700 transition-colors hover:bg-zinc-800/30">
+      <td className="px-2 py-3 align-top">
+        <div className="flex flex-wrap gap-1">
+          {deckCards.map((c) => (
+            <HoverableCard
+              key={c.id}
+              cardName={c.name}
+              image={c.image}
+              className="rounded bg-zinc-800 px-2 py-1 text-sm"
+            />
+          ))}
+        </div>
+      </td>
+      <td className="px-2 py-3 align-top">
+        <ul className="list-disc pl-4 text-sm">
+          {prerequisites.map((p, idx) => (
+            <li key={idx}>{replaceManaSymbols(p)}</li>
+          ))}
+        </ul>
+      </td>
+      <td className="px-2 py-3 align-top">
+        <ul className="list-disc pl-4 text-sm">
+          {combo.produces.map((produces) => (
+            <li key={produces.feature.id}>{produces.feature.name}</li>
+          ))}
+        </ul>
+      </td>
+      <td className="px-2 py-3 align-top">
+        <div className="text-sm">
+          <p className="font-semibold text-zinc-400">Steps</p>
+          <ol className="mt-1 list-decimal pl-4">
+            {steps.map((s, idx) => (
+              <li key={idx}>{replaceManaSymbols(s)}</li>
+            ))}
+          </ol>
+        </div>
+      </td>
+    </tr>
+  );
+}
+
+function ComboListView({
+  filteredCombos,
+  deckData,
+}: {
+  filteredCombos: AlmostIncluded[];
+  deckData: DeckData;
+}) {
+  return (
+    <div className="overflow-x-auto rounded border border-zinc-700 bg-black/40">
+      <table className="w-full min-w-[800px] table-fixed">
+        <thead>
+          <tr className="border-b border-zinc-700 text-left text-sm font-bold text-zinc-400">
+            <th className="w-1/4 px-2 py-2">Cards</th>
+            <th className="w-1/4 px-2 py-2">Prerequisites</th>
+            <th className="w-1/4 px-2 py-2">Results</th>
+            <th className="w-1/4 px-2 py-2">Steps</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredCombos.map((combo) => (
+            <ComboListItem
+              key={combo.id}
+              combo={combo}
+              cards={deckData.cards ?? []}
+            />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

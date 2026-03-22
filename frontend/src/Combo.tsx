@@ -13,7 +13,7 @@ interface props {
   showImages?: boolean;
 }
 
-const replaceManaSymbols = (s: string) => {
+export const replaceManaSymbols = (s: string) => {
   return s
     .replaceAll("}{", "} {")
     .split(" ")

@@ -218,43 +218,74 @@ function GroupedCombos({
   data: Record<string, AlmostIncluded[]>;
   cards: DeckCard[];
 }) {
-  return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-      {Object.entries(data)
-        .sort(([, combosA], [, combosB]) => combosB.length - combosA.length)
-        .map(([cardName, combos]) => {
-          const items = combos.map((c) => {
-            return (
-              <Combo
-                showImages={false}
-                initialExpanded={false}
-                cards={cards}
-                key={c.id}
-                combo={c}
-              />
-            );
-          });
+  const sortedEntries = useMemo(
+    () =>
+      Object.entries(data).sort(
+        ([, combosA], [, combosB]) => combosB.length - combosA.length,
+      ),
+    [data],
+  );
 
-          return (
-            <MissingCardAccordion
-              cardName={cardName}
-              key={cardName}
-              count={combos.length}
-            >
-              {combos.length > 3 ? (
-                <MasonryLayout items={items} />
-              ) : (
-                <div className="flex w-full flex-wrap gap-3">
-                  {items.map((i) => (
-                    <div className="w-5/12 min-w-80 flex-1" key={i.key}>
-                      {i}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </MissingCardAccordion>
-          );
-        })}
+  return (
+    <div className="flex flex-col gap-4">
+      {sortedEntries.map(([cardName, combos]) => (
+        <CollapsibleGroup
+          key={cardName}
+          cardName={cardName}
+          combos={combos}
+          cards={cards}
+        />
+      ))}
+    </div>
+  );
+}
+
+function CollapsibleGroup({
+  cardName,
+  combos,
+  cards,
+}: {
+  cardName: string;
+  combos: AlmostIncluded[];
+  cards: DeckCard[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="rounded-xl border border-zinc-700 bg-zinc-950 overflow-hidden">
+      <button
+        className="flex w-full cursor-pointer items-center justify-between bg-zinc-950 px-3 py-2 font-serif text-lg font-bold text-orange-200 hover:bg-zinc-900"
+        onClick={() => setExpanded(!expanded)}
+      >
+        <span>
+          Add {cardName} ({combos.length})
+        </span>
+        <FontAwesomeIcon icon={expanded ? faMinus : faPlus} />
+      </button>
+      {expanded && (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[800px] table-fixed">
+            <thead className="sticky top-0 z-10 bg-zinc-950">
+              <tr className="border-b border-zinc-700 text-left text-sm font-bold text-zinc-400">
+                <th className="px-2 py-2">Cards</th>
+                <th className="px-2 py-2">Prerequisites</th>
+                <th className="px-2 py-2">Results</th>
+                <th className="px-2 py-2">Steps</th>
+              </tr>
+            </thead>
+            <tbody>
+              {combos.map((combo) => (
+                <ComboListItem
+                  key={combo.id}
+                  combo={combo}
+                  cards={cards}
+                  missingCard={cardName}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
@@ -262,9 +293,11 @@ function GroupedCombos({
 function ComboListItem({
   combo,
   cards,
+  missingCard,
 }: {
   combo: AlmostIncluded;
   cards: DeckCard[];
+  missingCard?: string;
 }) {
   const deckCards = combo.uses
     .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
@@ -288,6 +321,12 @@ function ComboListItem({
               className="rounded bg-zinc-800 px-2 py-1 text-sm"
             />
           ))}
+          {missingCard && (
+            <HoverableCard
+              cardName={missingCard}
+              className="rounded border border-hit-pink-300 bg-zinc-800 px-2 py-1 text-sm"
+            />
+          )}
         </div>
       </td>
       <td className="px-2 py-3 align-top">
@@ -326,9 +365,9 @@ function ComboListView({
   deckData: DeckData;
 }) {
   return (
-    <div className="overflow-x-auto rounded border border-zinc-700 bg-black/40">
-      <table className="w-full min-w-[800px] table-fixed">
-        <thead>
+    <div className="overflow-x-auto rounded border border-zinc-700 bg-zinc-950/40">
+      <table className="w-full table-fixed">
+        <thead className="sticky top-0 z-10 bg-zinc-950">
           <tr className="border-b border-zinc-700 text-left text-sm font-bold text-zinc-400">
             {["Cards", "Prerequisites", "Results", "Steps"].map((h) => (
               <th key={h} className="px-2 py-3">

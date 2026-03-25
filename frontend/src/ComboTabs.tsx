@@ -1,36 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { Link, useLocation } from "react-router";
 import { CardFilter } from "./CardFilter";
-import { Combo } from "./Combo";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { useFilteredCombos } from "./hooks/useComboData";
-import { Hyperlink } from "./Hyperlink";
 import { Loading } from "./Loading";
-import { MissingCardAccordion } from "./MissingCardAccordion";
 import { getComboData } from "./services";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEyeSlash,
-  faImages,
-  faMinus,
-  faPlus,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import { Layout, LayoutSelect } from "./LayoutSelect";
-import { usePersist } from "./UserDeck/hooks/usePersist";
-import { MasonryLayout } from "./MasonryLayout";
-import { HoverableCard } from "./HoverableCard";
-import { replaceManaSymbols } from "./Combo";
-
-enum Tab {
-  COMBOS,
-  ALMOST_INCLUDED,
-  CARD_SEARCH,
-}
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { Combos } from "./Combos";
+import { GroupedCombos } from "./GroupedCombos";
+import { ListControls } from "./ListControls";
 
 export function ComboTabs({ deckData }: { deckData: DeckData }) {
-  const { data: allCombos, isLoading: isLoading } = useQuery({
+  const location = useLocation();
+  const pathParts = location.pathname.split("/");
+  const activeTab = pathParts[pathParts.length - 1];
+  const basePath = pathParts.slice(0, -1).join("/");
+
+  const { data: allCombos, isLoading } = useQuery({
     queryKey: ["combo-data", { source: deckData.source, id: deckData.id }],
     queryFn: async () => {
       const d = await getComboData({
@@ -40,14 +28,9 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
       return d;
     },
   });
-  const [tab, setTab] = useState<Tab>(Tab.COMBOS);
-  const comboData = useMemo(
-    () =>
-      tab === Tab.ALMOST_INCLUDED
-        ? allCombos?.almostIncluded
-        : allCombos?.included,
-    [allCombos, tab],
-  );
+
+  const comboData =
+    activeTab === "add-1" ? allCombos?.almostIncluded : allCombos?.included;
   const { filter, setFilter, filteredCombos, groupedByMissing } =
     useFilteredCombos({
       deckData,
@@ -55,7 +38,6 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
     });
   const noCombos = !comboData?.length;
   const noFilteredCombos = filteredCombos.length < 1;
-  const showGroups = !!(tab === Tab.ALMOST_INCLUDED && groupedByMissing);
 
   if (isLoading) {
     return <Loading size="lg" message="Loading combos" />;
@@ -63,35 +45,45 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="inline-flex flex-wrap gap-2 text-base md:text-lg lg:text-2xl">
-        <Button
-          variant={tab === Tab.COMBOS ? "activeTab" : "tab"}
-          onClick={() => setTab(Tab.COMBOS)}
-        >
-          Combos &ndash;
-          <span className="text-sm">({allCombos?.included?.length ?? 0})</span>
-        </Button>
-        {(allCombos?.almostIncluded?.length ?? -1) > 0 && (
-          <Button
-            variant={tab === Tab.ALMOST_INCLUDED ? "activeTab" : "tab"}
-            onClick={() => setTab(Tab.ALMOST_INCLUDED)}
-          >
-            Add 1 &ndash;&nbsp;
-            <span className="text-sm">
-              ({allCombos?.almostIncluded.length})
-            </span>
-          </Button>
-        )}
-        {deckData && (
-          <Button
-            variant={tab === Tab.CARD_SEARCH ? "activeTab" : "tab"}
-            onClick={() => setTab(Tab.CARD_SEARCH)}
-          >
-            Search Cards
-          </Button>
-        )}
+      <div className="grid">
+        <div className="inline-flex flex-wrap gap-2">
+          <Link to={`${basePath}/combos`}>
+            <Button
+              variant={activeTab === "combos" ? "activeTab" : "tab"}
+              size="tab"
+            >
+              Combos &ndash;
+              <span className="text-sm">
+                ({allCombos?.included?.length ?? 0})
+              </span>
+            </Button>
+          </Link>
+          {(allCombos?.almostIncluded?.length ?? -1) > 0 && (
+            <Link to={`${basePath}/add-1`}>
+              <Button
+                size="tab"
+                variant={activeTab === "add-1" ? "activeTab" : "tab"}
+              >
+                Add 1 &ndash;&nbsp;
+                <span className="text-sm">
+                  ({allCombos?.almostIncluded.length})
+                </span>
+              </Button>
+            </Link>
+          )}
+          <Link to={`${basePath}/search`}>
+            <Button
+              size="tab"
+              variant={activeTab === "search" ? "activeTab" : "tab"}
+            >
+              Search Cards
+            </Button>
+          </Link>
+        </div>
+        <hr className="border-zinc-700" />
       </div>
       <div className={"flex flex-1 flex-col gap-3"}>
+        {(activeTab === "combos" || activeTab === "add-1") && <ListControls />}
         <div className="relative max-w-96">
           <Input
             className="pr-8"
@@ -108,284 +100,23 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
             </button>
           )}
         </div>
-        {tab === Tab.COMBOS && (
+        {activeTab === "combos" && (
           <Combos
             noCombos={noCombos}
-            showGroups={showGroups}
             filter={filter}
             noFilteredCombos={noFilteredCombos}
-            groupedByMissing={groupedByMissing}
             deckData={deckData}
             filteredCombos={filteredCombos}
           />
         )}
-        {tab === Tab.ALMOST_INCLUDED && groupedByMissing && (
+
+        {activeTab === "add-1" && groupedByMissing && (
           <GroupedCombos data={groupedByMissing} cards={deckData.cards} />
         )}
-        {tab === Tab.CARD_SEARCH && deckData && (
+        {activeTab === "search" && deckData && (
           <CardFilter deckData={deckData} filter={filter} />
         )}
       </div>
-    </div>
-  );
-}
-
-function Combos({
-  noCombos,
-  filter,
-  noFilteredCombos,
-  deckData,
-  filteredCombos,
-}: {
-  noCombos: boolean;
-  showGroups?: boolean;
-  filter: string;
-  noFilteredCombos: boolean;
-  groupedByMissing?: Record<string, AlmostIncluded[]>;
-  deckData: DeckData;
-  filteredCombos: AlmostIncluded[];
-}) {
-  const [expandAll, setExpandAll] = useState(
-    (localStorage.getItem("expandAll") ?? "false") === "true",
-  );
-  usePersist({ key: "expandAll", val: expandAll ? "true" : "false" });
-  const [layout, setLayout] = useState<Layout>(
-    (localStorage.getItem("layout") as Layout) ?? Layout.GRID,
-  );
-  usePersist({ key: "layout", val: layout });
-  const [showImages, setShowImages] = useState(
-    (localStorage.getItem("showImages") ?? "true") === "true",
-  );
-  usePersist({ key: "showImages", val: showImages ? "true" : "false" });
-
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="inline-flex flex-wrap gap-3 md:justify-start">
-        <div className="hidden md:block">
-          <LayoutSelect layout={layout} setLayout={setLayout} />
-        </div>
-        <Button
-          className="inline-flex w-fit items-center"
-          onClick={() => setExpandAll((expand) => !expand)}
-        >
-          <FontAwesomeIcon icon={expandAll ? faMinus : faPlus} />
-          <span>{expandAll ? "Collapse" : "Expand"} all</span>
-        </Button>
-        <Button
-          className="inline-flex items-center"
-          onClick={() => setShowImages((show) => !show)}
-        >
-          <FontAwesomeIcon icon={showImages ? faEyeSlash : faImages} />
-          {showImages ? "Hide" : "Show"} images
-        </Button>
-      </div>
-      {noCombos && (
-        <h1 className="text-2xl">
-          💡 Pro Tip: Try adding some{" "}
-          <Hyperlink href="https://commanderspellbook.com/">combos</Hyperlink>{" "}
-          to your list
-        </h1>
-      )}
-      {!!filter && noFilteredCombos && (
-        <h1 className="mt-6 text-2xl">❌ No combos matching search</h1>
-      )}
-      {filteredCombos && layout === Layout.GRID && (
-        <MasonryLayout
-          items={filteredCombos.map((c) => {
-            return (
-              <Combo
-                showImages={showImages}
-                initialExpanded={expandAll}
-                cards={deckData.cards ?? []}
-                key={c.id}
-                combo={c}
-              />
-            );
-          })}
-        />
-      )}
-      {filteredCombos && layout === Layout.LIST && (
-        <ComboListView filteredCombos={filteredCombos} deckData={deckData} />
-      )}
-    </div>
-  );
-}
-
-function GroupedCombos({
-  data,
-  cards,
-}: {
-  data: Record<string, AlmostIncluded[]>;
-  cards: DeckCard[];
-}) {
-  const sortedEntries = useMemo(
-    () =>
-      Object.entries(data).sort(
-        ([, combosA], [, combosB]) => combosB.length - combosA.length,
-      ),
-    [data],
-  );
-
-  return (
-    <div className="flex flex-col gap-4">
-      {sortedEntries.map(([cardName, combos]) => (
-        <CollapsibleGroup
-          key={cardName}
-          cardName={cardName}
-          combos={combos}
-          cards={cards}
-        />
-      ))}
-    </div>
-  );
-}
-
-function CollapsibleGroup({
-  cardName,
-  combos,
-  cards,
-}: {
-  cardName: string;
-  combos: AlmostIncluded[];
-  cards: DeckCard[];
-}) {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div className="rounded-xl border border-zinc-700 bg-zinc-950 overflow-hidden">
-      <button
-        className="flex w-full cursor-pointer items-center justify-between bg-zinc-950 px-3 py-2 font-serif text-lg font-bold text-orange-200 hover:bg-zinc-900"
-        onClick={() => setExpanded(!expanded)}
-      >
-        <span>
-          Add {cardName} ({combos.length})
-        </span>
-        <FontAwesomeIcon icon={expanded ? faMinus : faPlus} />
-      </button>
-      {expanded && (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[800px] table-fixed">
-            <thead className="sticky top-0 z-10 bg-zinc-950">
-              <tr className="border-b border-zinc-700 text-left text-sm font-bold text-zinc-400">
-                <th className="px-2 py-2">Cards</th>
-                <th className="px-2 py-2">Prerequisites</th>
-                <th className="px-2 py-2">Results</th>
-                <th className="px-2 py-2">Steps</th>
-              </tr>
-            </thead>
-            <tbody>
-              {combos.map((combo) => (
-                <ComboListItem
-                  key={combo.id}
-                  combo={combo}
-                  cards={cards}
-                  missingCard={cardName}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ComboListItem({
-  combo,
-  cards,
-  missingCard,
-}: {
-  combo: AlmostIncluded;
-  cards: DeckCard[];
-  missingCard?: string;
-}) {
-  const deckCards = combo.uses
-    .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
-    .filter((c) => !!c);
-
-  const prerequisites = combo.otherPrerequisites
-    .split(".")
-    .filter((p) => p.trim());
-
-  const steps = combo.description.split(".").filter((t) => t.trim().length > 0);
-
-  return (
-    <tr className="border-b border-zinc-700 transition-colors hover:bg-zinc-800/30">
-      <td className="px-2 py-3 align-top">
-        <div className="flex flex-wrap gap-1">
-          {deckCards.map((c) => (
-            <HoverableCard
-              key={c.id}
-              cardName={c.name}
-              image={c.image}
-              className="rounded bg-zinc-800 px-2 py-1 text-sm"
-            />
-          ))}
-          {missingCard && (
-            <HoverableCard
-              cardName={missingCard}
-              className="rounded border border-hit-pink-300 bg-zinc-800 px-2 py-1 text-sm"
-            />
-          )}
-        </div>
-      </td>
-      <td className="px-2 py-3 align-top">
-        <ul className="list-disc pl-4 text-sm">
-          {prerequisites.map((p, idx) => (
-            <li key={idx}>{replaceManaSymbols(p)}</li>
-          ))}
-        </ul>
-      </td>
-      <td className="px-2 py-3 align-top">
-        <ul className="list-disc pl-4 text-sm">
-          {combo.produces.map((produces) => (
-            <li key={produces.feature.id}>{produces.feature.name}</li>
-          ))}
-        </ul>
-      </td>
-      <td className="px-2 py-3 align-top">
-        <div className="text-sm">
-          <p className="font-semibold text-zinc-400">Steps</p>
-          <ol className="mt-1 list-decimal pl-4">
-            {steps.map((s, idx) => (
-              <li key={idx}>{replaceManaSymbols(s)}</li>
-            ))}
-          </ol>
-        </div>
-      </td>
-    </tr>
-  );
-}
-
-function ComboListView({
-  filteredCombos,
-  deckData,
-}: {
-  filteredCombos: AlmostIncluded[];
-  deckData: DeckData;
-}) {
-  return (
-    <div className="overflow-x-auto rounded border border-zinc-700 bg-zinc-950/40">
-      <table className="w-full table-fixed">
-        <thead className="sticky top-0 z-10 bg-zinc-950">
-          <tr className="border-b border-zinc-700 text-left text-sm font-bold text-zinc-400">
-            {["Cards", "Prerequisites", "Results", "Steps"].map((h) => (
-              <th key={h} className="px-2 py-3">
-                {h}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCombos.map((combo) => (
-            <ComboListItem
-              key={combo.id}
-              combo={combo}
-              cards={deckData.cards ?? []}
-            />
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }

@@ -15,21 +15,26 @@ export function LayoutSelect({
   setLayout: (layout: Layout) => void;
 }) {
   return (
-    <div className="inline-flex">
-      <Button
-        variant={layout === Layout.GRID ? "primary" : "outline"}
-        onClick={() => setLayout(Layout.GRID)}
-        className="rounded-r-none"
-      >
-        <FontAwesomeIcon icon={faBorderAll} /> Grid
-      </Button>
-      <Button
-        variant={layout === Layout.LIST ? "primary" : "outline"}
-        onClick={() => setLayout(Layout.LIST)}
-        className="rounded-l-none"
-      >
-        <FontAwesomeIcon icon={faList} /> List
-      </Button>
+    <div className="flex flex-col gap-1">
+      <p className="text-xs font-bold uppercase text-zinc-400">
+        view combos as
+      </p>
+      <div>
+        <Button
+          variant={layout === Layout.GRID ? "primary" : "outline"}
+          onClick={() => setLayout(Layout.GRID)}
+          className="rounded-r-none"
+        >
+          <FontAwesomeIcon icon={faBorderAll} /> Grid
+        </Button>
+        <Button
+          variant={layout === Layout.LIST ? "primary" : "outline"}
+          onClick={() => setLayout(Layout.LIST)}
+          className="rounded-l-none"
+        >
+          <FontAwesomeIcon icon={faList} /> List
+        </Button>
+      </div>
     </div>
   );
 }

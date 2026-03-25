@@ -41,16 +41,21 @@ if (elem) {
           <Routes>
             <Route element={<App />}>
               <Route path="/" element={<Search />} />
-              <Route path="/deck/:source/:deckId" element={<DeckCombos />} />
-              <Route path="/deck/*" element={<RedirectDeck />} />
-              <Route
-                path="/user/moxfield/:userId/deck/:deckId"
-                element={<UserDeckCombos source="moxfield" />}
-              />
               <Route
                 path="/user/moxfield/:userName"
                 element={<MoxfieldUser />}
               />
+              <Route
+                path="/user/:source/:userId/deck/:deckId"
+                element={<UserDeckCombos />}
+              />
+              <Route
+                path="/user/:source/:userId/deck/:deckId/:tab"
+                element={<UserDeckCombos />}
+              />
+              <Route path="/deck/:source/:deckId" element={<DeckCombos />} />
+              <Route path="/deck/:source/:deckId/:tab" element={<DeckCombos />} />
+              <Route path="/deck/*" element={<RedirectDeck />} />
               <Route path="*" element={<Error />} />
             </Route>
           </Routes>

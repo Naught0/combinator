@@ -63,6 +63,7 @@ export function MoxfieldUser() {
       <div>
         <BackToSearch />
       </div>
+      <h1 className="font-serif text-3xl xl:text-4xl">{userName}'s decks</h1>
       {userName && <UserDeckFilters formats={formats} />}
       <UserDecksContainer
         pageSize={parseInt(searchParams.get("pageSize") || "12")}

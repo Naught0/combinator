@@ -13,9 +13,9 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-zinc-950 text-zinc-50 hover:bg-zinc-300 hover:text-zinc-800",
-        tab: "bg-zinc-950 text-zinc-50 hover:border-zinc-500 border-none rounded-b-none border-solid border-b-4",
+        tab: "bg-zinc-950 border-x-2 border-t-2 rounded-b-none text-zinc-100 hover:border-blue-600 hover:bg-blue-600/30",
         activeTab:
-          "bg-zinc-950 text-zinc-50 hover:bg-zinc-950/90 border-none rounded-b-none border-solid border-b-4 border-blue-600",
+          "bg-blue-600 text-zinc-50 font-bold hover:bg-blue-600/90 border-t-2 border-x-2 rounded-b-none border-blue-600",
         primary:
           "bg-blue-600 text-zinc-50 hover:bg-blue-600/90 border-blue-500 border",
         destructive: "bg-red-500 text-zinc-50 hover:bg-red-500/90",
@@ -28,11 +28,12 @@ const buttonVariants = cva(
         link: "text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-50 !p-0",
       },
       size: {
-        default: "h-10 px-4 py-2",
+        default: "px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         "icon-lg": "h-12 w-12",
+        tab: "text-lg md:text-xl h-fit w-fit px-4 py-2",
       },
     },
     defaultVariants: {

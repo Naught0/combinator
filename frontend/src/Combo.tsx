@@ -18,9 +18,9 @@ export const replaceManaSymbols = (s: string) => {
     .replaceAll("}{", "} {")
     .split(" ")
     .map((word, idx) => {
-      const toCompare = word.toLowerCase().replaceAll(/[.,]/g, "");
+      const toCompare = word.toLowerCase().replaceAll(/[.,:]/g, "");
       if (word && Object.keys(manaFontMap).includes(toCompare)) {
-        return manaFontMap[toCompare](`${word}-${idx}`);
+        return manaFontMap[toCompare](`${toCompare}-${idx}`);
       }
       return ` ${word} `;
     });
@@ -60,10 +60,8 @@ export const Combo = ({
     setExpanded(initialExpanded);
   }, [initialExpanded]);
   return (
-    <div
-      className={`flex h-fit w-full flex-col items-center rounded border border-zinc-700`}
-    >
-      <div className="z-10 flex w-full flex-col gap-1 rounded bg-zinc-800 p-6">
+    <div className={`flex h-full w-full flex-col`}>
+      <div className="z-10 flex w-full min-w-96 max-w-[500px] flex-col gap-1 rounded border border-zinc-600 bg-zinc-800 p-6">
         {deckCards.map((c, idx) => (
           <div className="inline-flex w-fit items-center gap-2" key={c.id}>
             {idx !== 0 && (

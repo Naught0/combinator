@@ -2,8 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+details > summary {
+  list-style: revert;
+}
+
+details > summary::-webkit-details-marker {
+  display: revert;
+}
+
 a {
-  @apply cursor-pointer text-orange-200 underline-offset-4 hover:underline;
+  @apply cursor-pointer text-hit-pink-200 underline-offset-4 hover:underline;
 }
 
 ul,
@@ -13,6 +21,11 @@ ol {
 
 ul {
   @apply list-disc;
+}
+
+ul li,
+ol li {
+  @apply mb-1.5;
 }
 
 ol {

@@ -51,10 +51,11 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
             <Button
               variant={activeTab === "combos" ? "activeTab" : "tab"}
               size="tab"
+              className="inline-flex items-start"
             >
-              Combos &ndash;
-              <span className="text-sm">
-                ({allCombos?.included?.length ?? 0})
+              Combos
+              <span className="align-super text-sm">
+                {allCombos?.included?.length ?? 0}
               </span>
             </Button>
           </Link>
@@ -63,10 +64,11 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
               <Button
                 size="tab"
                 variant={activeTab === "add-1" ? "activeTab" : "tab"}
+                className="inline-flex items-start"
               >
-                Add 1 &ndash;&nbsp;
-                <span className="text-sm">
-                  ({allCombos?.almostIncluded.length})
+                Add 1
+                <span className="align-super text-sm">
+                  {allCombos?.almostIncluded.length}
                 </span>
               </Button>
             </Link>

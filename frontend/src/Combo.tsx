@@ -80,7 +80,7 @@ export const Combo = ({
           <div className="flex w-full flex-col items-start gap-3">
             <div>
               <p className="font-bold lg:text-lg">Effects</p>
-              <ul>
+              <ul className="list">
                 {combo.produces.map((produces) => (
                   <li key={produces.feature.id}>{produces.feature.name}</li>
                 ))}
@@ -104,7 +104,7 @@ export const Combo = ({
               {!!combo.otherPrerequisites.trim() && (
                 <div className="flex min-w-72 flex-1 basis-5/12 flex-col">
                   <p className="font-bold">Prerequisites</p>
-                  <ul>
+                  <ul className="list">
                     {combo.otherPrerequisites
                       .split(".")
                       .filter((p) => p.trim())
@@ -118,7 +118,7 @@ export const Combo = ({
               )}
               <div className="flex min-w-72 flex-1 basis-5/12 flex-col">
                 <p className="font-bold">Steps</p>
-                <ol>
+                <ol className="list">
                   {combo.description
                     .split(".")
                     .filter((t) => t.trim().length > 0)

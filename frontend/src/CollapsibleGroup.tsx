@@ -46,7 +46,7 @@ export function CollapsibleGroup({
         (layout === Layout.GRID ? (
           <div className="flex flex-col gap-2 bg-zinc-900 px-3 py-4">
             <MasonryLayout
-              className="mx-auto xl:columns-2"
+              wide={false}
               items={combos.map((c) => (
                 <Combo
                   cards={cards}

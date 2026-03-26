@@ -95,7 +95,7 @@ export function ComboListItem({
         </div>
       </td>
       <td className="px-2 py-3 align-top">
-        <ul className="list-disc pl-4 text-sm">
+        <ul className="list space list-disc pl-4 text-sm">
           {prerequisites.map((p, idx) => (
             <li className="mb-1.5" key={idx}>
               {replaceManaSymbols(p)}
@@ -104,7 +104,7 @@ export function ComboListItem({
         </ul>
       </td>
       <td className="px-2 py-3 align-top">
-        <ul className="list-disc pl-4 text-sm">
+        <ul className="list space list-disc pl-4 text-sm">
           {combo.produces.map((produces) => (
             <li className="mb-1.5" key={produces.feature.id}>
               {produces.feature.name}
@@ -120,7 +120,7 @@ export function ComboListItem({
           <summary className="cursor-pointer rounded border border-zinc-600 px-2 py-1 text-sm hover:border-zinc-400">
             {steps.length} steps
           </summary>
-          <ol className="mt-2 list-decimal pl-4 text-sm">
+          <ol className="list space mt-2 list-decimal pl-4 text-sm">
             {steps.map((s, idx) => (
               <li className="mb-1.5" key={idx}>
                 {replaceManaSymbols(s)}

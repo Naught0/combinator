@@ -23,7 +23,6 @@ export const SearchTypeSelector: FC<Props> = ({
 }) => {
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-lg">Paste a...</p>
       <div className="inline-flex flex-wrap gap-3">
         <Button
           variant={buttonVariant(searchType, SearchType.MOXFIELD_USER)}

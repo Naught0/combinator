@@ -14,15 +14,18 @@ export function Search() {
     setSearchType(type);
   };
   return (
-    <div className="flex flex-col gap-3">
+    <div>
       <SearchTypeSelector
         searchType={searchType}
         setSearchType={saveSearchType}
       />
-      <div className="flex w-full flex-col gap-3">
-        {searchType === SearchType.MOXFIELD_USER && <MoxfieldSearch />}
-        {searchType === SearchType.DECK && <PasteDeckUrl />}
-        {searchType === SearchType.PASTE && <PasteList />}
+      <div className="flex w-full flex-col gap-3 rounded-lg rounded-tl-none border border-zinc-700 bg-zinc-800 px-4 py-3 lg:max-w-screen-sm">
+        <p className="text-lg">Paste a...</p>
+        <div className="flex w-full flex-col gap-3">
+          {searchType === SearchType.MOXFIELD_USER && <MoxfieldSearch />}
+          {searchType === SearchType.DECK && <PasteDeckUrl />}
+          {searchType === SearchType.PASTE && <PasteList />}
+        </div>
       </div>
     </div>
   );

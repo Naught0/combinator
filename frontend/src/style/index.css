@@ -14,8 +14,8 @@ a {
   @apply cursor-pointer text-hit-pink-200 underline-offset-4 hover:underline;
 }
 
-ul,
-ol {
+ul.list,
+ol.list {
   @apply pl-4;
 }
 
@@ -23,8 +23,7 @@ ul {
   @apply list-disc;
 }
 
-ul li,
-ol li {
+.list.space li {
   @apply mb-1.5;
 }
 

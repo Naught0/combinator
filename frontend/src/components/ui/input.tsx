@@ -10,6 +10,7 @@ const inputVariants = cva(
       variant: {
         default: "dark:border-zinc-700",
         error: "border-red-400/90 border border-solid",
+        homepage: "dark:border-zinc-700 px-2 py-3 text-lg",
       },
     },
     defaultVariants: {

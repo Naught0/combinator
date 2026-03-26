@@ -2,17 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-a {
-  @apply cursor-pointer text-orange-200 underline-offset-4 hover:underline;
+details > summary {
+  list-style: revert;
 }
 
-ul,
-ol {
+details > summary::-webkit-details-marker {
+  display: revert;
+}
+
+a {
+  @apply cursor-pointer text-hit-pink-200 underline-offset-4 hover:underline;
+}
+
+ul.list,
+ol.list {
   @apply pl-4;
 }
 
 ul {
   @apply list-disc;
+}
+
+.list.space li {
+  @apply mb-1.5;
 }
 
 ol {

@@ -10,6 +10,9 @@ import { Error } from "@/Error";
 import { Loading } from "@/Loading";
 import { removeDefaultParams } from "@/UserDeck/hooks/useRemoveDefaultParams";
 import { formats } from "@/util/moxfield";
+import { Hyperlink } from "@/Hyperlink";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 export function MoxfieldUser() {
   const { userName } = useParams<{ userName: string }>();
@@ -59,11 +62,24 @@ export function MoxfieldUser() {
   }
 
   return (
-    <div className="flex max-w-screen-2xl flex-col gap-3 md:gap-6">
+    <div className="flex max-w-screen-2xl flex-col gap-3">
       <div>
         <BackToSearch />
       </div>
-      {userName && <UserDeckFilters formats={formats} />}
+      <h1 className="font-serif text-3xl xl:text-4xl">{userName}'s decks</h1>
+      <Hyperlink
+        className="inline-flex items-center gap-2 text-sm text-zinc-400"
+        href={`https://moxfield.com/users/${userName}`}
+        target="_blank"
+      >
+        <span>View user on Moxfield</span>
+        <FontAwesomeIcon className="text-sm" icon={faArrowUpRightFromSquare} />
+      </Hyperlink>
+      {userName && (
+        <div className="mb-3">
+          <UserDeckFilters formats={formats} />
+        </div>
+      )}
       <UserDecksContainer
         pageSize={parseInt(searchParams.get("pageSize") || "12")}
         decks={data?.data}
@@ -77,7 +93,7 @@ export function MoxfieldUser() {
           </p>
         </div>
       )}
-      <div className="w-full">
+      <div className="m-auto mt-6 flex w-fit items-center justify-center rounded-lg border border-zinc-600 bg-zinc-800 p-2">
         <Paginate
           pageIndex={(data?.pageNumber ?? 1) - 1}
           setIndex={(i) =>

@@ -1,9 +1,13 @@
 import { ComboContainer } from "@/ComboContainer";
-import { useParams } from "react-router";
+import { useParams, Navigate } from "react-router";
 
 export function DeckCombos() {
-  let { source, deckId } = useParams<{ source: DeckSource; deckId: string }>();
-  if (!source || !deckId) return null; // TODO: Redirect to 404
+  let { source, deckId, tab } = useParams<{ source: DeckSource; deckId: string; tab: string }>();
+  if (!source || !deckId) return null;
+
+  if (!tab) {
+    return <Navigate to={`/deck/${source}/${deckId}/combos`} replace />;
+  }
 
   return <ComboContainer deckId={deckId} source={source} />;
 }

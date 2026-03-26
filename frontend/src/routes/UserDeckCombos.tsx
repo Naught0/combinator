@@ -4,23 +4,30 @@ import { Hyperlink } from "@/Hyperlink";
 import { IconText } from "@/IconText";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { PropsWithChildren } from "react";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 
-export function UserDeckCombos({ source }: { source: DeckSource }) {
-  let { userId, deckId } = useParams();
+export function UserDeckCombos() {
+  let { source, userId, deckId, tab } = useParams();
   if (!userId) return <Error message={"User not found"} />;
   if (!deckId) return <Error message={"Deck not found"} />;
+  if (!source) return <Error message={"Source not found"} />;
+
+  const basePath = `/user/${source}/${userId}/deck/${deckId}`;
+
+  if (!tab) {
+    return <Navigate to={`${basePath}/combos`} replace />;
+  }
 
   return (
     <Container>
       {source === "moxfield" && (
         <Hyperlink href={`/user/moxfield/${userId}`} target="">
-          <IconText className="text-base text-orange-100" icon={faArrowLeft}>
+          <IconText className="text-base text-hit-pink-200" icon={faArrowLeft}>
             {userId}'s decks
           </IconText>
         </Hyperlink>
       )}
-      <ComboContainer deckId={deckId} source={source} />
+      <ComboContainer deckId={deckId} source={source as DeckSource} />
     </Container>
   );
 }

@@ -11,7 +11,7 @@ export default function Nav() {
         >
           <img src={logo} alt="" width={32} />
           <span>
-            <span className="text-orange-300">mtg</span>
+            <span className="text-hit-pink-300">mtg</span>
             <wbr />
             combinator
           </span>

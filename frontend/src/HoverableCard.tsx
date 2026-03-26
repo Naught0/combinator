@@ -2,32 +2,34 @@ import { createPortal } from "react-dom";
 import { usePopperTooltip } from "react-popper-tooltip";
 import { cardNameToImageSrc } from "./services/scryfall";
 import { cn } from "./lib/utils";
-import { ReactNode } from "react";
 
 export const HoverableCard = ({
   cardName,
-  inDeck = true,
   image,
   className,
 }: {
   cardName: string;
   className?: string;
   image?: string;
-  inDeck?: boolean;
 }) => {
   const cardImage = image ?? cardNameToImageSrc(cardName);
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
       placement: "auto-end",
-      trigger: ["hover"],
-      delayShow: 150,
-      delayHide: 10,
+      trigger: ["hover", "click"],
+      closeOnOutsideClick: true,
+      interactive: true,
+      delayShow: 130,
+      delayHide: 100,
     });
   return (
     <>
       <span
-        className={cn(`${inDeck ? "" : "text-rose-400"}`, className)}
+        className={cn(
+          "inline-flex gap-1 text-zinc-300 underline decoration-zinc-300 decoration-dashed underline-offset-4",
+          className,
+        )}
         ref={setTriggerRef}
       >
         {cardName}

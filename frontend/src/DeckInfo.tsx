@@ -41,7 +41,7 @@ export const DeckInfo = ({ meta }: { meta: DeckMeta }) => {
             onClick={doShareUrl}
           >
             <FontAwesomeIcon icon={faShare} />
-            Share page
+            Share
           </button>
         )}
       </div>

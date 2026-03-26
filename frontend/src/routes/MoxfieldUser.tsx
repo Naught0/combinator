@@ -68,7 +68,7 @@ export function MoxfieldUser() {
       </div>
       <h1 className="font-serif text-3xl xl:text-4xl">{userName}'s decks</h1>
       <Hyperlink
-        className="inline-flex items-center gap-2 text-sm"
+        className="inline-flex items-center gap-2 text-sm text-zinc-400"
         href={`https://moxfield.com/users/${userName}`}
         target="_blank"
       >
@@ -93,7 +93,7 @@ export function MoxfieldUser() {
           </p>
         </div>
       )}
-      <div className="m-auto flex w-fit items-center justify-center rounded-lg border border-zinc-600 bg-zinc-800 p-2">
+      <div className="m-auto mt-6 flex w-fit items-center justify-center rounded-lg border border-zinc-600 bg-zinc-800 p-2">
         <Paginate
           pageIndex={(data?.pageNumber ?? 1) - 1}
           setIndex={(i) =>

@@ -25,20 +25,22 @@ export function CollapsibleGroup({
 
   return (
     <div
-      className={`overflow-hidden rounded-md border border-zinc-700 ${expanded ? "col-span-2" : ""}`}
+      className={`h-fit overflow-hidden rounded-md border border-zinc-700 ${expanded ? "col-span-2" : ""}`}
     >
       <button
-        className="flex w-full cursor-pointer items-center justify-between bg-zinc-950 px-4 py-3 font-serif text-lg font-bold hover:bg-zinc-950/50"
+        className="flex w-full cursor-pointer items-center justify-between gap-4 bg-zinc-950 px-4 py-3 font-serif text-lg font-bold hover:bg-zinc-950/50"
         onClick={() => setExpanded(!expanded)}
       >
         <span className="font-sans">
           Add{" "}
           <HoverableCard
-            className="font-serif text-hit-pink-200 underline underline-offset-8"
             cardName={cardName}
             image={cards.find((c) => c.name === cardName)?.image}
           />{" "}
-          (+{combos.length} combo{combos.length > 1 ? "s" : ""})
+          <wbr />
+          <span className="whitespace-nowrap">
+            (+{combos.length} combo{combos.length > 1 ? "s" : ""})
+          </span>
         </span>
         <FontAwesomeIcon icon={expanded ? faMinus : faPlus} />
       </button>
@@ -54,6 +56,7 @@ export function CollapsibleGroup({
                   combo={c}
                   showImages={showImages}
                   initialExpanded={expandAll}
+                  missingCard={cardName}
                 />
               ))}
             />

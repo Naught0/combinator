@@ -7,7 +7,7 @@ import { useFilteredCombos } from "./hooks/useComboData";
 import { Loading } from "./Loading";
 import { getComboData } from "./services";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Combos } from "./Combos";
 import { GroupedCombos } from "./GroupedCombos";
 import { ListControls } from "./ListControls";
@@ -44,7 +44,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col">
       <div className="grid">
         <div className="inline-flex flex-wrap gap-2">
           <Link to={`${basePath}/combos`}>
@@ -78,29 +78,33 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
               size="tab"
               variant={activeTab === "search" ? "activeTab" : "tab"}
             >
-              Search Cards
+              <FontAwesomeIcon icon={faMagnifyingGlass} /> Cards
             </Button>
           </Link>
         </div>
         <hr className="border-zinc-700" />
       </div>
-      <div className={"flex flex-1 flex-col gap-3"}>
-        {(activeTab === "combos" || activeTab === "add-1") && <ListControls />}
-        <div className="relative max-w-96">
-          <Input
-            className="pr-8"
-            placeholder="Filter combos by keyword, type line, or card name"
-            value={filter}
-            onChange={({ target }) => setFilter(target.value)}
-          />
-          {filter && (
-            <button
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200"
-              onClick={() => setFilter("")}
-            >
-              <FontAwesomeIcon icon={faXmark} />
-            </button>
+      <div className={"flex flex-col gap-6"}>
+        <div className="flex flex-col gap-3 rounded-b-lg border border-zinc-700 bg-zinc-800 px-4 py-2.5">
+          {(activeTab === "combos" || activeTab === "add-1") && (
+            <ListControls />
           )}
+          <div className="relative max-w-96">
+            <Input
+              className="pr-8"
+              placeholder="Search by keyword, type line, or card name"
+              value={filter}
+              onChange={({ target }) => setFilter(target.value)}
+            />
+            {filter && (
+              <button
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200"
+                onClick={() => setFilter("")}
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            )}
+          </div>
         </div>
         {activeTab === "combos" && (
           <Combos

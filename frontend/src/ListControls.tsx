@@ -10,6 +10,7 @@ import {
   faMinus,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { Separator } from "@radix-ui/react-select";
 
 export const expandAllAtom = atomWithStorage<boolean>("expandAll", false);
 export const showImagesAtom = atomWithStorage<boolean>("showImages", true);
@@ -36,16 +37,10 @@ export function ListControls() {
   const { layout, setLayout } = useLayout();
 
   return (
-    <div className="inline-flex flex-wrap items-end gap-3">
-      <div className="hidden md:block">
-        <LayoutSelect layout={layout} setLayout={setLayout} />
-      </div>
-      {layout === Layout.LIST && (
-        <div className="inline-flex items-center">
-          <div className="relative bottom-0 top-0 h-full w-0.5 bg-zinc-400" />
-          <AlwaysExpandCheckbox />
-        </div>
-      )}
+    <div className={`inline-flex flex-wrap items-end gap-3`}>
+      <LayoutSelect layout={layout} setLayout={setLayout} />
+      <Separator className="h-14 w-[1px] bg-zinc-500" />
+      {layout === Layout.LIST && <AlwaysExpandCheckbox />}
       {layout === Layout.GRID && (
         <>
           <Button

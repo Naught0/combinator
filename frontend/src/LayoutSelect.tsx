@@ -16,7 +16,7 @@ export function LayoutSelect({
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <p className="text-xs font-bold uppercase text-zinc-400">
+      <p className="text-xs font-bold uppercase text-zinc-300">
         view combos as
       </p>
       <div>

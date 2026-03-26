@@ -22,7 +22,7 @@ export function ComboTable({
         className,
       )}
     >
-      <table className="w-full table-fixed">
+      <table className="w-full min-w-[650px] table-fixed">
         <thead className="sticky top-0 z-10 bg-zinc-950">
           <tr className="border-b border-zinc-700 text-left font-serif text-sm font-bold uppercase text-zinc-300">
             {["Cards", "Prerequisites", "Results", "Steps"].map((h) => (
@@ -78,24 +78,30 @@ export function ComboListItem({
     <tr className="border-b border-zinc-700 bg-zinc-800 transition-colors odd:bg-zinc-800/70 hover:bg-zinc-700/50">
       <td className="px-2 py-3 align-top">
         <div className="flex flex-wrap gap-2">
-          {deckCards.map((c) => (
-            <HoverableCard
-              key={c.id}
-              cardName={c.name}
-              image={c.image}
-              className="inline-flex items-center rounded border border-zinc-500 bg-zinc-700 px-2 py-1 text-sm text-zinc-50"
-            />
-          ))}
-          {missingCard && (
-            <HoverableCard
-              cardName={missingCard}
-              className="rounded border-2 border-hit-pink-300/60 bg-hit-pink-300/5 px-2 py-1 text-sm text-orange-100"
-            />
-          )}
+          <ul className="grid gap-1.5">
+            {missingCard && (
+              <li>
+                <HoverableCard
+                  cardName={missingCard}
+                  className="text-xs text-hit-pink-200 decoration-hit-pink-200 sm:text-sm"
+                />
+              </li>
+            )}
+            {deckCards.map((c) => (
+              <li>
+                <HoverableCard
+                  key={c.id}
+                  cardName={c.name}
+                  image={c.image}
+                  className="inline-flex items-center text-xs text-zinc-100 sm:text-sm"
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       </td>
       <td className="px-2 py-3 align-top">
-        <ul className="list space list-disc pl-4 text-sm">
+        <ul className="list space list-disc pl-4 text-xs sm:text-sm">
           {prerequisites.map((p, idx) => (
             <li className="mb-1.5" key={idx}>
               {replaceManaSymbols(p)}
@@ -104,7 +110,7 @@ export function ComboListItem({
         </ul>
       </td>
       <td className="px-2 py-3 align-top">
-        <ul className="list space list-disc pl-4 text-sm">
+        <ul className="list space list-disc pl-4 text-xs sm:text-sm">
           {combo.produces.map((produces) => (
             <li className="mb-1.5" key={produces.feature.id}>
               {produces.feature.name}
@@ -120,7 +126,7 @@ export function ComboListItem({
           <summary className="cursor-pointer rounded border border-zinc-600 px-2 py-1 text-sm hover:border-zinc-400">
             {steps.length} steps
           </summary>
-          <ol className="list space mt-2 list-decimal pl-4 text-sm">
+          <ol className="list space mt-2 list-decimal pl-4 text-xs sm:text-sm">
             {steps.map((s, idx) => (
               <li className="mb-1.5" key={idx}>
                 {replaceManaSymbols(s)}

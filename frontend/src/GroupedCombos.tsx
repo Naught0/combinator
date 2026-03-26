@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { Layout } from "./LayoutSelect";
 import { CollapsibleGroup } from "./CollapsibleGroup";
 import { useLayout } from "./ListControls";
 
@@ -18,21 +17,6 @@ export function GroupedCombos({
       ),
     [data],
   );
-
-  if (layout === Layout.LIST) {
-    return (
-      <div className="grid grid-cols-2 gap-4">
-        {sortedEntries.map(([cardName, combos]) => (
-          <CollapsibleGroup
-            key={cardName}
-            cardName={cardName}
-            combos={combos}
-            cards={cards}
-          />
-        ))}
-      </div>
-    );
-  }
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">

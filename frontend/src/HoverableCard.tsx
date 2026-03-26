@@ -17,13 +17,21 @@ export const HoverableCard = ({
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
       placement: "auto-end",
-      trigger: ["hover"],
+      trigger: ["hover", "click"],
+      closeOnOutsideClick: true,
+      interactive: true,
       delayShow: 130,
-      delayHide: 10,
+      delayHide: 100,
     });
   return (
     <>
-      <span className={cn(className)} ref={setTriggerRef}>
+      <span
+        className={cn(
+          "inline-flex gap-1 text-zinc-300 underline decoration-zinc-300 decoration-dashed underline-offset-4",
+          className,
+        )}
+        ref={setTriggerRef}
+      >
         {cardName}
       </span>
       {visible &&

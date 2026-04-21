@@ -39,25 +39,30 @@ export function ListControls() {
   return (
     <div className={`inline-flex flex-wrap items-end gap-3`}>
       <LayoutSelect layout={layout} setLayout={setLayout} />
-      <Separator className="h-14 w-[1px] bg-zinc-500" />
+      <Separator className="hidden h-14 w-[1px] bg-zinc-500 sm:block" />
       {layout === Layout.LIST && <AlwaysExpandCheckbox />}
       {layout === Layout.GRID && (
-        <>
-          <Button
-            className="inline-flex w-fit items-center"
-            onClick={() => setExpandAll(!expandAll)}
-          >
-            <FontAwesomeIcon icon={expandAll ? faMinus : faPlus} />
-            <span>{expandAll ? "Collapse" : "Expand"} all</span>
-          </Button>
-          <Button
-            className="inline-flex items-center"
-            onClick={() => setShowImages(!showImages)}
-          >
-            <FontAwesomeIcon icon={showImages ? faEyeSlash : faImages} />
-            {showImages ? "Hide" : "Show"} images
-          </Button>
-        </>
+        <div className="grid gap-1">
+          <p className="text-xs font-bold uppercase text-zinc-300">
+            display settings
+          </p>
+          <div className="inline-flex flex-wrap items-center gap-1">
+            <Button
+              className="inline-flex w-fit items-center"
+              onClick={() => setExpandAll(!expandAll)}
+            >
+              <FontAwesomeIcon icon={expandAll ? faMinus : faPlus} />
+              <span>{expandAll ? "Collapse" : "Expand"} all</span>
+            </Button>
+            <Button
+              className="inline-flex items-center"
+              onClick={() => setShowImages(!showImages)}
+            >
+              <FontAwesomeIcon icon={showImages ? faEyeSlash : faImages} />
+              {showImages ? "Hide" : "Show"} images
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );

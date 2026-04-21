@@ -9,7 +9,11 @@ import { toast } from "sonner";
 export const DeckInfo = ({ meta }: { meta: DeckMeta }) => {
   const doShareUrl = () => {
     navigator.clipboard.writeText(window.location.href);
-    toast.success("Copied link to clipboard");
+    toast.success("Copied link to clipboard", {
+      richColors: true,
+      dismissible: true,
+      closeButton: true,
+    });
   };
 
   return (

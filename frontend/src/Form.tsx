@@ -13,16 +13,16 @@ export function Form({
   loading?: boolean;
 }) {
   return (
-    <form className="flex max-w-[512px] flex-col gap-3" onSubmit={onSubmit}>
+    <form className="flex max-w-[512px] flex-col gap-4" onSubmit={onSubmit}>
       {children}
-      <div>
+      <div className="mb-3">
         <NiceButton
-          className={"inline-flex justify-center gap-2"}
+          className={"inline-flex justify-center gap-2 px-4 py-3 text-lg"}
           type="submit"
           disabled={disabled || loading}
           loading={loading}
         >
-          <span>Think for me</span>{" "}
+          <span>think for me</span>{" "}
           <span>
             <FontAwesomeIcon icon={faArrowRight} />
           </span>

@@ -76,7 +76,7 @@ export const PasteList = () => {
               if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();
                 e.currentTarget.form?.dispatchEvent(
-                  new Event("submit", { bubbles: true, cancelable: true })
+                  new Event("submit", { bubbles: true, cancelable: true }),
                 );
               }
             }}

@@ -27,7 +27,7 @@ export const HoverableCard = ({
     <>
       <span
         className={cn(
-          "inline-flex gap-1 text-zinc-300 underline decoration-zinc-300 decoration-dashed underline-offset-4",
+          "inline-flex gap-1 text-hit-pink-100 underline decoration-dashed underline-offset-4",
           className,
         )}
         ref={setTriggerRef}

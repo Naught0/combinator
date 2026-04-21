@@ -21,8 +21,9 @@ export default function MoxfieldSearch() {
       >
         <Field>
           <Input
+            variant="homepage"
             name="moxfield-username"
-            placeholder="Moxfield username"
+            placeholder="moxfield username"
             onChange={(e) => setValue(e.target.value.trim())}
             value={value}
           />

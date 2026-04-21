@@ -1,8 +1,12 @@
 import { manaFontMap } from "./manaFontMap";
-import { Button } from "./components/ui/button";
+import * as button from "./components/ui/button";
 import { CardStack } from "./CardStack";
 import { useEffect, useState } from "react";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faCaretRight,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { HoverableCard } from "./HoverableCard";
 import { cardNameToImageSrc } from "./services/scryfall";
@@ -63,24 +67,27 @@ export const Combo = ({
     setExpanded(initialExpanded);
   }, [initialExpanded]);
   return (
-    <div className="z-10 flex max-w-[500px] flex-col gap-1 rounded border border-zinc-600 bg-zinc-800 p-6 text-sm sm:min-w-96 sm:text-base">
-      {missingCard && (
-        <ComboCardHeading
-          card={{ name: missingCard }}
-          isHoverable={!showImages}
-        />
-      )}
-      {deckCards.map((c, idx) => (
-        <div className="inline-flex w-fit items-center gap-2" key={c.id}>
-          {(idx !== 0 || !!missingCard) && (
-            <FontAwesomeIcon
-              icon={faPlus}
-              onClick={() => setExpanded(!expanded)}
-            />
-          )}
-          <ComboCardHeading key={c.id} card={c} isHoverable={!showImages} />
-        </div>
-      ))}
+    <div className="z-10 flex max-w-[500px] flex-col gap-3 rounded border border-zinc-600 bg-zinc-800 p-6 text-sm sm:min-w-96 sm:text-base">
+      <div className="flex flex-col gap-1">
+        {missingCard && (
+          <ComboCardHeading
+            card={{ name: missingCard }}
+            isHoverable={!showImages}
+          />
+        )}
+        {deckCards.map((c, idx) => (
+          <div className="inline-flex w-fit items-center gap-2" key={c.id}>
+            {(idx !== 0 || !!missingCard) && (
+              <FontAwesomeIcon
+                icon={faPlus}
+                className="text-zinc-400"
+                onClick={() => setExpanded(!expanded)}
+              />
+            )}
+            <ComboCardHeading key={c.id} card={c} isHoverable={!showImages} />
+          </div>
+        ))}
+      </div>
       <div
         className={`flex flex-col flex-wrap items-center justify-start gap-3 md:flex-col md:items-start`}
       >
@@ -102,8 +109,8 @@ export const Combo = ({
         )}
         <div className="flex w-full flex-col items-start gap-3">
           <div>
-            <p className="text-base font-bold md:text-lg">Effects</p>
-            <ul className="list">
+            <p className="font-bold">Effects</p>
+            <ul className="list text-sm">
               {combo.produces.map((produces) => (
                 <li key={produces.feature.id}>{produces.feature.name}</li>
               ))}
@@ -111,23 +118,23 @@ export const Combo = ({
           </div>
         </div>
 
-        <Button
-          className="inline-flex w-full items-center"
+        <button.Button
+          className="inline-flex w-full items-center border border-zinc-500"
           onClick={() => setExpanded((prev) => !prev)}
           size="sm"
           variant="ghost"
         >
-          <FontAwesomeIcon icon={expanded ? faMinus : faPlus} />
-          {expanded ? "Collapse" : "Expand"}
-        </Button>
+          <FontAwesomeIcon icon={expanded ? faCaretDown : faCaretRight} />
+          {expanded ? "Hide steps" : "Show steps"}
+        </button.Button>
       </div>
       {expanded && (
         <div className="flex flex-row flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">
           <div className="grid gap-2">
             {!!combo.otherPrerequisites.trim() && (
               <div className="flex flex-1 basis-5/12 flex-col sm:min-w-72">
-                <p className="text-base font-bold md:text-lg">Prerequisites</p>
-                <ul className="list">
+                <p className="font-bold">Prerequisites</p>
+                <ul className="list text-sm">
                   {combo.otherPrerequisites
                     .split(".")
                     .filter((p) => p.trim())
@@ -140,8 +147,8 @@ export const Combo = ({
               </div>
             )}
             <div className="flex flex-1 basis-5/12 flex-col sm:min-w-72">
-              <p className="text-base font-bold md:text-lg">Steps</p>
-              <ol className="list">
+              <p className="font-bold">Steps</p>
+              <ol className="list text-sm">
                 {combo.description
                   .split(".")
                   .filter((t) => t.trim().length > 0)

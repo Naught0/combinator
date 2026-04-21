@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation } from "react-router";
-import { CardFilter } from "./CardFilter";
+import { CardFilter, ViewMode } from "./CardFilter";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { useFilteredCombos } from "./hooks/useComboData";
@@ -11,6 +11,7 @@ import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Combos } from "./Combos";
 import { GroupedCombos } from "./GroupedCombos";
 import { ListControls } from "./ListControls";
+import { useState } from "react";
 
 export function ComboTabs({ deckData }: { deckData: DeckData }) {
   const location = useLocation();
@@ -38,6 +39,9 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
     });
   const noCombos = !comboData?.length;
   const noFilteredCombos = filteredCombos.length < 1;
+  const [searchViewMode, setSearchViewMode] = useState<ViewMode>(
+    (localStorage.getItem("cardViewMode") as ViewMode) ?? "text",
+  );
 
   if (isLoading) {
     return <Loading size="lg" message="Loading combos" />;
@@ -85,14 +89,14 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
         <hr className="border-zinc-700" />
       </div>
       <div className={"flex flex-col gap-6"}>
-        <div className="flex flex-col gap-3 rounded-b-lg border border-zinc-700 bg-zinc-800 px-4 py-2.5">
+        <div className="flex flex-col gap-3 rounded-b-lg border border-zinc-700 bg-zinc-800 px-4 py-6">
           {(activeTab === "combos" || activeTab === "add-1") && (
             <ListControls />
           )}
-          <div className="relative max-w-96">
+          <div className="relative sm:max-w-lg">
             <Input
               className="pr-8"
-              placeholder="Search by keyword, type line, or card name"
+              placeholder="search by keyword, type line, or card name"
               value={filter}
               onChange={({ target }) => setFilter(target.value)}
             />
@@ -120,7 +124,11 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
           <GroupedCombos data={groupedByMissing} cards={deckData.cards} />
         )}
         {activeTab === "search" && deckData && (
-          <CardFilter deckData={deckData} filter={filter} />
+          <CardFilter
+            viewMode={searchViewMode}
+            deckData={deckData}
+            filter={filter}
+          />
         )}
       </div>
     </div>

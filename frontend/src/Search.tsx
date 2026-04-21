@@ -3,6 +3,25 @@ import MoxfieldSearch from "./MoxfieldSearch";
 import { PasteDeckUrl } from "./PasteDeckUrl";
 import { PasteList } from "./PasteList";
 import { SearchTypeSelector, SearchType } from "./SearchTypeSelector";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleExclamation,
+  faCircleInfo,
+  faCircleQuestion,
+} from "@fortawesome/free-solid-svg-icons";
+
+function getMessage(type: SearchType) {
+  switch (type) {
+    case SearchType.MOXFIELD_USER:
+      return "enter your moxfield username to browse your decks & see what combos are inside";
+    case SearchType.DECK:
+      return "paste a deck url to see its combos";
+    case SearchType.PASTE:
+      return "paste a list of cards to see possible combos";
+    default:
+      return "uh... i'd probably just refresh if i was you";
+  }
+}
 
 export function Search() {
   const [searchType, setSearchType] = useState(
@@ -20,20 +39,18 @@ export function Search() {
           searchType={searchType}
           setSearchType={saveSearchType}
         />
-        <div className="flex w-full flex-col gap-3 rounded-lg rounded-tl-none border border-zinc-700 bg-zinc-800 px-4 py-3 lg:max-w-screen-sm">
+        <div className="flex w-full flex-col gap-3 rounded-lg rounded-tl-none border border-zinc-700 bg-zinc-800 p-6 lg:max-w-screen-sm">
           <div className="flex w-full flex-col gap-3">
             {searchType === SearchType.MOXFIELD_USER && <MoxfieldSearch />}
             {searchType === SearchType.DECK && <PasteDeckUrl />}
             {searchType === SearchType.PASTE && <PasteList />}
           </div>
+          <div className="h-[1px] w-full bg-zinc-700" />
+          <article className="inline-flex items-center gap-1.5 text-sm text-zinc-200">
+            <FontAwesomeIcon icon={faCircleInfo} className="text-zinc-300" />
+            {getMessage(searchType)}
+          </article>
         </div>
-      </div>
-      <div className="grid max-w-screen-sm gap-3 text-sm">
-        <p className="text-zinc-300">
-          mtgcombinator is a convenient tool that finds the combos in your
-          Magic: The Gathering deck. You can browse your Moxfield decks by
-          username, provide a deck URL, or even paste in a list.
-        </p>
       </div>
     </div>
   );

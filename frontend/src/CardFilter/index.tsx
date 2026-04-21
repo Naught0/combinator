@@ -1,22 +1,19 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { CardImage } from "../CardImage";
 import { HoverableCard } from "../HoverableCard";
-import { SelectItem } from "@/components/ui/select";
 import { useDebounce } from "use-debounce";
-import { Dropdown } from "@/Dropdown";
 
-type ViewMode = "image" | "text";
+export type ViewMode = "image" | "text";
 
 export const CardFilter = ({
   filter,
   deckData,
+  viewMode,
 }: {
   filter: string;
   deckData: DeckData;
+  viewMode: ViewMode;
 }) => {
-  const [viewMode, setViewMode] = useState<ViewMode>(
-    (localStorage.getItem("cardViewMode") as ViewMode) ?? "text",
-  );
   const [debouncedFilter] = useDebounce(filter, 300);
   const filteredCards = useMemo(
     () =>
@@ -32,16 +29,6 @@ export const CardFilter = ({
   );
   return (
     <div className="flex flex-1 flex-col gap-3">
-      <div className="flex-0 flex">
-        <Dropdown
-          onChange={(value) => setViewMode(value as ViewMode)}
-          value={viewMode}
-          defaultValue={"text" as ViewMode}
-        >
-          <SelectItem value="text">Text</SelectItem>
-          <SelectItem value="image">Images</SelectItem>
-        </Dropdown>
-      </div>
       <div className="flex flex-row flex-wrap justify-start gap-6">
         {filteredCards &&
           filteredCards.map((card) => {

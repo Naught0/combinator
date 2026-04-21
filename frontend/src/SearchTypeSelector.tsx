@@ -29,19 +29,19 @@ export const SearchTypeSelector: FC<Props> = ({
           className="flex items-center justify-center"
           onClick={() => setSearchType(SearchType.MOXFIELD_USER)}
         >
-          <span>Moxfield user</span>
+          <span>moxfield user</span>
         </Button>
         <Button
           variant={buttonVariant(searchType, SearchType.DECK)}
           onClick={() => setSearchType(SearchType.DECK)}
         >
-          Deck URL
+          deck url
         </Button>
         <Button
           variant={buttonVariant(searchType, SearchType.PASTE)}
           onClick={() => setSearchType(SearchType.PASTE)}
         >
-          Card list
+          card list
         </Button>
       </div>
     </div>

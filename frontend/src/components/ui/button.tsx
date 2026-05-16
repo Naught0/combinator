@@ -15,7 +15,7 @@ const buttonVariants = cva(
           "bg-zinc-950 text-zinc-50 hover:bg-zinc-300 hover:text-zinc-800",
         tab: "bg-zinc-800 sm:text-lg border-x border-t rounded-b-none border-zinc-600 text-zinc-100 hover:border-matisse-600 hover:bg-matisse-600/30",
         activeTab:
-          "bg-matisse-600 sm:text-lg text-zinc-50 font-bold hover:bg-matisse-600/90 border-t-2 border-x-2 rounded-b-none border-matisse-600",
+          "bg-matisse-600 sm:text-lg text-zinc-50 font-bold hover:bg-matisse-600/90 border-t border-x rounded-b-none border-b-none border-matisse-600",
         primary:
           "bg-matisse-600 text-zinc-50 hover:bg-matisse-600/90 border-matisse-600 border",
         destructive: "bg-red-500 text-zinc-50 hover:bg-red-500/90",

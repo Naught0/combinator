@@ -28,6 +28,7 @@ interface CardResponse {
 
 type CardType =
   | "artifact"
+  | "battle"
   | "conspiracy"
   | "creature"
   | "enchantment"

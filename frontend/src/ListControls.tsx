@@ -52,7 +52,7 @@ export function ListControls() {
               onClick={() => setExpandAll(!expandAll)}
             >
               <FontAwesomeIcon icon={expandAll ? faMinus : faPlus} />
-              <span>{expandAll ? "Collapse" : "Expand"} all</span>
+              <span>Always {expandAll ? "collapse" : "expand"} combos</span>
             </Button>
             <Button
               className="inline-flex items-center"

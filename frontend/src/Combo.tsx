@@ -67,7 +67,7 @@ export const Combo = ({
     setExpanded(initialExpanded);
   }, [initialExpanded]);
   return (
-    <div className="z-10 flex max-w-[500px] flex-col gap-3 rounded border border-zinc-600 bg-zinc-800 p-6 text-sm sm:min-w-96 sm:text-base">
+    <div className="z-10 flex flex-grow flex-col gap-3 rounded border border-zinc-600 bg-zinc-800 p-6 text-sm sm:min-w-96 sm:text-base">
       <div className="flex flex-col gap-1">
         {missingCard && (
           <ComboCardHeading

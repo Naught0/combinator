@@ -82,7 +82,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
               size="tab"
               variant={activeTab === "search" ? "activeTab" : "tab"}
             >
-              <FontAwesomeIcon icon={faMagnifyingGlass} /> Cards
+              Cards <FontAwesomeIcon icon={faMagnifyingGlass} />
             </Button>
           </Link>
         </div>
@@ -126,6 +126,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
         {activeTab === "search" && deckData && (
           <CardFilter
             viewMode={searchViewMode}
+            setViewMode={setSearchViewMode}
             deckData={deckData}
             filter={filter}
           />

@@ -80,7 +80,7 @@ export function ComboListItem({
         <div className="flex flex-wrap gap-2">
           <ul className="grid gap-1.5">
             {missingCard && (
-              <li>
+              <li key={missingCard}>
                 <HoverableCard
                   cardName={missingCard}
                   className="text-xs text-hit-pink-200 decoration-hit-pink-200 sm:text-sm"

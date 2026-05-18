@@ -5,7 +5,7 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontFamily: {
-      sans: ["Inter Variable", "sans-serif"],
+      sans: ["IBM Plex Sans Variable", "sans-serif"],
       serif: ["Josefin Sans Variable", "serif"],
     },
     extend: {

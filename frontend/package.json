@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@fontsource-variable/inter": "^5.0.16",
+    "@fontsource-variable/ibm-plex-sans": "^5.2.8",
     "@fontsource-variable/josefin-sans": "^5.1.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
     "@fortawesome/free-regular-svg-icons": "^6.7.1",

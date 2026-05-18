@@ -1,5 +1,3 @@
-import "@fontsource-variable/inter";
-import "@fontsource-variable/josefin-sans";
 import { Toaster } from "sonner";
 import { Footer } from "./Footer";
 import Nav from "./Nav";

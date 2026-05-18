@@ -29,13 +29,15 @@ export const SearchTypeSelector: FC<Props> = ({
           className="flex items-center justify-center"
           onClick={() => setSearchType(SearchType.MOXFIELD_USER)}
         >
-          <span>moxfield user</span>
+          <MoxfieldLogo className="rounded-full bg-white/20" />
+          <span>Moxfield User</span>
         </Button>
         <Button
           variant={buttonVariant(searchType, SearchType.DECK)}
           onClick={() => setSearchType(SearchType.DECK)}
         >
-          deck url
+          <FontAwesomeIcon icon={faLink} />
+          Deck URL
         </Button>
         <Button
           variant={buttonVariant(searchType, SearchType.PASTE)}

@@ -4,20 +4,16 @@ import { PasteDeckUrl } from "./PasteDeckUrl";
 import { PasteList } from "./PasteList";
 import { SearchTypeSelector, SearchType } from "./SearchTypeSelector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleExclamation,
-  faCircleInfo,
-  faCircleQuestion,
-} from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 function getMessage(type: SearchType) {
   switch (type) {
     case SearchType.MOXFIELD_USER:
-      return "enter your moxfield username to browse your decks & see what combos are inside";
+      return "Enter your Moxfield username to browse your decks & see what combos are inside";
     case SearchType.DECK:
-      return "paste a deck url to see its combos";
+      return "Paste a deck url to see its combos";
     case SearchType.PASTE:
-      return "paste a list of cards to see possible combos";
+      return "Paste a list of cards to see possible combos";
     default:
       return "uh... i'd probably just refresh if i was you";
   }
@@ -46,8 +42,8 @@ export function Search() {
             {searchType === SearchType.PASTE && <PasteList />}
           </div>
           <div className="h-[1px] w-full bg-zinc-700" />
-          <article className="inline-flex items-center gap-1.5 text-sm text-zinc-200">
-            <FontAwesomeIcon icon={faCircleInfo} className="text-zinc-300" />
+          <article className="inline-flex items-center gap-1.5 text-sm italic text-hit-pink-50/80">
+            <FontAwesomeIcon icon={faInfoCircle} />
             {getMessage(searchType)}
           </article>
         </div>

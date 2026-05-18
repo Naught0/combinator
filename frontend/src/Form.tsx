@@ -22,7 +22,7 @@ export function Form({
           disabled={disabled || loading}
           loading={loading}
         >
-          <span>think for me</span>{" "}
+          <span>Think for me</span>{" "}
           <span>
             <FontAwesomeIcon icon={faArrowRight} />
           </span>

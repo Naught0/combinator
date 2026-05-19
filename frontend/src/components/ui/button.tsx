@@ -7,15 +7,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const buttonVariants = cva(
-  "inline-flex items-center border-zinc-700 justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-zinc-950 focus-visible:ring-zinc-300",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-zinc-950 focus-visible:ring-zinc-300",
   {
     variants: {
       variant: {
         default:
           "bg-zinc-950 text-zinc-50 hover:bg-zinc-300 hover:text-zinc-800",
-        tab: "bg-zinc-800 sm:text-lg border-x border-t rounded-b-none border-zinc-600 text-zinc-100 hover:border-matisse-600 hover:bg-matisse-600/30",
+        tab: "border-zinc-700 bg-zinc-800 rounded-sm sm:text-lg border-x border-t sm:rounded-b-none border-b sm:border-b-0 text-zinc-100 hover:border-matisse-600 hover:bg-matisse-600/30",
         activeTab:
-          "bg-matisse-600 sm:text-lg text-zinc-50 font-bold hover:bg-matisse-600/90 border-t border-x rounded-b-none border-b-none border-matisse-600",
+          "bg-matisse-600 rounded-sm sm:text-lg text-zinc-50 font-bold hover:bg-matisse-600/90 border-b border-t border-x sm:rounded-b-none sm:border-b-none border-matisse-600",
         primary:
           "bg-matisse-600 text-zinc-50 hover:bg-matisse-600/90 border-matisse-600 border",
         destructive: "bg-red-500 text-zinc-50 hover:bg-red-500/90",

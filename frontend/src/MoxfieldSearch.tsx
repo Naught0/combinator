@@ -21,6 +21,8 @@ export default function MoxfieldSearch() {
       >
         <Field>
           <Input
+            autoComplete="off"
+            autoCorrect="off"
             variant="homepage"
             name="moxfield-username"
             placeholder="moxfield username"

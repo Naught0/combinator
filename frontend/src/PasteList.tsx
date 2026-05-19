@@ -71,7 +71,7 @@ export const PasteList = () => {
               setPastedList(e.target.value);
             }}
             value={pastedList || ""}
-            className="h-36 max-h-[512px] min-h-36 rounded p-2"
+            className="h-36 max-h-[512px] min-h-36 w-full rounded p-2"
             onKeyDown={(e) => {
               if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();

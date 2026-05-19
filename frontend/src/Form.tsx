@@ -13,11 +13,13 @@ export function Form({
   loading?: boolean;
 }) {
   return (
-    <form className="flex max-w-[512px] flex-col gap-4" onSubmit={onSubmit}>
+    <form className="flex flex-col gap-4" onSubmit={onSubmit}>
       {children}
-      <div className="mb-3">
+      <div className="mb-3 flex flex-1">
         <NiceButton
-          className={"inline-flex justify-center gap-2 px-4 py-3 text-lg"}
+          className={
+            "inline-flex justify-center gap-2 px-4 py-3 text-sm sm:text-lg"
+          }
           type="submit"
           disabled={disabled || loading}
           loading={loading}

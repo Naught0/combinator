@@ -29,13 +29,13 @@ export function Search() {
     setSearchType(type);
   };
   return (
-    <div className="grid gap-2">
-      <div>
+    <div className="mx-auto grid">
+      <div className="grid gap-2 sm:min-w-[512px] sm:gap-0 md:min-w-[636px]">
         <SearchTypeSelector
           searchType={searchType}
           setSearchType={saveSearchType}
         />
-        <div className="flex w-full flex-col gap-3 rounded-lg rounded-tl-none border border-zinc-700 bg-zinc-800 p-6 lg:max-w-screen-sm">
+        <div className="flex w-full flex-col gap-3 rounded-md border border-zinc-700 bg-zinc-800 p-6 sm:rounded-tl-none">
           <div className="flex w-full flex-col gap-3">
             {searchType === SearchType.MOXFIELD_USER && <MoxfieldSearch />}
             {searchType === SearchType.DECK && <PasteDeckUrl />}

@@ -3,6 +3,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.server
+    env_file: server/.env
     ports:
       - 5001:5001
     volumes:

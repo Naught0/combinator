@@ -21,7 +21,7 @@ const symbols = [
   "r",
   "g",
 ];
-const iconClassName = "ml-1 ms ms-shadow ms-cost ms-";
+const iconClassName = "-mt-1 mx-0.5 ms ms-shadow ms-cost ms-";
 export const manaFontMap = getPairs(symbols)
   .filter(([l, r]) => l !== r)
   .map(([l, r]) => ({ dataName: `{${l}/${r}}`, partialClassName: `${l}${r}` }))

@@ -26,12 +26,12 @@ if os.getenv("ENV", "").startswith("dev"):
     origins = ["*"]
     import requests_cache
 
-    requests_cache.install_cache("cache")
+    requests_cache.install_cache("cache", allowable_methods=["GET"])
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 

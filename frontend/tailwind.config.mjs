@@ -3,10 +3,9 @@
 module.exports = {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
-
   theme: {
     fontFamily: {
-      sans: ["Inter Variable", "sans-serif"],
+      sans: ["IBM Plex Sans Variable", "sans-serif"],
       serif: ["Josefin Sans Variable", "serif"],
     },
     extend: {
@@ -75,6 +74,19 @@ module.exports = {
           800: "#9e1638",
           900: "#841732",
           950: "#510618",
+        },
+        matisse: {
+          50: "#f3f7fc",
+          100: "#e6eef8",
+          200: "#c7dcf0",
+          300: "#95c0e4",
+          400: "#5d9fd3",
+          500: "#3883bf",
+          600: "#2a6daa",
+          700: "#215383",
+          800: "#1f476d",
+          900: "#1f3d5b",
+          950: "#14273d",
         },
       },
       borderRadius: {

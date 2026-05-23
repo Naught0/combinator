@@ -9,7 +9,7 @@ export default defineConfig({
       jsx: true,
     },
   },
-  plugins: ["react", "react-hooks"],
+  plugins: ["react", "react-hooks", "react-compiler"],
   settings: {
     react: {
       version: "detect", // Automatically detect the React version
@@ -19,6 +19,7 @@ export default defineConfig({
     "react/prop-types": "off", // Disable prop-types check if using TypeScript
     "react/jsx-uses-react": "off", // React 17+ does not need jsx-uses-react
     "react/jsx-uses-vars": "error", // Detect unused variables in JSX
+    "react-compiler/react-compiler": "warn",
     // General JavaScript rules
     "no-console": "warn", // Warn on console logs
     "no-debugger": "warn", // Warn on debugger statements

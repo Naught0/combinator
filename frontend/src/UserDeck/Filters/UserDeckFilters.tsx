@@ -23,13 +23,14 @@ export const UserDeckFilters = ({
     params.get("sortDirection") ?? defaultFormValues.sortDirection;
 
   return (
-    <div className="flex flex-row flex-wrap gap-3">
+    <div className="flex w-fit flex-row flex-wrap gap-3 rounded-md border border-zinc-600 bg-zinc-800 p-4">
       <Field>
-        <Label>Deck name</Label>
+        <Label>Search</Label>
         <div className="relative w-full">
           <SyncInput
+            className="min-w-60"
             name="filter"
-            placeholder="Filter decks by title"
+            placeholder="Search by title or card name"
             debounceMs={500}
           />
         </div>

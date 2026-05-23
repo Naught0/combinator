@@ -25,3 +25,19 @@ interface DeckData {
 interface CardResponse {
   cards: DeckCard[];
 }
+
+type CardType =
+  | "artifact"
+  | "battle"
+  | "conspiracy"
+  | "creature"
+  | "enchantment"
+  | "instant"
+  | "land"
+  | "phenomenon"
+  | "plane"
+  | "planeswalker"
+  | "scheme"
+  | "sorcery"
+  | "tribal"
+  | "vanguard";

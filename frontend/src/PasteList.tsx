@@ -9,30 +9,38 @@ import { getCardData } from "./services";
 import { TabContainer } from "./TabContainer";
 import { DeckInfo } from "./DeckInfo";
 
-export const PasteList = () => {
-  const [pastedList, setPastedList] = useState(
-    localStorage.getItem("pastedList") ?? "",
-  );
+interface PasteListProps {
+  pastedList: string;
+  setPastedList: (value: string) => void;
+  isInputOnly?: boolean;
+  onResultsDeckData?: (deckData: DeckData) => void;
+}
+
+export const PasteList = ({ pastedList, setPastedList, isInputOnly = false, onResultsDeckData }: PasteListProps) => {
   const [enabled, setEnabled] = useState(false);
   const [deckHash, setDeckHash] = useState("");
   const [debouncedList] = useDebounce(pastedList, 500);
+
   useEffect(
     function persistList() {
       localStorage.setItem("pastedList", pastedList);
     },
     [debouncedList],
   );
+
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ["pasted-list", deckHash],
     queryFn: async () => getCardData(parseCardList(pastedList)),
     enabled,
   });
+
   useEffect(
     function disableQuery() {
       if (enabled) setEnabled(false);
     },
     [isError, isSuccess],
   );
+
   useEffect(
     function calculateHash() {
       if (!debouncedList) return;
@@ -44,6 +52,7 @@ export const PasteList = () => {
     },
     [debouncedList],
   );
+
   const deckData = useMemo<DeckData>(() => {
     return {
       id: deckHash,
@@ -52,8 +61,14 @@ export const PasteList = () => {
     };
   }, [data?.cards, deckHash]);
 
-  return (
-    <TabContainer>
+  useEffect(() => {
+    if (onResultsDeckData && deckData?.cards?.length > 0) {
+      onResultsDeckData(deckData);
+    }
+  }, [deckData, onResultsDeckData]);
+
+  if (isInputOnly) {
+    return (
       <Form
         onSubmit={(e) => {
           e.preventDefault();
@@ -71,26 +86,31 @@ export const PasteList = () => {
               setPastedList(e.target.value);
             }}
             value={pastedList || ""}
-            className="h-36 max-h-[512px] min-h-36 rounded p-2"
+            className="h-36 max-h-[512px] min-h-36 w-full rounded p-2"
             onKeyDown={(e) => {
               if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();
                 e.currentTarget.form?.dispatchEvent(
-                  new Event("submit", { bubbles: true, cancelable: true })
+                  new Event("submit", { bubbles: true, cancelable: true }),
                 );
               }
             }}
           ></Textarea>
         </Field>
       </Form>
-      {deckData?.cards.length > 0 && (
-        <>
-          {deckData.meta && <DeckInfo meta={deckData.meta} />}
-          <ComboTabs deckData={deckData} />
-        </>
-      )}
-    </TabContainer>
-  );
+    );
+  }
+
+  if (deckData?.cards.length > 0) {
+    return (
+      <TabContainer>
+        {deckData.meta && <DeckInfo meta={deckData.meta} />}
+        <ComboTabs deckData={deckData} />
+      </TabContainer>
+    );
+  }
+
+  return null;
 };
 
 const MAX_CARDS = 1024;

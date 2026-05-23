@@ -26,21 +26,14 @@ export const ComboContainer = ({
   if (error?.response?.status === 404)
     return <Error message={"Deck not found"} />;
 
+  if (isError && !deckData)
+    return <Error code={error?.response?.status} message={error.message} />;
+
   return (
     <div className="flex flex-col gap-3">
       {isLoading && <Loading size="lg" message="Loading deck" />}
       {meta && <DeckInfo meta={meta} />}
       {deckData && <ComboTabs deckData={deckData} />}
-      {isError && (
-        <Error
-          code={error?.response?.status || 500}
-          message={
-            typeof error?.response?.data === "string"
-              ? error.response.data
-              : "Something went wrong"
-          }
-        />
-      )}
     </div>
   );
 };

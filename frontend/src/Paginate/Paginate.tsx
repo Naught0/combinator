@@ -64,50 +64,44 @@ export const Paginate: React.FC<props> = ({
 
   return (
     <Pagination>
-      <PaginationContent>
-        <div className="flex flex-col items-center justify-center md:contents">
-          <div className="flex flex-row gap-3">
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIndex(Math.max(0, pageIndex - 1));
-                }}
-              />
-            </PaginationItem>
-            <div className="hidden md:contents">
-              {pageNumbers.map((page, index) =>
-                page === null ? (
-                  <PaginationItem key={`ellipsis-${index}`}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                ) : (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setIndex(index);
-                      }}
-                      isActive={page - 1 === pageIndex}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                ),
-              )}
-            </div>
-            <PaginationItem>
-              <PaginationNext
-                onClick={() =>
-                  setIndex(Math.min(totalPages - 1, pageIndex + 1))
-                }
-              />
-            </PaginationItem>
-          </div>
-          <span className="contents text-sm md:hidden">
-            Page {pageIndex + 1} / {totalPages}
-          </span>
+      <PaginationContent className="flex flex-row items-center justify-between">
+        <PaginationItem>
+          <PaginationPrevious
+            onClick={(e) => {
+              e.preventDefault();
+              setIndex(Math.max(0, pageIndex - 1));
+            }}
+          />
+        </PaginationItem>
+        <div className="hidden md:contents">
+          {pageNumbers.map((page, index) =>
+            page === null ? (
+              <PaginationItem key={`ellipsis-${index}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIndex(index);
+                  }}
+                  isActive={page - 1 === pageIndex}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ),
+          )}
         </div>
+        <PaginationItem>
+          <PaginationNext
+            onClick={() => setIndex(Math.min(totalPages - 1, pageIndex + 1))}
+          />
+        </PaginationItem>
+        <span className="contents text-sm md:hidden">
+          Page {pageIndex + 1} / {totalPages}
+        </span>
       </PaginationContent>
     </Pagination>
   );

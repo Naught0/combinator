@@ -39,9 +39,10 @@ export function PasteDeckUrl() {
       >
         <Field>
           <Input
+            variant="homepage"
             name="deck-url"
             type="text"
-            placeholder="Moxfield, Archidekt, or MTGGoldfish deck URL"
+            placeholder="moxfield, archidekt, or mtggoldfish deck url"
             onInput={(e) => {
               setValue((e.target as HTMLInputElement).value);
             }}

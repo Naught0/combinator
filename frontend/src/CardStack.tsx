@@ -1,6 +1,11 @@
+import { memo } from "react";
 import StackableCard from "./StackableCard";
 
-export function CardStack({ cards }: { cards: DeckCard[] }) {
+export const CardStack = memo(function CardStack({
+  cards,
+}: {
+  cards: DeckCard[];
+}) {
   return (
     <div className="flex w-full select-none flex-col items-center justify-center gap-3 md:flex-row md:gap-5">
       {cards.map((card, index) => (
@@ -13,4 +18,4 @@ export function CardStack({ cards }: { cards: DeckCard[] }) {
       ))}
     </div>
   );
-}
+});

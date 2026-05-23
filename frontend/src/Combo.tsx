@@ -1,26 +1,32 @@
 import { manaFontMap } from "./manaFontMap";
-import { Button } from "./components/ui/button";
+import * as button from "./components/ui/button";
 import { CardStack } from "./CardStack";
-import { useEffect, useState } from "react";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { memo, useEffect, useMemo, useState } from "react";
+import {
+  faCaretDown,
+  faCaretRight,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { HoverableCard } from "./HoverableCard";
+import { cardNameToImageSrc } from "./services/scryfall";
 
 interface props {
   combo: AlmostIncluded;
   initialExpanded?: boolean;
   cards: DeckCard[];
   showImages?: boolean;
+  missingCard?: string;
 }
 
-const replaceManaSymbols = (s: string) => {
+export const replaceManaSymbols = (s: string) => {
   return s
     .replaceAll("}{", "} {")
     .split(" ")
     .map((word, idx) => {
-      const toCompare = word.toLowerCase().replaceAll(/[.,]/g, "");
+      const toCompare = word.toLowerCase().replaceAll(/[.,:]/g, "");
       if (word && Object.keys(manaFontMap).includes(toCompare)) {
-        return manaFontMap[toCompare](`${word}-${idx}`);
+        return manaFontMap[toCompare](`${toCompare}-${idx}`);
       }
       return ` ${word} `;
     });
@@ -30,7 +36,7 @@ function ComboCardHeading({
   card,
   isHoverable,
 }: {
-  card: DeckCard;
+  card: Partial<DeckCard> & { name: string };
   isHoverable?: boolean;
 }) {
   const className =
@@ -46,95 +52,123 @@ function ComboCardHeading({
   );
 }
 
-export const Combo = ({
+export const Combo = memo(function Combo({
   combo,
   initialExpanded,
   cards,
   showImages = true,
-}: props) => {
+  missingCard,
+}: props) {
   const [expanded, setExpanded] = useState(initialExpanded);
-  const deckCards = combo.uses
-    .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
-    .filter((c) => !!c);
+
+  const deckCards = useMemo(
+    () =>
+      combo.uses
+        .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
+        .filter((c): c is DeckCard => !!c),
+    [combo.uses, cards],
+  );
+
+  const cardStackCards = useMemo(
+    () =>
+      [
+        missingCard
+          ? {
+              id: "missing-card",
+              image: cardNameToImageSrc(missingCard),
+              name: missingCard ?? "",
+              oracle_text: "",
+              type: "",
+            }
+          : null,
+        ...deckCards,
+      ].filter((c): c is DeckCard => !!c),
+    [missingCard, deckCards],
+  );
+
   useEffect(() => {
     setExpanded(initialExpanded);
   }, [initialExpanded]);
+
   return (
-    <div
-      className={`flex h-fit w-full flex-col items-center rounded border border-zinc-700`}
-    >
-      <div className="z-10 flex w-full flex-col gap-1 rounded bg-zinc-800 p-6">
+    <div className="z-10 flex flex-grow flex-col gap-3 rounded border border-zinc-600 bg-zinc-800 p-6 text-sm sm:min-w-80 sm:text-base">
+      <div className="flex flex-col gap-1">
+        {missingCard && (
+          <ComboCardHeading
+            card={{ name: missingCard }}
+            isHoverable={!showImages}
+          />
+        )}
         {deckCards.map((c, idx) => (
           <div className="inline-flex w-fit items-center gap-2" key={c.id}>
-            {idx !== 0 && (
+            {(idx !== 0 || !!missingCard) && (
               <FontAwesomeIcon
                 icon={faPlus}
+                className="text-zinc-400"
                 onClick={() => setExpanded(!expanded)}
               />
             )}
             <ComboCardHeading key={c.id} card={c} isHoverable={!showImages} />
           </div>
         ))}
-        <div
-          className={`flex flex-col flex-wrap items-center justify-start gap-3 md:flex-row md:items-start`}
-        >
-          {showImages && <CardStack cards={deckCards} />}
-          <div className="flex w-full flex-col items-start gap-3">
-            <div>
-              <p className="font-bold lg:text-lg">Effects</p>
-              <ul>
-                {combo.produces.map((produces) => (
-                  <li key={produces.feature.id}>{produces.feature.name}</li>
-                ))}
-              </ul>
-            </div>
+      </div>
+      <div
+        className={`flex flex-col flex-wrap items-center justify-start gap-3 md:flex-col md:items-start`}
+      >
+        {showImages && <CardStack cards={cardStackCards} />}
+        <div className="flex w-full flex-col items-start gap-3">
+          <div>
+            <p className="font-bold">Effects</p>
+            <ul className="list text-sm">
+              {combo.produces.map((produces) => (
+                <li key={produces.feature.id}>{produces.feature.name}</li>
+              ))}
+            </ul>
           </div>
-
-          <Button
-            className="inline-flex w-full items-center"
-            onClick={() => setExpanded((prev) => !prev)}
-            size="sm"
-            variant="ghost"
-          >
-            <FontAwesomeIcon icon={expanded ? faMinus : faPlus} />
-            {expanded ? "Collapse" : "Expand"}
-          </Button>
         </div>
-        {expanded && (
-          <div className="flex flex-row flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">
-            <div className="flex flex-wrap gap-3 md:flex-row">
-              {!!combo.otherPrerequisites.trim() && (
-                <div className="flex min-w-72 flex-1 basis-5/12 flex-col">
-                  <p className="font-bold">Prerequisites</p>
-                  <ul>
-                    {combo.otherPrerequisites
-                      .split(".")
-                      .filter((p) => p.trim())
-                      .map((p, idx) => (
-                        <li key={`combo-${combo.id}-${p}-${idx}`}>
-                          {replaceManaSymbols(p)}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              )}
-              <div className="flex min-w-72 flex-1 basis-5/12 flex-col">
-                <p className="font-bold">Steps</p>
-                <ol>
-                  {combo.description
+
+        <button.Button
+          className="inline-flex w-full items-center border border-zinc-500"
+          onClick={() => setExpanded((prev) => !prev)}
+          size="sm"
+          variant="ghost"
+        >
+          <FontAwesomeIcon icon={expanded ? faCaretDown : faCaretRight} />
+          {expanded ? "Hide steps" : "Show steps"}
+        </button.Button>
+      </div>
+      {expanded && (
+        <div className="flex flex-row flex-wrap justify-start rounded-b-md border-t border-t-zinc-600 py-3">
+          <div className="grid gap-2">
+            {!!combo.otherPrerequisites.trim() && (
+              <div className="flex flex-1 basis-5/12 flex-col sm:min-w-72">
+                <p className="font-bold">Prerequisites</p>
+                <ul className="list text-sm">
+                  {combo.otherPrerequisites
                     .split(".")
-                    .filter((t) => t.trim().length > 0)
-                    .map((s, idx) => (
-                      <li key={`${combo.id}-${idx}`}>
-                        {replaceManaSymbols(s)}
+                    .filter((p) => p.trim())
+                    .map((p, idx) => (
+                      <li key={`combo-${combo.id}-${p}-${idx}`}>
+                        {replaceManaSymbols(p)}
                       </li>
                     ))}
-                </ol>
+                </ul>
               </div>
+            )}
+            <div className="flex flex-1 basis-5/12 flex-col sm:min-w-72">
+              <p className="font-bold">Steps</p>
+              <ol className="list text-sm">
+                {combo.description
+                  .split(".")
+                  .filter((t) => t.trim().length > 0)
+                  .map((s, idx) => (
+                    <li key={`${combo.id}-${idx}`}>{replaceManaSymbols(s)}</li>
+                  ))}
+              </ol>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
-};
+});

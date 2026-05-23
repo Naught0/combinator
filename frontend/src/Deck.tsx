@@ -15,10 +15,10 @@ export const Deck: FC<Props> = ({ deck }) => {
   return (
     <Link
       to={`/user/moxfield/${deck.authors[0].userName}/deck/${deck.publicId}`}
-      className="border border-zinc-800 text-zinc-100 visited:text-zinc-200 hover:text-white hover:no-underline"
+      className="rounded-lg border border-zinc-800 text-zinc-100 visited:text-zinc-200 hover:text-white hover:no-underline"
     >
       <div
-        className="flex flex-col justify-between gap-2 rounded bg-zinc-950 bg-no-repeat p-4"
+        className="flex flex-col justify-between gap-2 rounded-lg bg-zinc-950 bg-no-repeat p-4"
         style={{
           backgroundImage: deck.mainCardId
             ? `radial-gradient(transparent, rgb(0, 0, 0)),

@@ -26,7 +26,7 @@ export const useFilteredCombos = ({
   }, [filter, combos]);
 
   const groupedByMissing = useMemo(() => {
-    if (!deckData || !filteredCombos) return;
+    if (!deckData?.cards || !filteredCombos) return;
 
     const deckCards = deckData.cards.map((c) => c.name);
     const comboCards = filteredCombos.flatMap((c) =>

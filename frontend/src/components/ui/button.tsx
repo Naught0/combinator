@@ -7,17 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const buttonVariants = cva(
-  "inline-flex items-center border-zinc-700 justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-zinc-950 focus-visible:ring-zinc-300",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-zinc-950 focus-visible:ring-zinc-300",
   {
     variants: {
       variant: {
         default:
           "bg-zinc-950 text-zinc-50 hover:bg-zinc-300 hover:text-zinc-800",
-        tab: "bg-zinc-950 text-zinc-50 hover:border-zinc-500 border-none rounded-b-none border-solid border-b-4",
+        tab: "border-zinc-700 bg-zinc-800 rounded-sm sm:text-lg border-x border-t sm:rounded-b-none border-b sm:border-b-0 text-zinc-100 hover:border-matisse-600 hover:bg-matisse-600/30",
         activeTab:
-          "bg-zinc-950 text-zinc-50 hover:bg-zinc-950/90 border-none rounded-b-none border-solid border-b-4 border-blue-600",
+          "bg-matisse-600 rounded-sm sm:text-lg text-zinc-50 font-bold hover:bg-matisse-600/90 border-b border-t border-x sm:rounded-b-none sm:border-b-none border-matisse-600",
         primary:
-          "bg-blue-600 text-zinc-50 hover:bg-blue-600/90 border-blue-500 border",
+          "bg-matisse-600 text-zinc-50 hover:bg-matisse-600/90 border-matisse-600 border",
         destructive: "bg-red-500 text-zinc-50 hover:bg-red-500/90",
         outline:
           "border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-600 dark:bg-zinc-950 dark:hover:bg-zinc-700 dark:hover:text-zinc-50",
@@ -28,11 +28,12 @@ const buttonVariants = cva(
         link: "text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-50 !p-0",
       },
       size: {
-        default: "h-10 px-4 py-2",
+        default: "px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         "icon-lg": "h-12 w-12",
+        tab: "text-base md:text-lg h-fit w-fit px-4 py-2",
       },
     },
     defaultVariants: {

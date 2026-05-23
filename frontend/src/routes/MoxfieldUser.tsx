@@ -67,14 +67,19 @@ export function MoxfieldUser() {
         <BackToSearch />
       </div>
       <h1 className="font-serif text-3xl xl:text-4xl">{userName}'s decks</h1>
-      <Hyperlink
-        className="inline-flex items-center gap-2 text-sm text-zinc-400"
-        href={`https://moxfield.com/users/${userName}`}
-        target="_blank"
-      >
-        <span>View user on Moxfield</span>
-        <FontAwesomeIcon className="text-sm" icon={faArrowUpRightFromSquare} />
-      </Hyperlink>
+      <div>
+        <Hyperlink
+          className="inline-flex items-center gap-2 text-sm text-zinc-400"
+          href={`https://moxfield.com/users/${userName}`}
+          target="_blank"
+        >
+          <span>View user on Moxfield</span>
+          <FontAwesomeIcon
+            className="text-sm"
+            icon={faArrowUpRightFromSquare}
+          />
+        </Hyperlink>
+      </div>
       {userName && (
         <div className="mb-3">
           <UserDeckFilters formats={formats} />

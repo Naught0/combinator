@@ -9,7 +9,7 @@ export const MasonryLayout = ({ items, className, wide = true }: Props) => {
   return (
     <div
       className={cn(
-        "masonry mx-auto w-full columns-1 gap-3 lg:columns-2",
+        "mx-auto w-full columns-1 gap-3 md:columns-2",
         wide ? "xl:columns-3" : "",
         className,
       )}

@@ -36,7 +36,3 @@ ol {
     --radius: 0.5rem;
   }
 }
-
-.masonry {
-  counter-reset: item-counter;
-}

@@ -66,6 +66,9 @@ export const Footer = () => {
                   Source
                 </Hyperlink>
               </p>
+              <p>
+                Feedback: <a href="mailto:contact@jamese.dev">email me</a>
+              </p>
             </ResourceColumn>
           </div>
         </div>

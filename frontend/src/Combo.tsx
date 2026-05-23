@@ -1,7 +1,7 @@
 import { manaFontMap } from "./manaFontMap";
 import * as button from "./components/ui/button";
 import { CardStack } from "./CardStack";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import {
   faCaretDown,
   faCaretRight,
@@ -52,20 +52,44 @@ function ComboCardHeading({
   );
 }
 
-export const Combo = ({
+export const Combo = memo(function Combo({
   combo,
   initialExpanded,
   cards,
   showImages = true,
   missingCard,
-}: props) => {
+}: props) {
   const [expanded, setExpanded] = useState(initialExpanded);
-  const deckCards = combo.uses
-    .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
-    .filter((c) => !!c);
+
+  const deckCards = useMemo(
+    () =>
+      combo.uses
+        .map((comboCard) => cards.find((c) => c.name === comboCard.card?.name))
+        .filter((c): c is DeckCard => !!c),
+    [combo.uses, cards],
+  );
+
+  const cardStackCards = useMemo(
+    () =>
+      [
+        missingCard
+          ? {
+              id: "missing-card",
+              image: cardNameToImageSrc(missingCard),
+              name: missingCard ?? "",
+              oracle_text: "",
+              type: "",
+            }
+          : null,
+        ...deckCards,
+      ].filter((c): c is DeckCard => !!c),
+    [missingCard, deckCards],
+  );
+
   useEffect(() => {
     setExpanded(initialExpanded);
   }, [initialExpanded]);
+
   return (
     <div className="z-10 flex flex-grow flex-col gap-3 rounded border border-zinc-600 bg-zinc-800 p-6 text-sm sm:min-w-80 sm:text-base">
       <div className="flex flex-col gap-1">
@@ -91,22 +115,7 @@ export const Combo = ({
       <div
         className={`flex flex-col flex-wrap items-center justify-start gap-3 md:flex-col md:items-start`}
       >
-        {showImages && (
-          <CardStack
-            cards={[
-              missingCard
-                ? {
-                    id: "missing-card",
-                    image: cardNameToImageSrc(missingCard),
-                    name: missingCard ?? "",
-                    oracle_text: "",
-                    type: "",
-                  }
-                : null,
-              ...deckCards,
-            ].filter((c) => !!c)}
-          />
-        )}
+        {showImages && <CardStack cards={cardStackCards} />}
         <div className="flex w-full flex-col items-start gap-3">
           <div>
             <p className="font-bold">Effects</p>
@@ -162,4 +171,4 @@ export const Combo = ({
       )}
     </div>
   );
-};
+});

@@ -16,6 +16,7 @@ import { Search } from "./Search";
 import "./style/index.css";
 import { UserDeckCombos } from "./routes/UserDeckCombos";
 import { Error } from "./Error";
+import { PasteCombos } from "./routes/PasteCombos";
 
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const GC_TIME_MS = 1000 * 60 * 60 * 24 * 7;
@@ -49,12 +50,8 @@ if (elem) {
                 path="/user/:source/:userId/deck/:deckId"
                 element={<UserDeckCombos />}
               />
-              <Route
-                path="/user/:source/:userId/deck/:deckId/:tab"
-                element={<UserDeckCombos />}
-              />
               <Route path="/deck/:source/:deckId" element={<DeckCombos />} />
-              <Route path="/deck/:source/:deckId/:tab" element={<DeckCombos />} />
+              <Route path="/paste/:deckId" element={<PasteCombos />} />
               <Route path="/deck/*" element={<RedirectDeck />} />
               <Route path="*" element={<Error />} />
             </Route>

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useLocation } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { CardFilter, ViewMode } from "./CardFilter";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
@@ -14,10 +14,14 @@ import { ListControls } from "./ListControls";
 import { useState } from "react";
 
 export function ComboTabs({ deckData }: { deckData: DeckData }) {
-  const location = useLocation();
-  const pathParts = location.pathname.split("/");
-  const activeTab = pathParts[pathParts.length - 1];
-  const basePath = pathParts.slice(0, -1).join("/");
+  const [searchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab") || "combos";
+  
+  const getTabLink = (tab: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("tab", tab);
+    return `?${params.toString()}`;
+  };
 
   const { data: allCombos, isLoading } = useQuery({
     queryKey: ["combo-data", { source: deckData.source, id: deckData.id }],
@@ -51,7 +55,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
     <div className="flex flex-col">
       <div className="grid">
         <div className="inline-flex flex-wrap gap-2">
-          <Link to={`${basePath}/combos`}>
+          <Link to={getTabLink("combos")} replace>
             <Button
               variant={activeTab === "combos" ? "activeTab" : "tab"}
               size="tab"
@@ -64,7 +68,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
             </Button>
           </Link>
           {(allCombos?.almostIncluded?.length ?? -1) > 0 && (
-            <Link to={`${basePath}/add-1`}>
+            <Link to={getTabLink("add-1")} replace>
               <Button
                 size="tab"
                 variant={activeTab === "add-1" ? "activeTab" : "tab"}
@@ -77,7 +81,7 @@ export function ComboTabs({ deckData }: { deckData: DeckData }) {
               </Button>
             </Link>
           )}
-          <Link to={`${basePath}/search`}>
+          <Link to={getTabLink("search")} replace>
             <Button
               size="tab"
               variant={activeTab === "search" ? "activeTab" : "tab"}

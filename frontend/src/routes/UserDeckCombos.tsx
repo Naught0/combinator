@@ -4,18 +4,19 @@ import { Hyperlink } from "@/Hyperlink";
 import { IconText } from "@/IconText";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { PropsWithChildren } from "react";
-import { Navigate, useParams } from "react-router";
+import { Navigate, useParams, useSearchParams } from "react-router";
 
 export function UserDeckCombos() {
-  let { source, userId, deckId, tab } = useParams();
+  let { source, userId, deckId } = useParams();
+  const [searchParams] = useSearchParams();
+  const tab = searchParams.get("tab") || "combos";
+
   if (!userId) return <Error message={"User not found"} />;
   if (!deckId) return <Error message={"Deck not found"} />;
   if (!source) return <Error message={"Source not found"} />;
 
-  const basePath = `/user/${source}/${userId}/deck/${deckId}`;
-
   if (!tab) {
-    return <Navigate to={`${basePath}/combos`} replace />;
+    return <Navigate to={`/user/${source}/${userId}/deck/${deckId}?tab=combos`} replace />;
   }
 
   return (

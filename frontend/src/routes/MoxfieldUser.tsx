@@ -54,7 +54,7 @@ export function MoxfieldUser() {
   if (existsLoading)
     return <Loading size={"lg"} message={`Searching for user on Moxfield`} />;
 
-  if (userNameNotFound) {
+  if (userNameNotFound && !data) {
     return <Error message={"User not found"} />;
   }
 

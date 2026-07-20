@@ -2,7 +2,7 @@
 authors = [
     {name = "James", email = "4589250+Naught0@users.noreply.github.com"},
 ]
-requires-python = "<4.0,>=3.11"
+requires-python = "<3.14,>=3.11"
 dependencies = [
     "requests<3.0.0,>=2.27.1",
     "gunicorn>=20.1.0,<23.0.0",

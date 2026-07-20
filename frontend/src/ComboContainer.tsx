@@ -23,7 +23,7 @@ export const ComboContainer = ({
     queryFn: () => getDeckById(source, deckId),
   });
   const { meta } = deckData || {};
-  if (error?.response?.status === 404)
+  if (error?.response?.status === 404 && !deckData)
     return <Error message={"Deck not found"} />;
 
   return (

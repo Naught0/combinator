@@ -41,20 +41,23 @@ def combo_search(data: ComboSearchPayload):
 def read_deck(source: Source, deck_id: str):
     try:
         return get_deck(source, deck_id)
-    except Exception:
+    except Exception as e:
         sentry_sdk.capture_exception()
-        return Response("Deck not found", 404)
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @router.get("/deck/parse_url")
 def parse_deck_url(url: str):
     source = parse_source_from_url(url)
     if source is None:
-        return Response("Unknown source", 404)
+        raise HTTPException(status_code=404, detail="Unknown deck source. Supported: Moxfield, Archidekt, MTGGoldfish.")
 
-    id = parse_id_from_url(source, url)
+    try:
+        id = parse_id_from_url(source, url)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
     if id is None:
-        return Response("Invalid or malformed URL", 404)
+        raise HTTPException(status_code=404, detail="Could not parse a deck ID from the URL.")
 
     return {"source": source, "id": id}
 
@@ -63,15 +66,14 @@ def parse_deck_url(url: str):
 def deck_search(url: str):
     source = parse_source_from_url(url)
     if source is None:
-        return Response("Unknown source", 404)
-
-    deck_id = parse_id_from_url(source, url)
+        raise HTTPException(status_code=404, detail="Unknown deck source. Supported: Moxfield, Archidekt, MTGGoldfish.")
 
     try:
+        deck_id = parse_id_from_url(source, url)
         deck = get_deck(source, deck_id)
-    except Exception:
+    except Exception as e:
         sentry_sdk.capture_exception()
-        raise HTTPException(status_code=404, detail="Deck not found")
+        raise HTTPException(status_code=404, detail=str(e))
 
     return deck
 

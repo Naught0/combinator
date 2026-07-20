@@ -28,11 +28,10 @@ def parse_moxfield_deck_id(url: str) -> str:
 
 def parse_mtggoldfish_deck_id(url: str) -> str:
     parsed = urlparse(url)
-    try:
-        url_parts = parsed.path.split("/")
-        return url_parts[url_parts.index("deck") + 1]
-    except IndexError:
+    url_parts = [part for part in parsed.path.split("/") if part]
+    if not url_parts:
         raise ValueError("Invalid or malformed URL supplied.")
+    return url_parts[-1]
 
 
 def parse_archidekt_deck_id(url: str) -> str:

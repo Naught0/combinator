@@ -92,10 +92,5 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.7.2",
     "vite-plugin-radar": "^0.9.2"
-  },
-  "pnpm": {
-    "overrides": {
-      "rollup": "npm:@rollup/wasm-node"
-    }
   }
 }

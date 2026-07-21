@@ -1,0 +1,4 @@
+allowBuilds:
+  core-js-pure: true
+overrides:
+  rollup: "npm:@rollup/wasm-node"
